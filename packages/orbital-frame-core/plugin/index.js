@@ -8,11 +8,24 @@ export const ON_SEND = 'onSend'
 export const AFTER_SEND = 'afterSend'
 
 const signals = [ ON_INIT, ON_ERROR, ON_RESPOND, ON_EXECUTE, ON_SEND, AFTER_SEND ]
-const registry = []
+const registry = {}
+
+let pluginId = 0
 
 const plugin = {
   register (bot, definition) {
-    registry.push(definition.call(definition, bot))
+    const id = pluginId++
+    registry[id] = definition.call(definition, bot)
+    return id
+  },
+
+  unregister (id) {
+    if (registry[id]) {
+      delete registry[id]
+      return true
+    }
+
+    return false
   },
 
   registerMultiple (bot, definitions) {
@@ -29,7 +42,7 @@ const plugin = {
     if (signals.includes(signal)) {
       let catchable = opts.catchable
 
-      registry.some(plugin => {
+      Object.values(registry).some(plugin => {
         if (plugin[signal]) {
           let status = true
           if (catchable) {

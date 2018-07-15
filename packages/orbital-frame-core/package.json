@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bremen Braun (konapun)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "tree-sitter": "^0.12.17",
+    "tree-sitter-bash": "^0.12.0"
+  }
 }
