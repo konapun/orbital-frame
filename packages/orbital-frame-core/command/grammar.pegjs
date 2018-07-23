@@ -1,5 +1,5 @@
 /**
- * The command grammar is a subset of bash's grammar:
+ * The command grammar is a modified subset of bash's grammar:
  *  - command
  *  - options
  *  - arguments
@@ -9,13 +9,20 @@
  *  - multiple commands per line
  *  - redirect (for channels)
  *  - command substitution
+ *    - interpolated commands can be used as either arguments or option values
  *  - variables
  *    - predefined:
  *      - $$ - last command
  *      - $? - exit status of last command
- *  - &&
- *  - ||
  */
+
+Program
+  = Pipeline ";" Pipeline
+  / Pipeline
+
+Pipeline
+  = _ Command _ "|" Pipeline
+  / _ Command _
 
 Command
   = InterpolatedCommand
@@ -25,13 +32,28 @@ InterpolatedCommand
   = "$(" command:Command ")" { return command }
 
 BareCommand
-  = _ name:Word _ preOptions:Options* _ arguments:Arguments* _ postOptions:Options*
+  = _ name:Word _ preOptions:Option* _ arguments:Arguments* _ postOptions:Option*
 
-Options
-  = "options"
+Redirect
+  = ">" "TODO"
+
+Option
+  = LongOption _ Option*
+    / ShortOption _ Option*
+
+LongOption
+  = "--" Word _ Argument*
+
+ShortOption
+  = "-" Letter _ Argument*
 
 Arguments
-  = "arguments"
+  = Argument+
+
+Argument
+  = Variable
+  / Word
+  / String
 
 String
   = '"' chars:DoubleStringCharacter* '"' { return chars.join(''); }
@@ -56,6 +78,11 @@ EscapeSequence
   / "t"  { return "\t";   }
   / "v"  { return "\x0B"; }
 
+Variable
+  = "$" variable:Word { return variable; }
+
 Word = [a-zA-Z0-9_-]+
+
+Letter = [a-zA-Z]
 
 _  = [ \t\r\n]*
