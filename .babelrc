@@ -1,0 +1,21 @@
+{
+  "env": {
+    "build": {
+      "presets": [
+        ["@babel/preset-env", {
+          "targets": {
+            "node": "8.11"
+          },
+          "modules": false
+        }]
+      ],
+      "plugins": [
+        "@babel/plugin-external-helpers",
+        ["@babel/plugin-transform-runtime", {
+          "polyfill": false,
+          "regenerator": true
+        }]
+      ]
+    }
+  }
+}
