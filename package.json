@@ -1,14 +1,31 @@
 {
-	"devDependencies": {
-		"ava": "^0.25.0",
-		"babel-cli": "^6.26.0",
-		"babel-core": "^6.26.3",
-		"babel-plugin-external-helpers": "^6.22.0",
-		"babel-plugin-source-map-support": "^2.0.1",
-		"babel-plugin-transform-runtime": "^6.23.0",
-		"babel-polyfill": "^6.26.0",
-		"babel-preset-env": "^1.7.0",
-		"babel-register": "^6.26.0",
-		"lerna": "^2.11.0"
-	}
+  "name": "orbital-frame",
+  "description": "Command line as a chatbot",
+  "version": "0.1.0",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/konapun/orbital-frame.git"
+  },
+  "author": "konapun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/konapun/orbital-frame/issues"
+  },
+  "homepage": "https://github.com/konapun/orbital-frame#readme",
+  "scripts": {
+    "build": "NODE_ENV=production lerna exec --parallel -- babel src -d dist"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-source-map-support": "^2.0.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "lerna": "^2.11.0"
+  }
 }
