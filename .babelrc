@@ -3,6 +3,11 @@
   "env": {
     "test": {
       "presets": [["env"]]
+    },
+    "production": {
+      "ignore": [
+        "**/*.test.js"
+      ]
     }
   }
 }
