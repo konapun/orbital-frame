@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "A framework for hubot-based chatbots based on the unix command line",
   "main": "index.js",
-  "scripts": {
-    "build": "NODE_ENV=production babel src -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
   "dependencies": {},
