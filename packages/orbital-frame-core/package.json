@@ -9,8 +9,8 @@
   },
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
-  "dependencies": {
-    "tree-sitter": "^0.12.17",
-    "tree-sitter-bash": "^0.12.0"
+  "dependencies": {},
+  "devDependencies": {
+    "pegjs": "^0.10.0"
   }
 }
