@@ -42,13 +42,13 @@ Option
     / ShortOption _ Option*
 
 LongOption
-  = "--" Word _ Argument*
+  = "--" Word _ ?Argument
 
 ShortOption
-  = "-" Letter _ Argument*
+  = "-" Letter _ ?Argument
 
 Arguments
-  = Argument+
+  = (Argument _)+
 
 Argument
   = Variable
