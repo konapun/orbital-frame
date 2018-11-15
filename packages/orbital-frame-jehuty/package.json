@@ -1,17 +1,19 @@
 {
-  "name": "orbital-frame",
+  "name": "@orbital-frame/jehuty",
   "version": "0.0.0",
   "private": true,
   "author": "Bremen Braun (konapun)",
   "description": "Command line as a chatbot",
   "dependencies": {
+    "@orbital-frame/core": "^1.0.0",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.2",
     "hubot-heroku-keepalive": "^1.0.3",
     "hubot-redis-brain": "0.0.4",
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.1",
-    "hubot-slack": "^4.5.2"
+    "hubot-slack": "^4.5.2",
+    "mathjs": "^5.2.0"
   },
   "engines": {
     "node": "0.10.x"

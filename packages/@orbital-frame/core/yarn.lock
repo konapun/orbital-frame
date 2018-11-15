@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+create-singleton@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/create-singleton/-/create-singleton-0.0.4.tgz#777397b04dfb4e0e05d8afa2032dba8fc770f56d"
+
 pegjs@^0.10.0:
   version "0.10.0"
   resolved "http://registry.npmjs.org/pegjs/-/pegjs-0.10.0.tgz#cf8bafae6eddff4b5a7efb185269eaaf4610ddbd"

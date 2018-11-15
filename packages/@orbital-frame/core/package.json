@@ -1,5 +1,5 @@
 {
-  "name": "orbital-frame-core",
+  "name": "@orbital-frame/core",
   "version": "1.0.0",
   "description": "A framework for hubot-based chatbots based on the unix command line",
   "main": "index.js",
