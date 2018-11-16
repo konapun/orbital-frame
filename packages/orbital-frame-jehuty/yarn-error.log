@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /Users/konapun/.yarn/bin/yarn.js add @orbital-frame/core
+  /usr/local/bin/node /Users/konapun/.yarn/bin/yarn.js
 
 PATH: 
   /Users/konapun/.yarn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/konapun/.yarn/bin
@@ -34,6 +34,7 @@ npm manifest:
     "author": "Bremen Braun (konapun)",
     "description": "Command line as a chatbot",
     "dependencies": {
+      "@orbital-frame/core": "^1.0.0",
       "hubot": "^2.19.0",
       "hubot-diagnostics": "0.0.2",
       "hubot-heroku-keepalive": "^1.0.3",
