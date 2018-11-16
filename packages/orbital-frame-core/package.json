@@ -1,0 +1,17 @@
+{
+  "name": "@orbital-frame/core",
+  "version": "1.0.1",
+  "description": "A framework for hubot-based chatbots based on the unix command line",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build:parser": "./node_modules/.bin/pegjs src/command/interpreter/grammar.pegjs"
+  },
+  "author": "Bremen Braun (konapun)",
+  "license": "MIT",
+  "devDependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
