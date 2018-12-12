@@ -2,11 +2,13 @@ import phase from './phase'
 import start from './start'
 import registerPlugins from './registerPlugins'
 import registerCommands from './registerCommands'
-import listen from './listen'
-import process from './process'
-import execute from './execute'
-import respond from './respond'
+import main from './main'
+import listen from './main/listen'
+import process from './main/process'
+import execute from './main/execute'
+import respond from './main/respond'
 import shutdown from './shutdown'
+import {flow} from 'lodash/fp'
 
 /**
  * The lifecycle is a extensible state machine configured with the following
@@ -14,19 +16,18 @@ import shutdown from './shutdown'
  *  - START_UP
  *  - REGISTER_PLUGINS
  *  - REGISTER_COMMANDS
- *  - [{ LISTEN
+ *  - MAIN: [{ LISTEN
  *  -   PROCESS
  *  -   EXECUTE
  *  -   RESPOND
  *    } | SHUT_DOWN]
  */
 
-//TODO: define lifecycle points separately, invoke in js controls (loops, etc)
-
 export const Phase = {
   START_UP: phase(start),
   REGISTER_PLUGINS: phase(registerPlugins),
   REGISTER_COMMANDS: phase(registerCommands),
+  MAIN: phase(main),
   LISTEN: phase(listen),
   PROCESS_INPUT: phase(process),
   EXECUTE: phase(execute),
@@ -34,11 +35,17 @@ export const Phase = {
   SHUT_DOWN: phase(shutdown)
 }
 
+/**
+ * Use output from one phase as input to the next
+ * @param {Array<phase>} phases
+ */
+export const chain = flow
+
 export default {
   run () {
     Phase.START_UP()
     Phase.REGISTER_PLUGINS()
     Phase.REGISTER_COMMANDS()
-    Phase.LISTEN() // FIXME:
+    Phase.MAIN()
   }
 }

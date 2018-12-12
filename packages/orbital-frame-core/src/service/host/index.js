@@ -2,9 +2,9 @@ import serviceHost from './host'
 
 let instance
 export default {
-  initialize (api) {
+  initialize (frame) {
     if (!instance) {
-      instance = serviceHost(api)
+      instance = serviceHost(frame)
     }
   },
 
