@@ -48,7 +48,7 @@ describe('stream', () => {
       return data + 1
     }).pipe(data => {
       pipe3 = data
-      return data
+      return data + 1
     })
 
     await writer.send(2)
@@ -88,7 +88,7 @@ describe('stream', () => {
       return data + 1
     }).pipe(data => {
       pipe5 = data
-      return data
+      return data + 1
     })
 
     await writer.send(2)
@@ -100,7 +100,7 @@ describe('stream', () => {
     expect(pipe5).toBe(7)
   })
 
-  fit('should work with multisegmented pipes', async () => {
+  it('should work with multisegmented pipes', async () => {
     const {reader, writer} = stream()
 
     let segment1Data, segment1aData, segment1bData
@@ -145,19 +145,36 @@ describe('stream', () => {
       return data + 3
     })
 
+    let segment1b1Data, segment2b1Data, segment3b1Data
+    segment1b.pipe(data => {
+      segment1b1Data = data
+      return data
+    })
+    segment2b.pipe(data => {
+      segment2b1Data = data
+      return data
+    })
+    segment3b.pipe(data => {
+      segment3b1Data = data
+    })
+
     await writer.send(2)
 
     expect(segment1Data).toBe(2)
     expect(segment1aData).toBe(3)
-    expect(segment1bData).toBe(5)
+    expect(segment1bData).toBe(3)
 
     expect(segment2Data).toBe(2)
     expect(segment2aData).toBe(3)
-    expect(segment2bData).toBe(5)
+    expect(segment2bData).toBe(3)
 
     expect(segment3Data).toBe(2)
     expect(segment3aData).toBe(3)
-    expect(segment3bData).toBe(5)
+    expect(segment3bData).toBe(3)
+
+    expect(segment1b1Data).toBe(6)
+    expect(segment2b1Data).toBe(6)
+    expect(segment3b1Data).toBe(6)
   })
 
   it('should allow pipes to be detached', () => {

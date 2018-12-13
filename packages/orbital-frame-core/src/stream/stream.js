@@ -37,10 +37,7 @@ function stream () {
 
   const writer = {
     async send (data) {
-      return listeners.reduce(async (val, listener) => {
-        const result = await listener.call(val)
-        return result
-      }, data)
+      return await Promise.all(listeners.map(listener => listener.call(data)))
     },
 
     close () {
