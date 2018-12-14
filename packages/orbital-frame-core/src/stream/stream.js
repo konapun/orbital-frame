@@ -23,7 +23,6 @@ function stream () {
 
       const continuation = {
         pipe: segmentReader.pipe,
-        end: reader.end,
         detach: detach.bind(null, ++id)
       }
 
