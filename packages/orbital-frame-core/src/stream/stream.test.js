@@ -2,7 +2,7 @@ import stream from './stream'
 
 describe('stream', () => {
   it('should return a reader and a writer', () => {
-    const {reader, writer} = stream() // TODO: will i ever need another writer for this stream?
+    const {reader, writer} = stream()
 
     expect(reader).toBeDefined()
     expect(writer).toBeDefined()
@@ -177,27 +177,46 @@ describe('stream', () => {
     expect(segment3b1Data).toBe(6)
   })
 
-  it('should allow pipes to be detached', () => {
+  it('should allow pipes to be detached', async () => {
     const { reader, writer } = stream()
 
     let pipeData
-    const pipe = reader.pipe(data => {
-      pipeData = data
+    const pipe1 = reader.pipe(data => {
+      pipeData = `Pipe1: ${data}`
+    })
+    const pipe2 = reader.pipe(data => {
+      pipeData = `Pipe2: ${data}`
     })
 
-    writer.send('data1')
-    expect(pipeData).toBe('data1')
-    pipe.detach()
+    await writer.send('data')
+    expect(pipeData).toBe('Pipe2: data')
 
-    writer.send('data2')
-    expect(pipeData).toBe('data1')
+    pipe2.detach()
+    await writer.send('data2')
+    expect(pipeData).toBe('Pipe1: data2')
+
+    pipe1.detach()
+    await writer.send('data3')
+    expect(pipeData).toBe('Pipe1: data2')
   })
 
   it('should notify the reader when the writer closes', () => {
     const { reader, writer } = stream()
+
+    // TODO:
   })
 
-  it('should throw an error if a closed stream is writter to', () => {
+  it('should throw an error if a closed stream is writter to', async () => {
+    const { writer } = stream()
 
+    let message
+    writer.close()
+    try {
+      await writer.send('test')
+    } catch (e) {
+      message = e.message
+    }
+
+    expect(message).toBe('Attempting to write to a closed stream')
   })
 })

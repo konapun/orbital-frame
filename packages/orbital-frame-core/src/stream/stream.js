@@ -3,11 +3,14 @@
 // command flow (pipes, redirection channels, etc)
 
 function stream () {
+  let id = 0
   let listeners = []
   let open = true
 
-  const detach = con => {
-    listeners = listeners.filter(({continuation}) => con !== continuation)
+  const detach = streamId => {
+    listeners = listeners.filter(({id: listenerId}) => {
+      return listenerId !== streamId
+    })
   }
 
   const reader = {
@@ -23,10 +26,10 @@ function stream () {
       const continuation = {
         pipe: segmentReader.pipe,
         end: reader.end,
-        detach
+        detach: detach.bind(null, ++id)
       }
 
-      listeners.push({ call: onWrite, continuation })
+      listeners.push({ id, call: onWrite })
       return continuation
     },
 
@@ -37,11 +40,15 @@ function stream () {
 
   const writer = {
     async send (data) {
+      if (!open) {
+        throw new Error('Attempting to write to a closed stream')
+      }
       return await Promise.all(listeners.map(listener => listener.call(data)))
     },
 
-    close () {
+    async close () {
       open = false
+      // return await Promise.all(listeners.map(listener => listener.end()))
     }
   }
 
