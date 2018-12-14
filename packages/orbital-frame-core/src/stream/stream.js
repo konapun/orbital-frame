@@ -8,9 +8,7 @@ function stream () {
   let open = true
 
   const detach = streamId => {
-    listeners = listeners.filter(({id: listenerId}) => {
-      return listenerId !== streamId
-    })
+    listeners = listeners.filter(({id: listenerId}) => listenerId !== streamId)
   }
 
   const reader = {
@@ -31,10 +29,6 @@ function stream () {
 
       listeners.push({ id, call: onWrite })
       return continuation
-    },
-
-    end (fn) {
-
     }
   }
 
@@ -48,7 +42,6 @@ function stream () {
 
     async close () {
       open = false
-      // return await Promise.all(listeners.map(listener => listener.end()))
     }
   }
 
