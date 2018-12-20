@@ -10,6 +10,7 @@ import respond from './main/respond'
 import shutdown from './shutdown'
 import {flow} from 'lodash/fp'
 
+// TODO: awilix - each lifecycle phase should have access to services (see main/listen as example); next() flows
 /**
  * The lifecycle is a extensible state machine configured with the following
  * default points:

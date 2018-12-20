@@ -1,7 +1,7 @@
 const listen = async ({configService, listenerService}, next) => {
   listenerService.listen(configService.name).pipe(message => {
-    // TODO: trigger next lifecycle stage
-    next(message)
+    // TODO: transformations on message?
+    next(message) // trigger next lifecycle stage
   })
 }
 
