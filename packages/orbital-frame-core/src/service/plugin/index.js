@@ -1,10 +1,11 @@
-const registry = []
+const plugin = frame => ({ memoryService }) => ({
+  register (p) {
 
-export const register = plugin => {
+  },
 
-}
+  emit (signal, args) {
 
-export const emit = (signal, args, opts) => {
+  }
+})
 
-}
-
+export default plugin
