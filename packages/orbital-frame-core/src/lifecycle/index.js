@@ -10,43 +10,17 @@ import respond from './main/respond'
 import shutdown from './shutdown'
 import {flow} from 'lodash/fp'
 
-// TODO: awilix - each lifecycle phase should have access to services (see main/listen as example); next() flows
-/**
- * The lifecycle is a extensible state machine configured with the following
- * default points:
- *  - START_UP
- *  - REGISTER_PLUGINS
- *  - REGISTER_COMMANDS
- *  - MAIN: [{ LISTEN
- *  -   PROCESS
- *  -   EXECUTE
- *  -   RESPOND
- *    } | SHUT_DOWN]
- */
+const phases = [
+  // TODO:
+]
 
-export const Phase = {
-  START_UP: phase(start),
-  REGISTER_PLUGINS: phase(registerPlugins),
-  REGISTER_COMMANDS: phase(registerCommands),
-  MAIN: phase(main),
-  LISTEN: phase(listen),
-  PROCESS_INPUT: phase(process),
-  EXECUTE: phase(execute),
-  RESPOND: phase(respond),
-  SHUT_DOWN: phase(shutdown)
-}
-
-/**
- * Use output from one phase as input to the next
- * @param {Array<phase>} phases
- */
-export const chain = flow
-
-export default {
+const lifecycle = services => ({
   run () {
-    Phase.START_UP()
-    Phase.REGISTER_PLUGINS()
-    Phase.REGISTER_COMMANDS()
-    Phase.MAIN()
+    console.log('services:', Object.keys(services))
+    listen(services, () => {
+      console.log('DONE!')
+    })
   }
-}
+})
+
+export default lifecycle

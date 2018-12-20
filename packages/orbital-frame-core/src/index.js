@@ -1,19 +1,19 @@
-import awilix from 'awilix'
+import {createContainer, InjectionMode} from 'awilix'
 import serviceRegistry from './service'
 import lifecycle from './lifecycle'
 import frame from './frame'
 
-const container = awilix.createContainer({
-  injectionMode: awilix.injectionMode.PROXY
+const container = createContainer({
+  injectionMode: InjectionMode.PROXY
 })
 
 export default (robot, options) => {
   const adapter = frame(robot, options) //{ name: 'orbital-frame', ...options })
-  serviceRegistry.initialize(adapter, container)
+  serviceRegistry(container).initialize(adapter)
 
   return {
     run () {
-      lifecycle.run() // lifecycle phases communicate via services
+      lifecycle(container.cradle).run() // lifecycle phases communicate via services
     }
   }
 }
