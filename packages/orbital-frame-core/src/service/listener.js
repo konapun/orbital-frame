@@ -5,7 +5,6 @@ const listener = frame => () => ({
     const { reader, writer } = stream()
 
     frame.hear(matcher, response => {
-      response.send('Core send!') // TODO: remove this after testing
       writer.send(response)
     })
 

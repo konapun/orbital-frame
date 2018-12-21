@@ -11,10 +11,10 @@ const serviceRegistry = container => ({
     container.register({
       configService: asFunction(configService(frame)).singleton(),
       listenerService: asFunction(listenerService(frame)).singleton(),
-      memoryService: asFunction(memoryService(frame)).singleton(),
-      responderService: asFunction(responderService(frame)).singleton(),
-      parserService: asFunction(parserService(frame)).singleton(),
-      runnerService: asFunction(runnerService(frame)).singleton()
+      // memoryService: asFunction(memoryService(frame)).singleton(),
+      // responderService: asFunction(responderService(frame)).singleton(),
+      // parserService: asFunction(parserService(frame)).singleton(),
+      // runnerService: asFunction(runnerService(frame)).singleton()
     })
   }
 })

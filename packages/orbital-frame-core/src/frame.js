@@ -5,7 +5,12 @@
  * @param {Object} options
  */
 function frame (robot, options) {
-  // TODO:
+  const {name} = options
+
+  return {
+    name,
+    hear: robot.hear.bind(robot)
+  }
 }
 
 export default frame

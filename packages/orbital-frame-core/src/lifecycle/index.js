@@ -16,8 +16,7 @@ const phases = [
 
 const lifecycle = services => ({
   run () {
-    console.log('services:', Object.keys(services))
-    listen(services, () => {
+    listen(services, () => { // TODO:
       console.log('DONE!')
     })
   }
