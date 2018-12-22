@@ -1,25 +1,34 @@
-import phase from './phase'
-import start from './start'
-import registerPlugins from './registerPlugins'
-import registerCommands from './registerCommands'
-import main from './main'
-import listen from './main/listen'
-import process from './main/process'
-import execute from './main/execute'
-import respond from './main/respond'
-import shutdown from './shutdown'
-import {flow} from 'lodash/fp'
+import compose from 'lodash/fp/compose'
+import startPhase from './start'
+import registerPluginsPhase from './registerPlugins'
+import registerCommandsPhase from './registerCommands'
+import listenPhase from './listen'
+import processPhase from './process'
+import executePhase from './execute'
+import respondPhase from './respond'
 
-const phases = [
-  // TODO:
-]
+const phases = {
+  START: startPhase,
+  REGISTER_PLUGINS: registerPluginsPhase,
+  REGISTER_COMMANDS: registerCommandsPhase,
+  LISTEN: listenPhase,
+  PROCESS: processPhase,
+  EXECUTE: executePhase,
+  RESPOND: respondPhase,
+  END: () => () => () => {}
+}
 
-const lifecycle = services => ({
-  run () {
-    listen(services, () => { // TODO:
-      console.log('DONE!')
-    })
+const emittedPhases = Object.values(phases)
+  // .map(([event, phase]) => ) // TODO: wrap each phase in an emitter
+
+
+const lifecycle = services => {
+  const lifecyclePhases = emittedPhases.map(phase => phase(services))
+  const executablePhases = compose(lifecyclePhases)
+
+  return {
+    run: executablePhases()
   }
-})
+}
 
 export default lifecycle
