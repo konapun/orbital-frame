@@ -18,8 +18,16 @@ const phases = {
   END: () => () => () => {}
 }
 
-const emittedPhases = Object.values(phases)
-  // .map(([event, phase]) => ) // TODO: wrap each phase in an emitter
+const standard = (...args) => {
+  console.log('TEST')
+}
+
+const emittedPhases = Object.entries(phases)
+  .map(([event, phase]) => services => next => args => {
+    console.log(`BEFORE ${event}`)
+    phase(services)(next)(args)
+    console.log(`AFTER ${event}`)
+  })
 
 
 const lifecycle = services => {
