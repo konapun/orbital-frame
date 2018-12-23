@@ -18,15 +18,11 @@ const phases = {
   END: () => () => () => {}
 }
 
-const standard = (...args) => {
-  console.log('TEST')
-}
-
 const emittedPhases = Object.entries(phases)
   .map(([event, phase]) => services => next => args => {
-    console.log(`BEFORE ${event}`)
+    console.log(`BEFORE ${event}`) // TODO: trigger `before` lifecycle event
     phase(services)(next)(args)
-    console.log(`AFTER ${event}`)
+    console.log(`AFTER ${event}`) // TODO: trigger `after` lifecycle event
   })
 
 
