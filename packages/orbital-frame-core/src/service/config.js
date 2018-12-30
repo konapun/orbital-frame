@@ -1,5 +1,6 @@
 const config = frame => () => ({
-  name: frame.name
+  name: frame.name,
+  commands: frame.commands
   // TODO:
 })
 

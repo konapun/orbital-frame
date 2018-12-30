@@ -5,10 +5,11 @@
  * @param {Object} options
  */
 function frame (robot, options) {
-  const {name} = options
+  const {name, commands} = options
 
   return {
     name,
+    commands,
     hear: robot.hear.bind(robot)
   }
 }
