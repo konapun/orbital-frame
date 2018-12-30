@@ -14,24 +14,28 @@ const phases = {
   LISTEN: listenPhase,
   PROCESS: processPhase,
   EXECUTE: executePhase,
-  RESPOND: respondPhase,
-  END: () => () => () => {}
+  RESPOND: respondPhase
 }
 
-const emittedPhases = Object.entries(phases)
+const makeObservableLifecycle = phasemap => Object.entries(phasemap)
   .map(([event, phase]) => services => next => args => {
     console.log(`BEFORE ${event}`) // TODO: trigger `before` lifecycle event
     phase(services)(next)(args)
     console.log(`AFTER ${event}`) // TODO: trigger `after` lifecycle event
   })
 
+// Add start and end phases to enforce regularity in normal lifecycle phases
+const primeLifecycle = phases => [
+  ...phases,
+  () => () => () => {}
+]
+
 
 const lifecycle = services => {
-  const lifecyclePhases = emittedPhases.map(phase => phase(services))
-  const executablePhases = compose(lifecyclePhases)
+  const startLifecycle = compose(primeLifecycle(makeObservableLifecycle(phases).map(phase => phase(services))))
 
   return {
-    run: executablePhases()
+    run: startLifecycle()
   }
 }
 

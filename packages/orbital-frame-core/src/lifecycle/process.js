@@ -1,6 +1,7 @@
-const process = (/* TODO: parser service */) => next => res => {
-  console.log('PROCESSING MESSAGE - TODO', res.message.text)
-  next('command')
+const process = ({ parserService }) => next => response => {
+  const message = response.message.text.split(/\s+/).splice(1).join(' ')
+  console.log('Transformed message to', message)
+  next(message)
 }
 
 export default process

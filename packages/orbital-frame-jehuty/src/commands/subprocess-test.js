@@ -7,7 +7,10 @@ const subprocessTest = command('subprocess-test', {
   format (output) {
 
   },
-  execute (args, opts) {
+  execute (args, opts, {listenService, respondService}) {
+    respondService.send('excuting')
+    listenService.hear('something').pipe(response => {
 
+    })
   }
 })

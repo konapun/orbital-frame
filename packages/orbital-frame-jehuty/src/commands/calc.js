@@ -9,6 +9,8 @@ export default command('calc', {
     return String(output)
   },
   execute (args) {
+    const {respondService: responder} = this.services
+    responder.send('Executing command')
     return mathJs.eval(args.join(''))
   }
 })
