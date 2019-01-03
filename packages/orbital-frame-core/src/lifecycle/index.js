@@ -18,9 +18,9 @@ const phases = {
 }
 
 const makeObservableLifecycle = phasemap => Object.entries(phasemap)
-  .map(([event, phase]) => services => next => args => {
+  .map(([event, phase]) => services => next => (...args) => {
     console.log(`BEFORE ${event}`) // TODO: trigger `before` lifecycle event
-    phase(services)(next)(args)
+    phase(services)(next)(...args)
     console.log(`AFTER ${event}`) // TODO: trigger `after` lifecycle event
   })
 

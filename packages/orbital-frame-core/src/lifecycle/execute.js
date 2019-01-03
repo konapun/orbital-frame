@@ -1,6 +1,6 @@
-const execute = () => next => command => {
+const execute = () => next => (command, context) => {
   console.log(`EXECUTING COMMAND - ${command}`)
-  next('output')
+  next('output', context)
 }
 
 export default execute

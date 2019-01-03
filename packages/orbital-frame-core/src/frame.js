@@ -10,7 +10,8 @@ function frame (robot, options) {
   return {
     name,
     commands,
-    hear: robot.hear.bind(robot)
+    hear: robot.hear.bind(robot),
+    send: robot.messageRoom.bind(robot)
   }
 }
 

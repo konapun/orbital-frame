@@ -1,5 +1,5 @@
-const respond = () => next => output => {
-  console.log('RESPONDING WITH OUTPUT - TODO')
+const respond = ({messengerService}) => next => (output, context) => {
+  messengerService.respond(context, 'RESPONDING!')
   next()
 }
 
