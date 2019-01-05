@@ -1,15 +1,15 @@
-import {createContainer, InjectionMode} from 'awilix'
+import { createContainer, InjectionMode } from 'awilix'
 import serviceRegistry from './service'
 import lifecycle from './lifecycle'
-import frame from './frame'
+import frame, { adapter } from './frame'
 
 const container = createContainer({
   injectionMode: InjectionMode.PROXY
 })
 
 export default (robot, options) => {
-  const adapter = frame(robot, options) //{ name: 'orbital-frame', ...options })
-  serviceRegistry(container).initialize(adapter)
+  const sensors = frame(robot, options)
+  serviceRegistry(container).initialize(sensors)
 
   return {
     run () {
@@ -17,3 +17,5 @@ export default (robot, options) => {
     }
   }
 }
+
+export { adapter }

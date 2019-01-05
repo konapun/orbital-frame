@@ -6,7 +6,6 @@
   "description": "Command line as a chatbot",
   "dependencies": {
     "@orbital-frame/core": "^1.0.1",
-    "@orbital-frame/interpreter": "^1.0.1",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.2",
     "hubot-heroku-keepalive": "^1.0.3",
