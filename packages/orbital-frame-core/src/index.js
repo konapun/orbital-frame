@@ -1,21 +1,9 @@
-import { createContainer, InjectionMode } from 'awilix'
-import serviceRegistry from './service'
-import lifecycle from './lifecycle'
-import frame, { adapter } from './frame'
+import core from './core'
+import { adapter } from './frame'
+import { phases } from './lifecycle'
 
-const container = createContainer({
-  injectionMode: InjectionMode.PROXY
-})
-
-export default (robot, options) => {
-  const sensors = frame(robot, options)
-  serviceRegistry(container).initialize(sensors)
-
-  return {
-    run () {
-      lifecycle(container.cradle).run() // lifecycle phases communicate via services
-    }
-  }
+export default core
+export {
+  adapter,
+  phases as phase
 }
-
-export { adapter }

@@ -7,7 +7,7 @@ import processPhase from './process'
 import executePhase from './execute'
 import respondPhase from './respond'
 
-const phases = {
+export const phases = {
   START: startPhase,
   REGISTER_PLUGINS: registerPluginsPhase,
   REGISTER_COMMANDS: registerCommandsPhase,
@@ -17,10 +17,18 @@ const phases = {
   RESPOND: respondPhase
 }
 
+/*
+ * The lifecycle is used to implement a plugin system. Each phase triggers
+ * before/after events which plugins can hook into to modify bot behavior
+ */
 const makeObservableLifecycle = phasemap => Object.entries(phasemap)
   .map(([event, phase]) => services => next => (...args) => {
     console.log(`BEFORE ${event}`) // TODO: trigger `before` lifecycle event
-    phase(services)(next)(...args)
+    try {
+      phase(services)(next)(...args)
+    } catch (err) {
+      // TODO: trigger error event
+    }
     console.log(`AFTER ${event}`) // TODO: trigger `after` lifecycle event
   })
 
