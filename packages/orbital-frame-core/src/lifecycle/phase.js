@@ -8,13 +8,20 @@ function phase (fn) {
 
   return {
     call: services => next => (...args) => {
+      const nextWrapper = (...args) => {
+        listeners.after.forEach(listener => listener(...args))
+        return next(...args)
+      }
+
+      const action = fn(services)(nextWrapper)
+
       listeners.before.forEach(listener => listener(...args))
+
       try {
-        fn(services)(next)(...args) // FIXME: probably wanna trigger before/after here
+        action(...args)
       } catch (err) {
         listeners.error.forEach(listener => listener(err))
       }
-      listeners.after.forEach(listener => listener()) // TODO: pass result that `next` is invoked with
     },
 
     listen ({enter, exit, error} = {enter: null, exit: null, error: null}) {
