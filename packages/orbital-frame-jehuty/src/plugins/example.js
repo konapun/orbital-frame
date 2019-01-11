@@ -2,18 +2,7 @@ import {phase} from '@orbital-frame/core'
 
 function plugin () {
   return {
-    [phase.START]: {
-      enter () {
-        console.log('Starting')
-      },
-      exit () {
-        console.log('Started')
-      }
-    },
-    [phase.LOAD_PLUGINS]: {
-      enter () {
-        console.log('Loading plugins')
-      },
+    [phase.LOAD_PLUGINS]: { // phases before exiting LOAD_PLUGINS aren't available for extension via plugins since they're not yet loaded
       exit () {
         console.log('Loaded plugins')
       }

@@ -6,7 +6,7 @@ const loadOne = plugin => {
       throw new Error(`Can't register plugin action for key "${pluginPhase}" (available keys are ${Object.keys(phases).join(' ')})`)
     }
 
-    phases[pluginPhase].listen(actionDefinition)
+    phases[pluginPhase].extend(actionDefinition)
   })
 }
 

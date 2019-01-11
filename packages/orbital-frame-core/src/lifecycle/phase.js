@@ -1,6 +1,6 @@
 
 function phase (fn) {
-  const listeners = {
+  const extensions = {
     before: [],
     after: [],
     error: []
@@ -9,30 +9,30 @@ function phase (fn) {
   return {
     call: services => next => (...args) => {
       const nextWrapper = (...args) => {
-        listeners.after.forEach(listener => listener(...args))
+        extensions.after.forEach(extension => extension(...args))
         return next(...args)
       }
 
       const action = fn(services)(nextWrapper)
 
-      listeners.before.forEach(listener => listener(...args))
+      extensions.before.forEach(extension => extension(...args))
 
       try {
         action(...args)
       } catch (err) {
-        listeners.error.forEach(listener => listener(err))
+        extensions.error.forEach(extension => extension(err))
       }
     },
 
-    listen ({enter, exit, error} = {enter: null, exit: null, error: null}) {
+    extend ({enter, exit, error} = {enter: null, exit: null, error: null}) {
       if (enter) {
-        listeners.before.push(enter)
+        extensions.before.push(enter)
       }
       if (exit) {
-        listeners.after.push(exit)
+        extensions.after.push(exit)
       }
       if (error) {
-        listeners.error.push(error)
+        extensions.error.push(error)
       }
     }
   }

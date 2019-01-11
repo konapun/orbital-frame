@@ -3,7 +3,7 @@ import lifecycle, {phase} from './index'
 describe('lifecycle', () => {
   it('should support plugins', () => {
     let started, ended = false
-    phase.START.listen({
+    phase.LISTEN.extend({
       enter () {
         started = true
       },
