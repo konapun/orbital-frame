@@ -1,18 +1,28 @@
 import phase from '../phase'
 import startPhase from './start'
-import registerPluginsPhase from './registerPlugins'
-import registerCommandsPhase from './registerCommands'
+import loadPluginsPhase from './loadPlugins'
+import loadCommandsPhase from './loadCommands'
 import listenPhase from './listen'
 import processPhase from './process'
 import executePhase from './execute'
 import respondPhase from './respond'
 
+export const phaseEnum = {
+  START: 'start',
+  LOAD_PLUGINS: 'registerPlugins',
+  LOAD_COMMANDS: 'loadCommands',
+  LISTEN: 'listen',
+  PROCESS: 'process',
+  EXECUTE: 'execute',
+  RESPOND: 'respond'
+}
+
 export default {
-  START: phase(startPhase),
-  REGISTER_PLUGINS: phase(registerPluginsPhase),
-  REGISTER_COMMANDS: phase(registerCommandsPhase),
-  LISTEN: phase(listenPhase),
-  PROCESS: phase(processPhase),
-  EXECUTE: phase(executePhase),
-  RESPOND: phase(respondPhase)
+  [phaseEnum.START]: phase(startPhase),
+  [phaseEnum.LOAD_PLUGINS]: phase(loadPluginsPhase),
+  [phaseEnum.LOAD_COMMANDS]: phase(loadCommandsPhase),
+  [phaseEnum.LISTEN]: phase(listenPhase),
+  [phaseEnum.PROCESS]: phase(processPhase),
+  [phaseEnum.EXECUTE]: phase(executePhase),
+  [phaseEnum.RESPOND]: phase(respondPhase)
 }

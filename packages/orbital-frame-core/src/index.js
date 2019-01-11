@@ -1,9 +1,9 @@
 import core from './core'
 import { adapter } from './frame'
-import { phases } from './lifecycle'
+import { phaseEnum } from './lifecycle'
 
 export default core
 export {
   adapter,
-  phases as phase
+  phaseEnum as phase
 }

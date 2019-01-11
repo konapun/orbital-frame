@@ -13,7 +13,7 @@ export default (robot, options) => {
 
   return {
     run () {
-      lifecycle(container.cradle).run() // lifecycle phases communicate via services
+      lifecycle(container.cradle).run()
     }
   }
 }

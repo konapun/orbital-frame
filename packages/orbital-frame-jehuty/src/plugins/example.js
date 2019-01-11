@@ -1,4 +1,4 @@
-import {lifecyclePhase as phase} from '@orbital-frame/core'
+import {phase} from '@orbital-frame/core'
 
 function plugin () {
   return {
@@ -10,20 +10,20 @@ function plugin () {
         console.log('Started')
       }
     },
-    [phase.REGISTER_PLUGINS]: {
+    [phase.LOAD_PLUGINS]: {
       enter () {
-        console.log('Registering plugins')
+        console.log('Loading plugins')
       },
       exit () {
-        console.log('Registered plugins')
+        console.log('Loaded plugins')
       }
     },
-    [phase.REGISTER_COMMANDS]: {
+    [phase.LOAD_COMMANDS]: {
       enter () {
-        console.log('Registering commands')
+        console.log('Loading commands')
       },
       exit () {
-        console.log('Registered commands')
+        console.log('Loaded commands')
       }
     },
     [phase.LISTEN]: {
@@ -56,14 +56,6 @@ function plugin () {
       },
       exit () {
         console.log('Responded')
-      }
-    },
-    [phase.ERROR]: {
-      enter () {
-        console.log('Triggering error')
-      },
-      exit () {
-        console.log('Triggered error')
       }
     }
   }
