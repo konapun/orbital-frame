@@ -5,6 +5,7 @@ function plugin () {
     [phase.LOAD_PLUGINS]: { // phases before exiting LOAD_PLUGINS aren't available for extension via plugins since they're not yet loaded
       exit () {
         console.log('Loaded plugins')
+        console.log('----------')
       }
     },
     [phase.LOAD_COMMANDS]: {
@@ -13,6 +14,7 @@ function plugin () {
       },
       exit () {
         console.log('Loaded commands')
+        console.log('----------')
       }
     },
     [phase.LISTEN]: {
@@ -21,6 +23,7 @@ function plugin () {
       },
       exit () {
         console.log('Listened')
+        console.log('----------')
       }
     },
     [phase.PROCESS]: {
@@ -29,6 +32,7 @@ function plugin () {
       },
       exit () {
         console.log('Processed')
+        console.log('----------')
       }
     },
     [phase.EXECUTE]: {
@@ -37,6 +41,7 @@ function plugin () {
       },
       exit () {
         console.log('Executed')
+        console.log('----------')
       }
     },
     [phase.RESPOND]: {
@@ -45,6 +50,7 @@ function plugin () {
       },
       exit () {
         console.log('Responded')
+        console.log('----------')
       }
     }
   }

@@ -10,7 +10,7 @@ const loadOne = plugin => {
   })
 }
 
-const pluginLoader = frame => () => ({
+const pluginService = frame => () => ({
   load (plugins) {
     [].concat(plugins)
       .map(pluginDefinition => pluginDefinition(frame)) // FIXME: pass frame or service cradle?
@@ -18,4 +18,4 @@ const pluginLoader = frame => () => ({
   }
 })
 
-export default pluginLoader
+export default pluginService

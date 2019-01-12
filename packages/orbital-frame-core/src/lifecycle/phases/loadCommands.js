@@ -1,7 +1,6 @@
-const registerCommands = ({configService, memoryService}) => next => () => {
-  console.log('REGISTERING COMMANDS - TODO')
+const registerCommands = ({ configService, commandService }) => next => () => {
   const commands = configService.commands
-  // TODO: register commands
+  commandService.load(commands)
   next()
 }
 
