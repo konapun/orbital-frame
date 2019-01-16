@@ -1,4 +1,4 @@
-import unixParser from '@orbital-frame/interpreter'
+import unixParser from '@orbital-frame/parser'
 
 const parser = frame => () => ({
   parse (string) {

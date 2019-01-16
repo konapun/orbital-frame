@@ -1,4 +1,3 @@
-console.log('building registry')
 const commandRegistry = {}
 
 const loadOne = (command, services) => {

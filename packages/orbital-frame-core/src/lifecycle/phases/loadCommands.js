@@ -1,7 +1,7 @@
-const registerCommands = ({ configService, commandService }) => next => () => {
+const loadCommands = ({ configService, commandService }) => next => () => {
   const commands = configService.commands
   commandService.load(commands)
   next()
 }
 
-export default registerCommands
+export default loadCommands

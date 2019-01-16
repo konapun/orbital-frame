@@ -7,7 +7,7 @@ import executePhase from './execute'
 import respondPhase from './respond'
 
 export const phaseEnum = {
-  LOAD_PLUGINS: 'registerPlugins',
+  LOAD_PLUGINS: 'loadPlugins',
   LOAD_COMMANDS: 'loadCommands',
   LISTEN: 'listen',
   PROCESS: 'process',

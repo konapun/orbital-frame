@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "build:parser": "./node_modules/.bin/pegjs src/command/interpreter/grammar.pegjs"
+    "build:parser": "./node_modules/.bin/pegjs src/command/parser/grammar.pegjs"
   },
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "pegjs": "^0.10.0"
   },
   "dependencies": {
-    "@orbital-frame/interpreter": "^1.0.1",
+    "@orbital-frame/parser": "^1.0.1",
     "awilix": "^4.0.1",
     "lodash": "^4.17.11"
   }
