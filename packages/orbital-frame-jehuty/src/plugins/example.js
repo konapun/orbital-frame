@@ -1,6 +1,6 @@
 import {phase} from '@orbital-frame/core'
 
-function plugin () {
+function plugin ({configService}) {
   return {
     [phase.LOAD_PLUGINS]: { // phases before exiting LOAD_PLUGINS aren't available for extension via plugins since they're not yet loaded
       exit () {
@@ -19,7 +19,7 @@ function plugin () {
     },
     [phase.LISTEN]: {
       enter () {
-        console.log('Listening')
+        console.log(`Setting up listener for "${configService.name}"`)
       },
       exit () {
         console.log('Listened')

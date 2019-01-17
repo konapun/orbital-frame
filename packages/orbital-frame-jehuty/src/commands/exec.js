@@ -1,9 +1,7 @@
-import command from '@orbital-frame/core/command'
-import parser from '@orbital-frame/core/services/parser'
-import runner from '@orbital-frame/core/services/runner'
+// import command from '@orbital-frame/core/command'
 
-export default command('exec', {
-  execute (args, opts) {
+// export default command('exec', {
+//   execute (args, opts) {
 
-  }
-})
+//   }
+// })

@@ -10,10 +10,10 @@ const loadOne = plugin => {
   })
 }
 
-const pluginService = frame => () => ({
+const pluginService = () => services => ({
   load (plugins) {
     [].concat(plugins)
-      .map(pluginDefinition => pluginDefinition(frame)) // FIXME: pass frame or service cradle?
+      .map(pluginDefinition => pluginDefinition(services))
       .forEach(plugin => loadOne(plugin))
   }
 })
