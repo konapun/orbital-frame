@@ -41,11 +41,11 @@ The Orbital Frame lifecycle consists of the following stages:
 Orbital Frame uses dependency injection (DI) to expose its various configured
 subsystems for use within the lifecycle and user-defined commands and plugins.
   - **commandService**
+  - **compilerService**
   - **configService**
   - **listenerService**
   - **memoryService**
   - **messengerService**
-  - **parserService**
   - **pluginService**
 
 ## Plugins

@@ -28,5 +28,52 @@ channel-history #random | filter --user $(whoami) > #general
 ```
 would parse to `TODO`
 ```js
+{
+  "type": "Program",
+  "value": [
+    {
+      "type": "Pipeline",
+      "value": [
+        {
+          "type": "Command",
+          "value": [
+            {
+              "type": "Word",
+              "value": "channel-history"
+            },
+            {
+              "type": "Argument",
+              "value": "#random"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Pipeline",
+      "value": [
+        {
+          "type": "Command",
+          "value": [
+            {
+              "type": "Word",
+              "value": "filter"
+            },
+            {
+              "type": "LongOption",
+              "value":
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Redirect",
+      "value": [
+
+      ]
+    }
+  ]
+}
 // I don't know yet!
 ```
