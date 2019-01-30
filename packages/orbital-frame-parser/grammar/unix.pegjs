@@ -3,23 +3,26 @@
 }
 
 Program
-  = lhs:Pipeline ";" rhs:Pipeline { return { type: "Program", value: [ lhs, rhs ] } }
-  / pipeline:Pipeline { return { type: "Program", value: [ pipeline ] } }
+  = pipelines:(Pipeline _ ";")+ { return { type: "Program", body: [ ...pipelines ] } }
+  / pipeline:Pipeline { return { type: "Program", body: [ pipeline ] } }
 
 Pipeline
-  = _ command:Command _ "|" pipeline:Pipeline { return { type: "Pipeline", value: [ command, pipeline ] } }
-  / _ command:Command _ redirect:Redirect { return { type: "Pipeline", value: [ command, redirect ] } }
-  / _ command:Command _ { return { type: "Pipeline", value: [ command ] } }
+  = _ lhs:Command _ "|" _ rhs:Pipeline { return { type: "Pipeline", body: [ lhs, rhs ] } }
+  / _ command:Command _ redirect:Redirect { return { type: "Pipeline", body: [ command, redirect ] } }
+  / _ command:Command _ { return { type: "Pipeline", body: [ command ] } }
 
 Command
   = InterpolatedCommand
   / BareCommand
 
 InterpolatedCommand
-  = "$(" command:Command ")" { return { type: "InterpolatedCommand", value: command } }
+  = "$(" command:Command ")" { return { type: "InterpolatedCommand", body: [ command ] } }
 
 BareCommand
-  = _ name:Word _ preOptions:Option* _ args:(Argument _)* _ postOptions:Option* { return { type: "Command", value: [ name, [ ...preOptions, ...postOptions ], ...args ] } }
+  = name:Word _ preOptions:Option* _ args:(Argument _)* _ postOptions:Option* { return { type: "Command", value: [ name, [ ...preOptions, ...postOptions ], ...args ] } }
+
+Assignment
+  = variable:Word "=" value:String { return { type: "Assignment", value: [ variable, value ]}}
 
 Redirect
   = ">" channel:Word { return { type: "Redirect", value: channel } }

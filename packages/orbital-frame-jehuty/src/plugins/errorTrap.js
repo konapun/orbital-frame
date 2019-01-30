@@ -1,11 +1,14 @@
-import {phase} from '@orbital-frame/core'
+import { phase } from '@orbital-frame/core'
 
-function errorTrapPlugin () {
+function errorTrapPlugin ({ messengerService }) {
   return Object.values(phase)
     .map(phaseKey => ({
       [phaseKey]: {
         error (e) {
-          console.log(`Caught error ${e.message}`)
+          const message = `Error: ${e.message}`
+
+          console.error(message)
+          // messengerService.respond(`\`${message}\``) // FIXME: need context...
         }
       }
     }))

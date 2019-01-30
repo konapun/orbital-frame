@@ -1,7 +1,12 @@
-// import command from '@orbital-frame/core/command'
-
-// export default command('exec', {
-//   execute (args, opts) {
-
-//   }
-// })
+export default ({ compilerService }) => ({
+  name: 'exec',
+  description: 'Execute a string as a command',
+  options: {},
+  format (output) {
+    return output // TODO:
+  },
+  execute (args, opts) {
+    const compiled = compilerService.compile(args.join(' '))
+    return compiled()
+  }
+})

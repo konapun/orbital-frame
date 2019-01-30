@@ -1,4 +1,4 @@
-import {asFunction} from 'awilix'
+import { asFunction } from 'awilix'
 import commandService from './command'
 import compilerService from './compiler'
 import configService from './config'

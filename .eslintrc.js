@@ -29,6 +29,18 @@ module.exports = {
     "space-before-function-paren": [
       "error",
       "always"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "always"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
     ]
   }
 }
