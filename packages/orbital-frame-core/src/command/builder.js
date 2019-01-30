@@ -30,7 +30,8 @@ function pipelineBuilder () {
     },
 
     build () {
-
+      const [ first, ...rest ] = commands
+      return () => rest.reduce((pipeline, command) => pipeline.pipe(command), first)
     }
   }
 }
@@ -51,7 +52,7 @@ function commandBuilder () {
     },
 
     build () {
-
+      // TODO: return a command
     }
   }
 }

@@ -6,7 +6,8 @@ function command (definition) {
 
   return {
     pipe (command2) {
-
+      // TODO:
+      return command2 // for pipe chaining
     }
   }
 }
