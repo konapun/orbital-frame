@@ -1,6 +1,6 @@
 import command from './command'
 
-function builder () {
+function builder (commandRegistry) {
   const pipelines = []
 
   return {

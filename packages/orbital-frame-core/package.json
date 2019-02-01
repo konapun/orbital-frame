@@ -17,6 +17,7 @@
   "dependencies": {
     "@orbital-frame/parser": "^1.0.1",
     "awilix": "^4.0.1",
+    "joi": "^14.3.1",
     "lodash": "^4.17.11"
   }
 }

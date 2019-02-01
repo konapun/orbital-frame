@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "build:parser": "./node_modules/.bin/pegjs src/command/parser/grammar.pegjs"
+    "build:parser": "./node_modules/.bin/pegjs src/grammar/unix.pegjs"
   },
   "author": "Bremen Braun (konapun)",
   "license": "MIT",

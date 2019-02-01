@@ -24,7 +24,7 @@ function phase (fn) {
       }
     },
 
-    extend ({enter, exit, error} = {enter: null, exit: null, error: null}) {
+    extend ({ enter, exit, error } = { enter: null, exit: null, error: null }) {
       if (enter) {
         extensions.before.push(enter)
       }

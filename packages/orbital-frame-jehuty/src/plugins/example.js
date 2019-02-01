@@ -19,7 +19,7 @@ function plugin ({configService}) {
     },
     [phase.LISTEN]: {
       enter () {
-        console.log(`Setting up listener for "${configService.name}"`)
+        console.log(`Setting up listener for "${configService.name}"...`)
       },
       exit () {
         console.log('Listened')
