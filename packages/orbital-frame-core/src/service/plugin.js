@@ -1,7 +1,7 @@
-import {phase as phases} from '../lifecycle'
+import { phase as phases } from '../lifecycle'
 
 const loadOne = plugin => {
-  Object.entries(plugin).forEach(([pluginPhase, actionDefinition]) => {
+  Object.entries(plugin).forEach(([ pluginPhase, actionDefinition ]) => {
     if (!(pluginPhase in phases)) {
       throw new Error(`Can't register plugin action for key "${pluginPhase}" (available keys are ${Object.keys(phases).join(' ')})`)
     }

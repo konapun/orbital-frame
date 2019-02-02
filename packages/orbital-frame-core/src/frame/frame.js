@@ -12,7 +12,7 @@ const defaults = {
  * the service host and provides a uniform API between bot types
  */
 function frame (sensors, options) {
-  const {name, plugins, commands, adapter} = { ...defaults, ...options }
+  const { name, plugins, commands, adapter } = { ...defaults, ...options }
 
   const { hear, send } = adapter(sensors)
   return {

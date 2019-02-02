@@ -1,7 +1,7 @@
 import parser, { walker, type } from '@orbital-frame/parser'
 import command, { builder } from '../command'
 
-const compiler = () => ({ commandService })  => ({
+const compiler = () => ({ commandService, environmentService })  => ({
 
   /**
    * const command = compiler.compile('echo "test" | emoji-text')
@@ -18,37 +18,45 @@ const compiler = () => ({ commandService })  => ({
     const commands = []
     let pipeline, command
     walker.walk(ast, node => {
-      console.log(`Walking: on node ${node.type}`)
       switch (node.type) {
 
       case type.PIPELINE: {
-        console.log('ADDING PIPELINE')
         pipeline = commandBuilder.addPipeline()
         pipelines.push(pipeline)
         break
       }
+      case type.ASSIGNMENT: {
+        const [ key, value ] = node.body
+        environmentService.set(key, value)
+        break
+      }
+      case type.INTERPOLATION: {
+        // TODO:
+        break
+      }
       case type.COMMAND: {
-        command = pipeline.addCommand()
+        const [ name ] = node.body
+        command = pipeline.addCommand(name)
         commands.push(command)
         break
       }
-      case type.REDIRECT: {
-        break
-      }
       case type.OPTION: {
-        const [ key, value ] = type.body
+        const [ key, value ] = node.body
         command.addOption(key, value)
         break
       }
       case type.ARGUMENT: {
-        const [ value ] = type.body
+        const [ value ] = node.body
         command.addArgument(value)
         break
       }
       case type.VARIABLE: {
+        const [ key ] = node.body
+        const value = environmentService.get(key)
+        console.log('Got value', value)
+        // TODO:
         break
       }
-
       }
     })
 

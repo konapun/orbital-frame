@@ -1,21 +1,34 @@
 Program
-  = _ pipeline:Pipeline _ pipelines:(";" _ Pipeline)* ";"* { return { type: "Program", body: [ pipeline, ...pipelines ] } }
+  = _ statement:Statement _ rest:(";" _ Statement)* ";"* {
+  	  const statements = rest.map(part => part[2])
+      return { type: "Program", body: [ statement, ...statements ] }
+    }
+
+Statement
+  = Assignment
+  / Pipeline
+
+Assignment
+  = variable:Word "=" value:Text { return { type: "Assignment", body: [ variable, value ] } }
 
 Pipeline
-  = _ command:Command _ commands:("|" _ Command)* { return { type: "Pipeline", body: [ command, ...commands ] } }
+  = _ command:Command _ rest:("|" _ Command)* {
+      const commands = rest.map(part => part[2])
+      return { type: "Pipeline", body: [ command, ...commands ] }
+    }
 
 Command
   = BareCommand
-  / InterpolatedCommand
+  / Interpolation
 
 BareCommand
-  = name:Word _ preOptions:Option* _ args:(Argument _)* _ postOptions:Option* { return { type: "Command", body: [ name, ...[ ...preOptions, ...postOptions ], ...args ] } }
+  = name:Word _ preOptions:Option* _ argsParts:(Argument _)* _ postOptions:Option* {
+      const args = argsParts.map(part => part[0])
+      return { type: "Command", body: [ name, ...[ ...preOptions, ...postOptions ], ...args ] }
+    }
 
-InterpolatedCommand
-  = "$(" _ command:Command _ ")" { return { type: "InterpolatedCommand", body: [ command ] } }
-
-Assignment
-  = variable:Word "=" value:String { return { type: "Assignment", body: [ variable, value ] } }
+Interpolation
+  = "$(" _ command:Command _ ")" { return { type: "Interpolation", body: [ command ] } }
 
 Option
   = option:LongOption _ options:Option* { return [ option, ...options ] }
@@ -28,9 +41,12 @@ ShortOption
   = "-" name:Letter _ ?arg:Argument { return { type: "Option", body: [ name, arg ] } }
 
 Argument
-  = variable:Variable { return { type: "Argument", body: variable } }
-  / word:Word { return { type: "Argument", body: word } }
-  / string:String { return { type: "Argument", body: string } }
+  = variable:Variable { return { type: "Argument", body: [ variable ] } }
+  / text:Text { return { type: "Argument", body: [ text ] } }
+
+Text
+  = Word
+  / String
 
 String
   = '"' chars:DoubleStringCharacter* '"' { return chars.join('') }
@@ -56,9 +72,9 @@ EscapeSequence
   / "v"  { return "\x0B" }
 
 Variable
-  = "$" variable:Word { return { type: "Variable", body: variable } }
+  = "$" variable:Word { return { type: "Variable", body: [ variable ] } }
 
-Word = word:[a-zA-Z0-9_-]+ { return { type: "Word", body: word.join('') } }
+Word = word:[a-zA-Z0-9_-]+ { return word.join('')  }
 
 Letter = [a-zA-Z]
 

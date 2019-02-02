@@ -1,14 +1,10 @@
-// Uses:
-// Streaming responses from slack to the client (via the listener)
-// command flow (pipes, redirection channels, etc)
-
 function stream () {
   let id = 0
   let listeners = []
   let open = true
 
   const detach = streamId => {
-    listeners = listeners.filter(({id: listenerId}) => listenerId !== streamId)
+    listeners = listeners.filter(({ id: listenerId }) => listenerId !== streamId)
   }
 
   const reader = {

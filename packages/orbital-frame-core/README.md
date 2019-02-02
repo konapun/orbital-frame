@@ -1,7 +1,7 @@
 # O R B I T A L - F R A M E
 `@orbital-frame/core` is a framework for building chatbots that work similarly
-to the UNIX command line, complete with commands, pipes, variables, redirection,
-etc. A reference implementation is provided in `@orbital-frame/jehuty`.
+to the UNIX command line, complete with commands, pipes, variables, etc. A
+reference implementation is provided in `@orbital-frame/jehuty`.
 
 ## Creating a bot
 ```js

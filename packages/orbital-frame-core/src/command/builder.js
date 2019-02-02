@@ -22,8 +22,8 @@ function pipelineBuilder () {
   const commands = []
 
   return {
-    addCommand () {
-      const builder = commandBuilder()
+    addCommand (name) {
+      const builder = commandBuilder(name)
       commands.push(builder)
 
       return builder
@@ -36,7 +36,7 @@ function pipelineBuilder () {
   }
 }
 
-function commandBuilder () {
+function commandBuilder (name) {
   const options = {}
   const args = []
 
@@ -52,6 +52,7 @@ function commandBuilder () {
     },
 
     build () {
+      console.log('Building command', name)
       // TODO: return a command
     }
   }
