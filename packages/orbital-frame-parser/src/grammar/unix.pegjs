@@ -28,7 +28,7 @@ BareCommand
     }
 
 Interpolation
-  = "$(" _ command:Command _ ")" { return { type: "Interpolation", body: [ command ] } }
+  = "$(" _ pipeline:Pipeline _ ")" { return { type: "Interpolation", body: [ pipeline ] } }
 
 Option
   = option:LongOption _ options:Option* { return [ option, ...options ] }

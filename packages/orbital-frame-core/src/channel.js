@@ -1,3 +1,4 @@
+// TODO: use streams to establish a channel for interactive commands
 /**
 const echoChannel = Channel.open([user], { // a channel can have multiple receivers
   receive (message) {

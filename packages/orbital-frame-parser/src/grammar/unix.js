@@ -164,7 +164,7 @@ function peg$parse(input, options) {
       peg$c11 = peg$literalExpectation("$(", false),
       peg$c12 = ")",
       peg$c13 = peg$literalExpectation(")", false),
-      peg$c14 = function(command) { return { type: "Interpolation", body: [ command ] } },
+      peg$c14 = function(pipeline) { return { type: "Interpolation", body: [ pipeline ] } },
       peg$c15 = function(option, options) { return [ option, ...options ] },
       peg$c16 = "--",
       peg$c17 = peg$literalExpectation("--", false),
@@ -722,7 +722,7 @@ function peg$parse(input, options) {
     if (s1 !== peg$FAILED) {
       s2 = peg$parse_();
       if (s2 !== peg$FAILED) {
-        s3 = peg$parseCommand();
+        s3 = peg$parsePipeline();
         if (s3 !== peg$FAILED) {
           s4 = peg$parse_();
           if (s4 !== peg$FAILED) {

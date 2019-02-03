@@ -1,5 +1,5 @@
 import parser, { walker, type } from '@orbital-frame/parser'
-import command, { builder } from '../command'
+import { builder } from '../command'
 
 const compiler = () => ({ commandService, environmentService })  => ({
 
@@ -11,10 +11,13 @@ const compiler = () => ({ commandService, environmentService })  => ({
    */
   compile (string) {
     const ast = parser.parse(string)
+    return this.buildCommand(ast)
+  },
+
+  buildCommand (ast) {
     const commandBuilder = builder(commandService.registry)
 
     const pipelines = []
-    const commands = []
     let pipeline, command
     walker.walk(ast, node => {
       switch (node.type) {
@@ -30,13 +33,14 @@ const compiler = () => ({ commandService, environmentService })  => ({
         break
       }
       case type.INTERPOLATION: {
-        // TODO:
-        break
+        const [ source ] = node.body
+        const cmd = this.buildCommand(source)
+        console.log(`Source ${source} evaluated to ${cmd()}`)
+        return cmd() // TODO: probably want to evaluate interpolation on command execute, not build
       }
       case type.COMMAND: {
         const [ name ] = node.body
         command = pipeline.addCommand(name)
-        commands.push(command)
         break
       }
       case type.OPTION: {
