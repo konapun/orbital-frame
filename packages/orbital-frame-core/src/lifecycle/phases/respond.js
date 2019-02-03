@@ -1,5 +1,5 @@
 const respond = ({ messengerService }) => next => (output, context) => {
-  messengerService.respond(context, 'RESPONDING!')
+  messengerService.respond(context, output)
   next()
 }
 

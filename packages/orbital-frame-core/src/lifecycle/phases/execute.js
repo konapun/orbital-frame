@@ -1,6 +1,5 @@
 const execute = () => next => (command, context) => {
-  const output = command()
-  console.log('OUTPUT:', output)
+  const output = command().join('\n')
   next(output, context)
 }
 
