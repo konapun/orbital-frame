@@ -1,6 +1,7 @@
 const execute = () => next => (command, context) => {
-  console.log(`EXECUTING COMMAND - ${command}`)
-  next('output', context)
+  const output = command()
+  console.log('OUTPUT:', output)
+  next(output, context)
 }
 
 export default execute

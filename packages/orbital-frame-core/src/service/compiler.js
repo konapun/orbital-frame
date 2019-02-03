@@ -11,7 +11,6 @@ const compiler = () => ({ commandService, environmentService })  => ({
    */
   compile (string) {
     const ast = parser.parse(string)
-    console.log('Have ast', ast)
     const commandBuilder = builder(commandService.registry)
 
     const pipelines = []
@@ -55,6 +54,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
         const value = environmentService.get(key)
         console.log('Got value', value)
         // TODO:
+        return value
         break
       }
       }
