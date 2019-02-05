@@ -28,6 +28,10 @@ function pipelineBuilder (commandRegistry) {
       return builder
     },
 
+    addInterpolated (subtree) {
+      // TODO:
+    },
+
     build () {
       const [ first, ...rest ] = commands.map(command => command.build())
       return () => rest.reduce((val, cmd) => cmd(val), first()) // TODO: async
@@ -36,13 +40,15 @@ function pipelineBuilder (commandRegistry) {
 }
 
 function commandBuilder (name, commandRegistry) {
-  const options = {}
+  const options = []
   const args = []
 
   return {
-    addOption (key, value) {
-      options[key] = value
-      return this
+    addOption (key) {
+      const option = optionBuilder(key)
+      options.push(option)
+
+      return option
     },
 
     addArgument (argument) {
@@ -56,11 +62,30 @@ function commandBuilder (name, commandRegistry) {
         throw new Error(`Command not found: ${name}`)
       }
 
+      const execOptions = options
+        .map(opt => opt.build())
+        .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
+
       // TODO: execute can be async
       return incoming => {
         const execArgs = incoming ? [ incoming, ...args ] : args
-        return command.execute(execArgs, options)
+        return command.execute(execArgs, execOptions)
       }
+    }
+  }
+}
+
+function optionBuilder (key) {
+  let optionValue
+
+  return {
+    setValue (value) {
+      if (optionValue) throw new Error('Options may only have a single value')
+      optionValue = value
+    },
+
+    build () {
+      return [ key, optionValue ]
     }
   }
 }

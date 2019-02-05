@@ -6,6 +6,7 @@ function echo () {
       return `Formatted: ${output}`
     },
     execute (args) {
+      console.log('Echoing args', args)
       return args.join(' ')
     }
   }

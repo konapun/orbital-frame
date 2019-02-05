@@ -18,7 +18,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
     const commandBuilder = builder(commandService.registry)
 
     const pipelines = []
-    let pipeline, command
+    let pipeline, command, option
     walker.walk(ast, node => {
       switch (node.type) {
 
@@ -29,14 +29,17 @@ const compiler = () => ({ commandService, environmentService })  => ({
       }
       case type.ASSIGNMENT: {
         const [ key, value ] = node.body
+        console.log('Env setting', key, 'to', value)
         environmentService.set(key, value)
         break
       }
       case type.INTERPOLATION: {
         const [ source ] = node.body
+        pipeline.addInterpolated(source)
+        // TODO: probably want to evaluate interpolation on command execute, not build, so remove stuff below once this is working in the builder
         const cmd = this.buildCommand(source)
         console.log(`Source ${source} evaluated to ${cmd()}`)
-        return cmd() // TODO: probably want to evaluate interpolation on command execute, not build
+        return cmd()
       }
       case type.COMMAND: {
         const [ name ] = node.body
@@ -44,18 +47,27 @@ const compiler = () => ({ commandService, environmentService })  => ({
         break
       }
       case type.OPTION: {
-        const [ key, value ] = node.body
-        command.addOption(key, value)
+        const [ key ] = node.body
+        option = command.addOption(key)
         break
       }
       case type.ARGUMENT: {
         const [ value ] = node.body
-        command.addArgument(value)
+        if (option) {
+          try {
+            option.setValue(value)
+          } catch (err) { // option already has value
+            command.addArgument(value)
+          }
+        } else {
+          command.addArgument(value)
+        }
         break
       }
-      case type.VARIABLE: {
+      case type.VARIABLE: { // FIXME: this should return up to its parent (switch compiler to use post-order tree traversal)
         const [ key ] = node.body
         const value = environmentService.get(key)
+        command.addArgument(value) // FIXME: might be option
         console.log('Got value', value)
         // TODO:
         return value

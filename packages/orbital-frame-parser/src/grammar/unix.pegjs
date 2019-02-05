@@ -38,7 +38,10 @@ LongOption
   = "--" name:Word _ ?arg:Argument { return { type: "Option", body: [ name, arg ] } }
 
 ShortOption
-  = "-" name:Letter _ ?arg:Argument { return { type: "Option", body: [ name, arg ] } }
+  = "-" name:Letter _ ?arg:Argument {
+      // TODO: separate multiple letters into single options a la `ls -ltr`
+      return { type: "Option", body: [ name, arg ] }
+    }
 
 Argument
   = variable:Variable { return { type: "Argument", body: [ variable ] } }

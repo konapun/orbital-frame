@@ -1,4 +1,4 @@
 import builder from './builder'
+import schemaValidator from './schemaValidator'
 
-export default builder
-export { builder }
+export { builder, schemaValidator }
