@@ -64,7 +64,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
         }
         break
       }
-      case type.VARIABLE: { // FIXME: this should return up to its parent (switch compiler to use post-order tree traversal)
+      case type.VARIABLE: { // FIXME: this should return up to its parent (switch compiler to use post-order tree traversa)
         const [ key ] = node.body
         const value = environmentService.get(key)
         command.addArgument(value) // FIXME: might be option

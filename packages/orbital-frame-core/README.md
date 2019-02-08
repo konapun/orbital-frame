@@ -40,13 +40,88 @@ The Orbital Frame lifecycle consists of the following stages:
 ## Services
 Orbital Frame uses dependency injection (DI) to expose its various configured
 subsystems for use within the lifecycle and user-defined commands and plugins.
-  - **commandService**
-  - **compilerService**
-  - **configService**
-  - **listenerService**
-  - **memoryService**
-  - **messengerService**
-  - **pluginService**
+
+### commandService
+The command service enables the loading of commands into the bot.
+
+#### Example
+```js
+import sampleCommand from './sample'
+const example = ({ commandService }) => {
+  const loadedCommands = commandService.registry
+  commandService.load(sampleCommand)
+}
+```
+
+### compilerService
+The compiler service takes a source string and produces an executable command.
+
+#### Example
+```js
+const example = ({ compilerService }) => {
+  const source = 'VAR=test; echo $VAR | transform-text --uppercase'
+  const command = compilerService.compile(source)
+  const output = command()
+}
+```
+
+### configService
+The config service holds configuration information for the bot.
+
+#### Example
+```js
+const example = ({ configService }) => {
+  const { name, commands, plugins } = configService
+}
+```
+
+### environmentService
+The environment service is used to store and retrieve variables.
+
+#### Example
+```js
+const example = ({ environmentService, compilerService }) => {
+  environmentService.set('TEST_VAR', 'hello')
+  const value = environmentService.get('TEST_VAR')
+
+  const command = compilerService.compile('echo $TEST_VAR')
+  command() // This will echo "hello" as set in the environment
+}
+```
+
+### listenerService
+The listener service sets up a matcher with an action.
+
+#### Example
+```js
+const example = ({ listenerService }) => {
+  listenerService.listen('hey')
+    .pipe(message => {
+      console.log('Received message')
+    })
+}
+```
+### messengerService
+The messenger service sends output to the adapter the bot is running on.
+
+#### Example
+```js
+const example = ({ messengerService }) => {
+  // TODO: this service isn't finalized
+}
+```
+
+### pluginService
+The plugin service is responsible for registering plugins.
+(See below for documentation on creating your own plugins)
+
+#### Example
+```js
+import myPlugin from './my-plugin'
+const example = ({ pluginService }) => {
+  pluginService.load(myPlugin)
+}
+```
 
 ## Plugins
 Each phase in the Orbital Frame lifecycle is pluggable on both enter and exit
@@ -122,4 +197,10 @@ export default plugin
 TODO
 
 ### Interactive Commands
+TODO
+
 ### Jobs
+TODO
+
+## Users
+TODO
