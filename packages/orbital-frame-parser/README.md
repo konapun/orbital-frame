@@ -18,7 +18,7 @@ The command grammar is a modified subset of bash's grammar:
       - `$?` - exit status of last command
 
 ## AST
-The grammar can be found [here](./grammar/unix.pegjs).
+The grammar can be found [here](./src/grammar/unix.pegjs).
 
 ### Example
 The command
