@@ -44,7 +44,8 @@ ShortOption
     }
 
 Argument
-  = variable:Variable { return { type: "Argument", body: [ variable ] } }
+  = interpolation:Interpolation { return { type: "Argument", body: [ interpolation ]}}
+  / variable:Variable { return { type: "Argument", body: [ variable ] } }
   / text:Text { return { type: "Argument", body: [ text ] } }
 
 Text

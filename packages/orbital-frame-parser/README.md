@@ -10,7 +10,6 @@ The command grammar is a modified subset of bash's grammar:
     - long
   - pipes
   - multiple commands per line
-  - redirect (for channels)
   - command substitution
     - interpolated commands can be used as either arguments or option values
   - variables
@@ -24,56 +23,110 @@ The grammar can be found [here](./grammar/unix.pegjs).
 ### Example
 The command
 ```
-channel-history #random | filter --user $(whoami) > #general
+CHANNEL="#random"; channel-history $CHANNEL | filter --user $(whoami)
 ```
-would parse to `TODO`
+would parse to
 ```js
 {
-  "type": "Program",
-  "value": [
-    {
-      "type": "Pipeline",
-      "value": [
-        {
-          "type": "Command",
-          "value": [
+   "type": "Program",
+   "body": [
+      {
+         "type": "Assignment",
+         "body": [
+            "CHANNEL",
+            "#random"
+         ]
+      },
+      {
+         "type": "Pipeline",
+         "body": [
             {
-              "type": "Word",
-              "value": "channel-history"
+               "type": "Command",
+               "body": [
+                  "channel-history",
+                  {
+                     "type": "Argument",
+                     "body": [
+                        {
+                           "type": "Variable",
+                           "body": [
+                              "CHANNEL"
+                           ]
+                        }
+                     ]
+                  }
+               ]
             },
             {
-              "type": "Argument",
-              "value": "#random"
+               "type": "Command",
+               "body": [
+                  "filter",
+                  [
+                     {
+                        "type": "Option",
+                        "body": [
+                           "user",
+                           {
+                              "type": "Argument",
+                              "body": [
+                                 {
+                                    "type": "Interpolation",
+                                    "body": [
+                                       {
+                                          "type": "Pipeline",
+                                          "body": [
+                                             {
+                                                "type": "Command",
+                                                "body": [
+                                                   "whoami"
+                                                ]
+                                             }
+                                          ]
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        ]
+                     }
+                  ]
+               ]
             }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "Pipeline",
-      "value": [
-        {
-          "type": "Command",
-          "value": [
-            {
-              "type": "Word",
-              "value": "filter"
-            },
-            {
-              "type": "LongOption",
-              "value":
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "Redirect",
-      "value": [
-
-      ]
-    }
-  ]
+         ]
+      }
+   ]
 }
-// I don't know yet!
 ```
+
+## Differences from bash
+Orbital Frame uses a stricter grammar than bash and in doing so avoids some
+annoying and perhaps surprising edge cases.
+
+***
+
+In bash, variables are expanded in place so things like this are allowed:
+```
+ARG="-n"; echo $ARG test
+```
+which would allow `-n` to be used to specify an option. Orbital Frame, however,
+only allows variables to be used as arguments to commands and command options.
+
+***
+
+Bash allows evaluating strings as options so the following
+```
+echo "-n" test
+```
+will print "test" without a newline character while Orbital Frame passes both
+"-n" and "test" as arguments to `echo`
+
+***
+
+Bash also allows similar behavior with regards to command interpolation.
+In bash,
+```
+echo $(echo "-n ") test
+```
+will print "test" without a newline character while Orbital Frame passes both
+"-n" (the evaluation of the interpolated command) and "test" as arguments to
+`echo`.

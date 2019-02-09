@@ -1,7 +1,7 @@
 const jehuty = require('../dist').default
 
 function bootstrap (hubot) {
-  jehuty(hubot).run({option1: 'test'})
+  jehuty(hubot).run()
 }
 
 module.exports = bootstrap

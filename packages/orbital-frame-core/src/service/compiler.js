@@ -4,10 +4,10 @@ import { builder } from '../command'
 const compiler = () => ({ commandService, environmentService })  => ({
 
   /**
-   * const command = compiler.compile('echo "test" | emoji-text')
-   * command()
+   * Create a function from a source string
    *
    * @param {String} string source to parse into executable pipeline
+   * @returns {Function} function that when executed evaluates the source string
    */
   compile (string) {
     const ast = parser.parse(string)
