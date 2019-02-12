@@ -1,7 +1,15 @@
+export const treeControl = {
+  STOP: 0
+}
+
 export default {
-  walk (node, visitor) { // FIXME: interpolation and variable expansions work much more naturally in a bottom-up evaluation so change this and the compiler to use post-order traversal rather than breadth-first
+  walk (node, visitor) {
     if (!Array.isArray(node)) {
-      visitor(node)
+      const control = visitor(node)
+      switch (control) {
+      case treeControl.STOP:
+        return
+      }
     } else {
       node.forEach(n => this.walk(n, visitor))
     }

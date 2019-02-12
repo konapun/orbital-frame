@@ -1,4 +1,4 @@
-import isFunction from 'lodash/isFunction'
+import { isFunction, flatten } from 'lodash'
 
 function builder (commandRegistry) {
   const pipelines = []
@@ -55,7 +55,6 @@ function commandBuilder (name, commandRegistry, environment) {
     },
 
     build () {
-      console.log('Name:', name)
       const command = commandRegistry[name]
       if (!command) {
         throw new Error(`Command not found: ${name}`)
@@ -63,15 +62,8 @@ function commandBuilder (name, commandRegistry, environment) {
 
       // TODO: execute can be async
       return incoming => {
-        console.log('ARGS:', args)
         const execArgs = incoming ? [ incoming, ...args ] : args
-        const interpolatedArgs = execArgs.map(arg => {
-          console.log('On arg', arg)
-          if (isFunction(arg)) {
-            console.log('Argument is FUNCTION')
-          }
-          return isFunction(arg) ? arg() : arg
-        }) // TODO: await this as well
+        const interpolatedArgs = flatten(execArgs.map(arg => isFunction(arg) ? arg() : arg)) // TODO: await this as well
         const execOptions = options
           .map(opt => opt.build())
           .map(([ key, value ]) => isFunction(value) ? [ key, value() ] : [ key, value ]) // TODO: await this as well

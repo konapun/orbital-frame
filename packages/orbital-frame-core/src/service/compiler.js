@@ -38,6 +38,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
         const [ source ] = node.body
         const cmd = this.buildCommand(source)
         currentBuilder.addArgument(cmd)
+        break
       }
       case type.COMMAND: {
         const [ name ] = node.body
