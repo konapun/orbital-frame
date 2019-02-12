@@ -9,7 +9,7 @@ Statement
   / Pipeline
 
 Assignment
-  = variable:Word "=" value:Text { return { type: "Assignment", body: [ variable, value ] } }
+  = variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value ] } }
 
 Pipeline
   = _ command:Command _ rest:("|" _ Command)* {
@@ -44,7 +44,7 @@ ShortOption
     }
 
 Argument
-  = interpolation:Interpolation { return { type: "Argument", body: [ interpolation ]}}
+  = interpolation:Interpolation
   / variable:Variable { return { type: "Argument", body: [ variable ] } }
   / text:Text { return { type: "Argument", body: [ text ] } }
 

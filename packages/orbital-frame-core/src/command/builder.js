@@ -1,3 +1,5 @@
+import isFunction from 'lodash/isFunction'
+
 function builder (commandRegistry) {
   const pipelines = []
 
@@ -28,10 +30,6 @@ function pipelineBuilder (commandRegistry) {
       return builder
     },
 
-    addInterpolated (subtree) {
-      // TODO:
-    },
-
     build () {
       const [ first, ...rest ] = commands.map(command => command.build())
       return () => rest.reduce((val, cmd) => cmd(val), first()) // TODO: async
@@ -39,7 +37,7 @@ function pipelineBuilder (commandRegistry) {
   }
 }
 
-function commandBuilder (name, commandRegistry) {
+function commandBuilder (name, commandRegistry, environment) {
   const options = []
   const args = []
 
@@ -57,19 +55,29 @@ function commandBuilder (name, commandRegistry) {
     },
 
     build () {
+      console.log('Name:', name)
       const command = commandRegistry[name]
       if (!command) {
         throw new Error(`Command not found: ${name}`)
       }
 
-      const execOptions = options
-        .map(opt => opt.build())
-        .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
-
       // TODO: execute can be async
       return incoming => {
+        console.log('ARGS:', args)
         const execArgs = incoming ? [ incoming, ...args ] : args
-        return command.execute(execArgs, execOptions)
+        const interpolatedArgs = execArgs.map(arg => {
+          console.log('On arg', arg)
+          if (isFunction(arg)) {
+            console.log('Argument is FUNCTION')
+          }
+          return isFunction(arg) ? arg() : arg
+        }) // TODO: await this as well
+        const execOptions = options
+          .map(opt => opt.build())
+          .map(([ key, value ]) => isFunction(value) ? [ key, value() ] : [ key, value ]) // TODO: await this as well
+          .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
+
+        return command.execute(interpolatedArgs, execOptions)
       }
     }
   }
@@ -82,6 +90,10 @@ function optionBuilder (key) {
     setValue (value) {
       if (optionValue) throw new Error('Options may only have a single value')
       optionValue = value
+    },
+
+    addArgument (value) {
+      this.setValue(value)
     },
 
     build () {

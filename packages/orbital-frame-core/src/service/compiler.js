@@ -18,59 +18,48 @@ const compiler = () => ({ commandService, environmentService })  => ({
     const commandBuilder = builder(commandService.registry)
 
     const pipelines = []
-    let pipeline, command, option
+    let pipeline, command, option, currentBuilder
     walker.walk(ast, node => {
       switch (node.type) {
 
       case type.PIPELINE: {
         pipeline = commandBuilder.addPipeline()
         pipelines.push(pipeline)
+        currentBuilder = pipeline
         break
       }
       case type.ASSIGNMENT: {
         const [ key, value ] = node.body
         console.log('Env setting', key, 'to', value)
-        environmentService.set(key, value)
+        environmentService.set(key, value) // FIXME: value could be an interpolation so assignments need to happen at runtime; move to builder
         break
       }
       case type.INTERPOLATION: {
         const [ source ] = node.body
-        pipeline.addInterpolated(source)
-        // TODO: probably want to evaluate interpolation on command execute, not build, so remove stuff below once this is working in the builder
         const cmd = this.buildCommand(source)
-        console.log(`Source ${source} evaluated to ${cmd()}`)
-        return cmd()
+        currentBuilder.addArgument(cmd)
       }
       case type.COMMAND: {
         const [ name ] = node.body
         command = pipeline.addCommand(name)
+        currentBuilder = command
         break
       }
       case type.OPTION: {
         const [ key ] = node.body
         option = command.addOption(key)
+        currentBuilder = option
         break
       }
       case type.ARGUMENT: {
         const [ value ] = node.body
-        if (option) {
-          try {
-            option.setValue(value)
-          } catch (err) { // option already has value
-            command.addArgument(value)
-          }
-        } else {
-          command.addArgument(value)
-        }
+        currentBuilder.addArgument(value)
         break
       }
-      case type.VARIABLE: { // FIXME: this should return up to its parent (switch compiler to use post-order tree traversa)
+      case type.VARIABLE: {
         const [ key ] = node.body
-        const value = environmentService.get(key)
-        command.addArgument(value) // FIXME: might be option
-        console.log('Got value', value)
-        // TODO:
-        return value
+        const value = environmentService.get(key) // FIXME: this should happen at runtime, not compile
+        currentBuilder.addArgument(value)
         break
       }
       }
