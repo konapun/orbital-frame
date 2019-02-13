@@ -130,3 +130,9 @@ echo $(echo "-n ") test
 will print "test" without a newline character while Orbital Frame passes both
 "-n" (the evaluation of the interpolated command) and "test" as arguments to
 `echo`.
+
+***
+
+Bash treats single- and double-quoted strings differently, where double-quoted
+strings allow interpolation and single-quoted strings do not. Orbital Frame
+doesn't allow string interpolation at all (at least for now).

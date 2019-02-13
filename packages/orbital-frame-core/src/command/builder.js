@@ -1,33 +1,57 @@
 import { isFunction, flatten } from 'lodash'
 
-function builder (commandRegistry) {
+function builder (commandRegistry, environment) { // TODO: use environment
   const pipelines = []
+  const assignments = []
 
   return {
     addPipeline () {
-      const builder = pipelineBuilder(commandRegistry)
+      const builder = pipelineBuilder(commandRegistry, environment)
       pipelines.push(builder)
 
       return builder
     },
+    addVariable (key) {
+      const builder = assignmentBuilder(key)
+      assignments.push(builder)
+
+      return builder
+    },
     build () {
-      return () => pipelines.map(pipeline => { // TODO: await pipelines
-        const pipelineOutput = pipeline.build()
-        return pipelineOutput()
-      })
+      return () => {
+        assignments
+          .map(assignment => assignment.build())
+          .map(([ key, value ]) => {
+            const execVal = isFunction(value) ? value() : value // TODO: async
+            environment.set(key, execVal)
+          })
+
+        return pipelines.map(pipeline => { // TODO: await pipelines
+          const pipelineOutput = pipeline.build()
+          return pipelineOutput()
+        })
+      }
     }
   }
 }
 
-function pipelineBuilder (commandRegistry) {
+function pipelineBuilder (commandRegistry, environment) {
   const commands = []
 
   return {
     addCommand (name) {
-      const builder = commandBuilder(name, commandRegistry)
+      const builder = commandBuilder(name, commandRegistry, environment)
       commands.push(builder)
 
       return builder
+    },
+
+    addArgument (interpolation) {
+      commands.push({
+        build: () => interpolation
+      })
+
+      return this
     },
 
     build () {
@@ -43,7 +67,7 @@ function commandBuilder (name, commandRegistry, environment) {
 
   return {
     addOption (key) {
-      const option = optionBuilder(key)
+      const option = optionBuilder(key, environment)
       options.push(option)
 
       return option
@@ -52,6 +76,10 @@ function commandBuilder (name, commandRegistry, environment) {
     addArgument (argument) {
       args.push(argument)
       return this
+    },
+
+    addVariable (key) {
+      this.addArgument(() => environment.get(key))
     },
 
     build () {
@@ -69,13 +97,14 @@ function commandBuilder (name, commandRegistry, environment) {
           .map(([ key, value ]) => isFunction(value) ? [ key, value() ] : [ key, value ]) // TODO: await this as well
           .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
+        // TODO: need to parse options schema from command definition to find out how to distribute args from opts in case of binary and also provide early error messages from unrecognized options
         return command.execute(interpolatedArgs, execOptions)
       }
     }
   }
 }
 
-function optionBuilder (key) {
+function optionBuilder (key, environment) {
   let optionValue
 
   return {
@@ -88,8 +117,26 @@ function optionBuilder (key) {
       this.setValue(value)
     },
 
+    addVariable (key) {
+      this.addArgument(() => environment.get(key))
+    },
+
     build () {
       return [ key, optionValue ]
+    }
+  }
+}
+
+function assignmentBuilder (variable) {
+  let value
+
+  return {
+    addArgument (val) {
+      value = val
+    },
+
+    build () {
+      return [ variable, value ]
     }
   }
 }

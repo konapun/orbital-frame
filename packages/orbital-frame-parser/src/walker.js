@@ -1,13 +1,14 @@
-export const treeControl = {
-  STOP: 0
+const treeControl = {
+  SUBTREE_STOP: 0
 }
 
 export default {
+  treeControl,
   walk (node, visitor) {
     if (!Array.isArray(node)) {
       const control = visitor(node)
       switch (control) {
-      case treeControl.STOP:
+      case treeControl.SUBTREE_STOP:
         return
       }
     } else {

@@ -1,8 +1,6 @@
 function help ({ commandService }) {
   const listAll = () => Object.keys(commandService.registry)
-  const listOne = command => {
-    console.log('Listing help for command', command)
-  }
+  const listOne = command => commandService.registry[command].description
 
   return {
     name: 'help',
@@ -16,7 +14,6 @@ function help ({ commandService }) {
       default:
         throw new Error('Wrong number of arguments: expected 0 or 1')
       }
-      return Object.keys(commandService.registry)
     },
     format (output) {
       // TODO: in-depth help

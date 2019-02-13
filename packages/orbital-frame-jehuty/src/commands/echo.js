@@ -5,8 +5,8 @@ function echo () {
     format (output) {
       return `Formatted: ${output}`
     },
-    execute (args) {
-      console.log('Echoing args', args)
+    execute (args, opts) {
+      console.log('Echo got options', opts)
       return args.join(' ')
     }
   }

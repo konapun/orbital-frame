@@ -38,14 +38,13 @@ LongOption
   = "--" name:Word _ ?arg:Argument { return { type: "Option", body: [ name, arg ] } }
 
 ShortOption
-  = "-" name:Letter _ ?arg:Argument {
-      // TODO: separate multiple letters into single options a la `ls -ltr`
-      return { type: "Option", body: [ name, arg ] }
+  = "-" options:Letter+ _ ?arg:Argument {
+      return options.map(letter => ({ type: "Option", body: [ letter, arg ] })) // FIXME: arg should only apply to the last option
     }
 
 Argument
   = interpolation:Interpolation
-  / variable:Variable { return { type: "Argument", body: [ variable ] } }
+  / variable:Variable
   / text:Text { return { type: "Argument", body: [ text ] } }
 
 Text
@@ -78,7 +77,7 @@ EscapeSequence
 Variable
   = "$" variable:Word { return { type: "Variable", body: [ variable ] } }
 
-Word = word:[a-zA-Z0-9_-]+ { return word.join('')  }
+Word = word:[a-zA-Z0-9_%\-\+\*\^]+ { return word.join('')  }
 
 Letter = [a-zA-Z]
 

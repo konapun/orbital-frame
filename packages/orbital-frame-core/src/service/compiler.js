@@ -15,13 +15,12 @@ const compiler = () => ({ commandService, environmentService })  => ({
   },
 
   buildCommand (ast) {
-    const commandBuilder = builder(commandService.registry)
+    const commandBuilder = builder(commandService.registry, environmentService)
 
     const pipelines = []
     let pipeline, command, option, currentBuilder
     walker.walk(ast, node => {
       switch (node.type) {
-
       case type.PIPELINE: {
         pipeline = commandBuilder.addPipeline()
         pipelines.push(pipeline)
@@ -29,16 +28,17 @@ const compiler = () => ({ commandService, environmentService })  => ({
         break
       }
       case type.ASSIGNMENT: {
-        const [ key, value ] = node.body
-        console.log('Env setting', key, 'to', value)
-        environmentService.set(key, value) // FIXME: value could be an interpolation so assignments need to happen at runtime; move to builder
+        const [ key ] = node.body
+
+        const assignment = commandBuilder.addVariable(key)
+        currentBuilder = assignment
         break
       }
       case type.INTERPOLATION: {
         const [ source ] = node.body
         const cmd = this.buildCommand(source)
         currentBuilder.addArgument(cmd)
-        break
+        return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of buildCommand
       }
       case type.COMMAND: {
         const [ name ] = node.body
@@ -54,13 +54,15 @@ const compiler = () => ({ commandService, environmentService })  => ({
       }
       case type.ARGUMENT: {
         const [ value ] = node.body
-        currentBuilder.addArgument(value)
+        if (currentBuilder) {
+          currentBuilder.addArgument(value)
+        }
+        currentBuilder = command
         break
       }
       case type.VARIABLE: {
         const [ key ] = node.body
-        const value = environmentService.get(key) // FIXME: this should happen at runtime, not compile
-        currentBuilder.addArgument(value)
+        currentBuilder.addVariable(key)
         break
       }
       }
