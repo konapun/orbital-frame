@@ -1,6 +1,6 @@
 import { isFunction, flatten } from 'lodash'
 
-function builder (commandRegistry, environment) { // TODO: use environment
+function builder (commandRegistry, environment) {
   const pipelines = []
   const assignments = []
 

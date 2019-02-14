@@ -2,8 +2,10 @@
 function hubotAdapter (hubot) {
   return {
     hear: hubot.hear.bind(hubot), // TODO: adapt response as well
-    send: hubot.messageRoom.bind(hubot)
-    // TODO: expose additional functionality for slack and the like?
+    send: hubot.messageRoom.bind(hubot),
+    async getUsers () { // Or // TODO: adapter.slack.users.list({ limit: 9999 }).then(res => { ?
+      return await Object.values(hubot.brain.data.users).map(({ id, name }) => ({ id, name }))
+    }
   }
 }
 

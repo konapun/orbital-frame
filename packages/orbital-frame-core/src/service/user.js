@@ -1,11 +1,18 @@
 const user = frame => () => ({
-  // TODO: adapter.slack.users.list({ limit: 9999 }).then(res => {
-  find () {
+  async find (criteria) { // ex: find({ name: 'konapun' })
+    const matcher = user => Object.entries(criteria).every(([ key, value ]) => user[key] === value)
+    const allUsers = await this.list()
 
+    return allUsers.filter(matcher)
   },
 
-  list () {
+  async findOne (criteria) {
+    const matches = await this.find(criteria)
+    return matches[0]
+  },
 
+  async list () {
+    return await frame.getUsers()
   }
 })
 

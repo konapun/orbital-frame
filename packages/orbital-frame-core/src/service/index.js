@@ -6,6 +6,7 @@ import environmentService from './environment'
 import listenerService from './listener'
 import messengerService from './messenger'
 import pluginService from './plugin'
+import userService from './user'
 
 const services = {
   commandService,
@@ -14,7 +15,8 @@ const services = {
   environmentService,
   listenerService,
   messengerService,
-  pluginService
+  pluginService,
+  userService
 }
 
 const serviceRegistry = container => ({

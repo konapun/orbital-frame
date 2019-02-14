@@ -14,13 +14,14 @@ const defaults = {
 function frame (sensors, options) {
   const { name, plugins, commands, adapter } = { ...defaults, ...options }
 
-  const { hear, send } = adapter(sensors)
+  const { hear, send, getUsers } = adapter(sensors)
   return {
     name,
     plugins,
     commands,
     hear,
-    send
+    send,
+    getUsers
   }
 }
 

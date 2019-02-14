@@ -11,9 +11,6 @@
   },
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
-  "devDependencies": {
-    "pegjs": "^0.10.0"
-  },
   "dependencies": {
     "@orbital-frame/parser": "^1.0.1",
     "awilix": "^4.0.1",

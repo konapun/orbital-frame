@@ -1,5 +1,7 @@
+import corePlugins from '../../plugins'
+
 const loadPlugins = ({ configService, pluginService }) => next => () => {
-  const plugins = configService.plugins
+  const plugins = [ ...corePlugins, ...configService.plugins ]
   pluginService.load(plugins)
   next()
 }

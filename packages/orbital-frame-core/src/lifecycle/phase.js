@@ -9,18 +9,18 @@ function phase (fn) {
   return {
     call: services => next => (...args) => {
       const nextWrapper = (...args) => {
-        extensions.after.forEach(extension => extension(...args))
+        extensions.after.forEach(extension => extension(...args)) // TODO: extensions can be async
         return next(...args)
       }
 
       const action = fn(services)(nextWrapper)
 
-      extensions.before.forEach(extension => extension(...args))
+      extensions.before.forEach(extension => extension(...args)) // TODO: extensions can be async
 
       try {
-        action(...args)
+        action(...args) // TODO: actions can be async
       } catch (err) {
-        extensions.error.forEach(extension => extension(err))
+        extensions.error.forEach(extension => extension(err)) // TODO: extensions can be async
       }
     },
 
