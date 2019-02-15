@@ -4,8 +4,9 @@ import { phaseEnum } from '../lifecycle'
  * Use lifecycle phase triggers to keep track of running commands and associate
  * them with users
  */
-const jobsPlugin = ({ userService }) => {
-  let findUser
+const jobsPlugin = () => {
+  let userId // TODO: make sure this works with an async, multi-user flow
+  const jobs = []
 
   return {
     [phaseEnum.LOAD_PLUGINS]: {
@@ -16,15 +17,13 @@ const jobsPlugin = ({ userService }) => {
     [phaseEnum.LISTEN]: {
       exit (context) {
         const { id } = context.message.user // TODO: make sure adapter follows this format
-        findUser = userService.findOne({ id }) // TODO: will this work with multi-user, multi-async?
+        userId = id
       }
     },
     [phaseEnum.EXECUTE]: {
       enter (executable) {
-        findUser.then(executor => {
-          console.log('EXECUTING from user', executor)
-        })
-        // TODO: Associate user with command
+        console.log('EXECUTING from user', userId)
+        // TODO: Associate user with command and add to jobs
       },
       exit (output) {
         // TODO: mark job as complete
