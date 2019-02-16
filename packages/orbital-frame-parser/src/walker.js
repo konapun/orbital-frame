@@ -17,7 +17,7 @@ export default {
 
     const { body } = node
     if (body) {
-      node.body.forEach(child => this.walk(child, visitor))
+      body.forEach(child => this.walk(child, visitor))
     }
   }
 }

@@ -24,7 +24,7 @@ chat services. Currently, only the Hubot adapter is available and this is what
 `@orbital-frame/jehuty` ships with.
 
 ### Creating adapters
-TODO
+TODO The adapters API is still in flux
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
@@ -55,7 +55,7 @@ const example = ({ commandService }) => {
 
 ### compilerService
 The compiler service takes a source string and produces an executable command.
-
+  * **`compilerService.compile`** `String -> Fn`
 #### Example
 ```js
 const example = ({ compilerService }) => {
@@ -66,17 +66,26 @@ const example = ({ compilerService }) => {
 ```
 
 ### configService
-The config service holds configuration information for the bot.
+The config service holds configuration information for the bot:
+  * **`configService.name`** `-> String` The name of the bot
+  * **`configService.commands`** `-> Array<Command>` A list of commands registered with the bot
+  * **`configService.plugins`** `-> Array<Plugin>` A list of plugins registered with the bot
+  * **`configService.adapter`** `-> Adapter` The adapter the bot is running on. Note that using the adapter
+    directly will couple your command/plugin to the adapter itself so all
+    dependencies on the adapter itself pass through an abstraction layer in the
+    core itself.
 
 #### Example
 ```js
 const example = ({ configService }) => {
-  const { name, commands, plugins } = configService
+  const { name, commands, plugins, adapter } = configService
 }
 ```
 
 ### environmentService
 The environment service is used to store and retrieve variables.
+  * **`environmentService.set`** `String, Any -> Nil` Assign a value to a variable in the environment
+  * **`environmentService.get`** `String -> Any` Retrieve a value for a variable in the environment
 
 #### Example
 ```js
@@ -89,8 +98,25 @@ const example = ({ environmentService, compilerService }) => {
 }
 ```
 
+### jobService
+The job service associates commands with users and provides operations for
+retrieving information for jobs.
+  * **`jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
+  * **`userService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
+
+#### Example
+```js
+const example = ({ jobService, userService }) => {
+  const user = userService.find({ name: 'konapun' })
+  const runningJobs = jobService.find({ user, status: 'running' })
+  const finishedJobs = jobService.find({ user, status: 'finished' })
+  const returnValues = finishedJobs.map(job => job.returnValue)
+}
+```
+
 ### listenerService
 The listener service sets up a matcher with an action.
+  * **`listenerService.listen`** `String -> StreamReader` Set up a listener and receive a stream reader to get responses written to the stream
 
 #### Example
 ```js
@@ -114,12 +140,26 @@ const example = ({ messengerService }) => {
 ### pluginService
 The plugin service is responsible for registering plugins.
 (See below for documentation on creating your own plugins)
+  * **`pluginService.load`** `Plugin | Array<Plugin> -> Nil` Load one or more plugins
 
 #### Example
 ```js
 import myPlugin from './my-plugin'
 const example = ({ pluginService }) => {
   pluginService.load(myPlugin)
+}
+```
+
+### userService
+The user service retrieves users running on the bot adapter.
+  * **`userService.find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
+  * **`userService.findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
+
+#### Example
+```js
+const example = ({ userService }) => {
+  const found = userService.findOne({ id: 123 })
+  console.log(found.name) // -> "konapun"
 }
 ```
 
@@ -197,10 +237,4 @@ export default plugin
 TODO
 
 ### Interactive Commands
-TODO
-
-### Jobs
-TODO
-
-## Users
 TODO

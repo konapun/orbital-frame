@@ -1,15 +1,15 @@
-const jobService = () => () => ({
-  getRunning () {
-    // TODO:
+const job = () => () => ({
+  find (criteria) {
+    // TODO
   },
 
-  getCompleted () {
-    // TODO:
+  findOne (criteria) {
+    // TODO
   },
 
-  findByUser (user) {
-    // TODO:
+  list () {
+    // TODO
   }
 })
 
-export default jobService
+export default job
