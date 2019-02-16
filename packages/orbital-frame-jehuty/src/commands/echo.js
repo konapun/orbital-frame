@@ -2,6 +2,15 @@ function echo () {
   return {
     name: 'echo',
     description: 'TODO',
+    options: {
+      t: {
+        alias: 'test',
+        describe: 'Testing',
+        type: 'boolean',
+        required: false,
+        default: false
+      }
+    },
     format (output) {
       return `Formatted: ${output}`
     },

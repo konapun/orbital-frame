@@ -5,17 +5,14 @@ consumption by @orbital-frame/core.
 The command grammar is a modified subset of bash's grammar:
   - command
   - options
-  - arguments
     - short
     - long
+  - arguments
   - pipes
   - multiple commands per line
   - command substitution
     - interpolated commands can be used as either arguments or option values
   - variables
-    - predefined:
-      - `$$` - last command
-      - `$?` - exit status of last command
 
 ## AST
 The grammar can be found [here](./src/grammar/unix.pegjs).
@@ -25,7 +22,7 @@ The command
 ```
 CHANNEL="#random"; channel-history $CHANNEL | filter --user $(whoami)
 ```
-would parse to
+parses to
 ```js
 {
    "type": "Program",

@@ -8,6 +8,10 @@ const user = frame => () => ({
 
   async findOne (criteria) {
     const matches = await this.find(criteria)
+    if (matches.length === 0) {
+      throw new Error('No users found for search criteria')
+    }
+
     return matches[0]
   },
 

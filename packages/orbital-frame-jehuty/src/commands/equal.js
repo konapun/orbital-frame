@@ -3,8 +3,9 @@ function equal () {
     name: 'equal',
     description: 'Check two or more arguments for equality',
     options: {
-      strict: {
-        alias: 's',
+      s: {
+        alias: 'strict',
+        describe: 'Use strict equality (=== instead of ==)',
         type: 'boolean',
         default: false
       }
