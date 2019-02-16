@@ -8,6 +8,7 @@ function errorTrapPlugin ({ messengerService }) {
           const message = `Error: ${e.message}`
 
           console.error(message)
+          // throw message
           // messengerService.respond(`\`${message}\``) // FIXME: need context...
         }
       }

@@ -6,12 +6,12 @@ function builder (commandRegistry, environment) {
   const pipelines = []
   const assignments = []
 
-  function pipelineBuilder (commandRegistry) {
+  function pipelineBuilder () {
     const commands = []
 
     return {
       addCommand (name) {
-        const builder = commandBuilder(name, commandRegistry)
+        const builder = commandBuilder(name)
         commands.push(builder)
 
         return builder
@@ -32,7 +32,7 @@ function builder (commandRegistry, environment) {
     }
   }
 
-  function commandBuilder (name, commandRegistry) {
+  function commandBuilder (name) {
     const options = []
     const args = []
 
@@ -62,7 +62,7 @@ function builder (commandRegistry, environment) {
         const getPromotedArgsOpts = (args, opts, optsDefinition) => { // the distribution of arguments to options isn't known until runtime since some options can be boolean switches. Determine which option values should actually be arguments and repartition
           const validOptions = { // flatten options and aliases for O(1) lookup
             ...optsDefinition,
-            ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, curr }))
+            ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, curr }), {})
           }
 
           const redistOpts = Object.entries(opts).forEach(([ key, value ]) => {
@@ -131,7 +131,7 @@ function builder (commandRegistry, environment) {
 
   return {
     addPipeline () {
-      const builder = pipelineBuilder(commandRegistry, environment)
+      const builder = pipelineBuilder()
       pipelines.push(builder)
 
       return builder

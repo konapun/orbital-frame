@@ -4,7 +4,7 @@ import Joi from 'joi'
 function runtimeValidator (commands) {
   const validators = commands
     // .map(command => ) // TODO: build Joi validator for specific command
-    .reduce((map, command) => ({ ...map, [command.name]: command }))
+    .reduce((map, command) => ({ ...map, [command.name]: command }), {})
 
   return {
     validate (command) {
