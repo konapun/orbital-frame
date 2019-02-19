@@ -6,9 +6,19 @@ function echo () {
       t: {
         alias: 'test',
         describe: 'Testing',
-        type: 'boolean',
+        type: 'number',
         required: false,
-        default: false
+        default: 1
+      },
+      v: {
+        alias: 'test2',
+        describe: 'Boolean test',
+        type: 'boolean'
+      },
+      w: {
+        alias: 'test3',
+        describe: 'Boolean test2',
+        type: 'boolean'
       }
     },
     format (output) {

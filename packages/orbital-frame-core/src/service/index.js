@@ -1,4 +1,5 @@
 import { asFunction } from 'awilix'
+import channelService from './channel'
 import commandService from './command'
 import compilerService from './compiler'
 import configService from './config'
@@ -9,6 +10,7 @@ import pluginService from './plugin'
 import userService from './user'
 
 const services = {
+  channelService,
   commandService,
   compilerService,
   configService,

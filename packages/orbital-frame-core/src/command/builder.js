@@ -2,7 +2,6 @@ import { isFunction, flatten } from 'lodash'
 import runtimeValidator from './runtimeValidator'
 
 function builder (commandRegistry, environment) {
-  // const commandValidator = runtimeValidator(commandRegistry)
   const pipelines = []
   const assignments = []
 
@@ -59,23 +58,36 @@ function builder (commandRegistry, environment) {
           throw new Error(`Command not found: ${name}`)
         }
 
+        // TODO: validate options
+        const validateOptions = (opts, schema) => {
+          const validOptions = { // flatten options and aliases for O(1) lookup
+            ...optsDefinition,
+            ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, ...curr }), {})
+          }
+
+          // const redistOpts = Object.entries(opts).forEach(([ key, value ]) => {
+          //   const schema = validOptions[key]
+          //   console.log('Schema:', schema)
+          //   const validator = runtimeValidator(schema)
+          //   const something = validator.validate(value)
+
+          //   console.log('Got validator output', something)
+          //   console.log(`Schema for option ${key}`, schema)
+          // })
+        }
+
         const getPromotedArgsOpts = (args, opts, optsDefinition) => { // the distribution of arguments to options isn't known until runtime since some options can be boolean switches. Determine which option values should actually be arguments and repartition
           const validOptions = { // flatten options and aliases for O(1) lookup
             ...optsDefinition,
-            ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, curr }), {})
+            ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, ...curr }), {})
           }
 
-          const redistOpts = Object.entries(opts).forEach(([ key, value ]) => {
-            const schema = validOptions[key]
-
-            console.log(`Schema for option ${key}`, schema)
-          })
-
-          // TODO:
-          return [ args, opts ]
+          const booleanOpts = Object.entries(validOptions).filter(([ , value ]) => value.type === 'boolean').reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
+          const distributedArgs = [ ...args, ...Object.entries(opts).filter(([ key ]) => booleanOpts[key]).map(([ , val ]) => val) ]
+          const distributedOpts = Object.entries(opts).map(([ key, val ]) => booleanOpts[key] ? { [key]: true } : { [key]: val }).reduce((acc, curr) => ({ ...acc, ...curr }), {})
+          return [ distributedArgs, distributedOpts ]
         }
 
-        // TODO: execute can be async
         return incoming => {
           const execArgs = incoming ? [ incoming, ...args ] : args
           const interpolatedArgs = flatten(execArgs.map(arg => isFunction(arg) ? arg() : arg)) // TODO: await this as well
@@ -84,8 +96,6 @@ function builder (commandRegistry, environment) {
             .map(([ key, value ]) => isFunction(value) ? [ key, value() ] : [ key, value ]) // TODO: await this as well
             .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
-          console.log('OPTIONS DEFINITION:', command.options)
-          console.log('EXEC OPTIONS:', execOptions)
           return command.execute(...getPromotedArgsOpts(interpolatedArgs, execOptions, command.options))
         }
       }

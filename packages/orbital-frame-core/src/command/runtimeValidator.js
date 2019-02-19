@@ -1,14 +1,22 @@
 import Joi from 'joi'
-// checks the format of the command being invoked against the command schema
 
-function runtimeValidator (commands) {
-  const validators = commands
-    // .map(command => ) // TODO: build Joi validator for specific command
-    .reduce((map, command) => ({ ...map, [command.name]: command }), {})
+function runtimeValidator ({ alias, type, default: deflt, required }) {
+  const validator = Joi[type]()
+  if (deflt) {
+    validator.default(deflt)
+  }
+  if (required) {
+    validator.required()
+  }
 
   return {
-    validate (command) {
+    validate (value) {
+      const { error, value: val } = validator.validate(value)
+      if (error) {
+        throw error
+      }
 
+      return val
     }
   }
 }

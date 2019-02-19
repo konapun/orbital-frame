@@ -14,7 +14,7 @@ const defaults = {
 function frame (sensors, options) {
   const { name, plugins, commands, adapter } = { ...defaults, ...options }
 
-  const { hear, send, getUsers, adapter: frameAdapter } = adapter(sensors)
+  const { hear, send, getUsers, getChannels, adapter: frameAdapter } = adapter(sensors)
   return {
     name,
     plugins,
@@ -22,6 +22,7 @@ function frame (sensors, options) {
     hear,
     send,
     getUsers,
+    getChannels,
     adapter: frameAdapter // this should only be used in orbital-frame clients since it will be closely bound to the specific adapter
   }
 }

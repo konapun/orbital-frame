@@ -4,7 +4,7 @@ import { phaseEnum } from '../lifecycle'
  * Use lifecycle phase triggers to keep track of running commands and associate
  * them with users
  */
-const jobsPlugin = () => {
+const jobsPlugin = ({ channelService }) => {
   let userId // TODO: make sure this works with an async, multi-user flow
   const jobs = []
 
