@@ -11,6 +11,7 @@ import car from './car'
 import cdr from './cdr'
 import sleep from './sleep'
 import alias from './alias'
+import jobs from './jobs'
 
 export default [
   calc,
@@ -25,5 +26,6 @@ export default [
   car,
   cdr,
   sleep,
-  alias
+  alias,
+  jobs
 ]

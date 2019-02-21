@@ -4,27 +4,34 @@ import { phaseEnum } from '../lifecycle'
  * Use lifecycle phase triggers to keep track of running commands and associate
  * them with users
  */
-const jobsPlugin = ({ channelService }) => {
+const jobsPlugin = ({ jobService }) => {
   const namespace = 'core.plugin.job'
-  const jobs = []
 
   return {
     [phaseEnum.LISTEN]: {
       exit ({ context, state }) {
         const { id } = context.message.user // TODO: make sure adapter follows this format
-        state.set(`${namespace}.id`, id)
+        const job = jobService.create(id, { context })
+        state.set(`${namespace}.job`, job)
       }
     },
     [phaseEnum.EXECUTE]: {
       enter ({ command, state }) {
-        const userId = state.get(`${namespace}.id`)
-        console.log('EXECUTING from user', userId)
-        // TODO: Associate user with command and add to jobs
+        const job = state.get(`${namespace}.job`)
+        jobService.update(job.id, { command })
       },
       exit ({ output, state }) {
-        // TODO: mark job as complete
-        console.log('EXECUTED:', output)
+        const job = state.get(`${namespace}.job`)
+        jobService.update(job.id, {
+          status: jobService.status.FULFILLED,
+          output,
+          finished: Date.now()
+        })
       }
+      // error ({ error, state }) { //TODO: error phase doesn't currently pass a hash with state
+      //   const job = state.get(`${namespace}.job`)
+      //   job.status = jobStatus.REJECTED
+      // }
     }
   }
 }

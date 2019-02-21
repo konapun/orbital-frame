@@ -20,7 +20,12 @@ function phase (fn) {
       try {
         action(...args) // TODO: actions can be async
       } catch (err) {
-        extensions.error.forEach(extension => extension(err)) // TODO: extensions can be async
+        const errorHandlers = extensions.error
+        if (errorHandlers.length === 0) {
+          throw err // don't silently swallow errors if no custom handlers are available
+        } else {
+          errorHandlers.forEach(extension => extension(err)) // TODO: extensions can be async
+        }
       }
     },
 
