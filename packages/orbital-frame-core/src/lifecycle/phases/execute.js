@@ -1,6 +1,7 @@
-const execute = () => next => (command, context) => {
+const execute = () => next => args => {
+  const { command } = args
   const output = command()
-  next(output, context)
+  next({ ...args, output })
 }
 
 export default execute

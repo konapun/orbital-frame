@@ -1,6 +1,18 @@
+const cycleState = () => {
+  const state = {}
+  return {
+    set (key, value) {
+      state[key] = value
+    },
+    get (key) {
+      return state[key]
+    }
+  }
+}
+
 const listen = ({ configService, listenerService }) => next => () => {
-  listenerService.listen(configService.name).pipe(response => {
-    next(response) // TODO: transformations on response?
+  listenerService.listen(configService.name).pipe(context => {
+    next({ context, state: cycleState() })
   })
 }
 

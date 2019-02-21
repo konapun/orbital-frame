@@ -5,27 +5,23 @@ import { phaseEnum } from '../lifecycle'
  * them with users
  */
 const jobsPlugin = ({ channelService }) => {
-  let userId // TODO: make sure this works with an async, multi-user flow
+  const namespace = 'core.plugin.job'
   const jobs = []
 
   return {
-    [phaseEnum.LOAD_PLUGINS]: {
-      exit () {
-        console.log('JOBS PLUGIN!')
-      }
-    },
     [phaseEnum.LISTEN]: {
-      exit (context) {
+      exit ({ context, state }) {
         const { id } = context.message.user // TODO: make sure adapter follows this format
-        userId = id
+        state.set(`${namespace}.id`, id)
       }
     },
     [phaseEnum.EXECUTE]: {
-      enter (executable) {
+      enter ({ command, state }) {
+        const userId = state.get(`${namespace}.id`)
         console.log('EXECUTING from user', userId)
         // TODO: Associate user with command and add to jobs
       },
-      exit (output) {
+      exit ({ output, state }) {
         // TODO: mark job as complete
         console.log('EXECUTED:', output)
       }
