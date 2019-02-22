@@ -7,24 +7,23 @@ function phase (fn) {
   }
 
   return {
-    call: services => next => (...args) => {
+    call: services => next => async (...args) => {
       const nextWrapper = (...args) => {
-        extensions.after.forEach(extension => extension(...args)) // TODO: extensions can be async
+        extensions.after.forEach(extension => extension(...args)) // TODO: can extensions can be async?
         return next(...args)
       }
 
       const action = fn(services)(nextWrapper)
-
-      extensions.before.forEach(extension => extension(...args)) // TODO: extensions can be async
+      extensions.before.forEach(extension => extension(...args)) // TODO: can extensions can be async?
 
       try {
-        action(...args) // TODO: actions can be async
+        await action(...args)
       } catch (err) {
         const errorHandlers = extensions.error
         if (errorHandlers.length === 0) {
           throw err // don't silently swallow errors if no custom handlers are available
         } else {
-          errorHandlers.forEach(extension => extension(err)) // TODO: extensions can be async
+          errorHandlers.forEach(extension => extension(err)) // TODO: can extensions can be async?
         }
       }
     },

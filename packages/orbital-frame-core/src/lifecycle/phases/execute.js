@@ -1,6 +1,6 @@
-const execute = () => next => args => {
+const execute = () => next => async args => {
   const { command } = args
-  const output = command()
+  const output = await command()
   next({ ...args, output })
 }
 

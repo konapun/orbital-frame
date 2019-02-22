@@ -26,7 +26,7 @@ function builder (commandRegistry, environment) {
 
       build () {
         const [ first, ...rest ] = commands.map(command => command.build())
-        return () => rest.reduce((val, cmd) => cmd(val), first()) // TODO: async
+        return async () => await rest.reduce(async (val, cmd) => await cmd(val), await first())
       }
     }
   }
@@ -76,7 +76,7 @@ function builder (commandRegistry, environment) {
           // })
         }
 
-        const getPromotedArgsOpts = (args, opts, optsDefinition) => { // the distribution of arguments to options isn't known until runtime since some options can be boolean switches. Determine which option values should actually be arguments and repartition
+        const getPromotedArgsOpts = (args, opts, optsDefinition = {}) => { // the distribution of arguments to options isn't known until runtime since some options can be boolean switches. Determine which option values should actually be arguments and repartition
           const validOptions = { // flatten options and aliases for O(1) lookup
             ...optsDefinition,
             ...Object.values(optsDefinition).map(definition => ({ [definition.alias]: definition })).reduce((acc, curr) => ({ ...acc, ...curr }), {})
@@ -88,15 +88,15 @@ function builder (commandRegistry, environment) {
           return [ distributedArgs, distributedOpts ]
         }
 
-        return incoming => {
+        return async incoming => {
           const execArgs = incoming ? [ incoming, ...args ] : args
-          const interpolatedArgs = flatten(execArgs.map(arg => isFunction(arg) ? arg() : arg)) // TODO: await this as well
+          const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
           const execOptions = options
             .map(opt => opt.build())
-            .map(([ key, value ]) => isFunction(value) ? [ key, value() ] : [ key, value ]) // TODO: await this as well
+            .map(async ([ key, value ]) => isFunction(value) ? [ key, await value() ] : [ key, value ]) // TODO: await this as well
             .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
-          return command.execute(...getPromotedArgsOpts(interpolatedArgs, execOptions, command.options))
+          return await command.execute(...getPromotedArgsOpts(interpolatedArgs, execOptions, command.options))
         }
       }
     }
@@ -155,18 +155,19 @@ function builder (commandRegistry, environment) {
     },
 
     build () {
-      return () => {
-        assignments
+      return async () => {
+        await Promise.all(assignments
           .map(assignment => assignment.build())
-          .map(([ key, value ]) => {
-            const execVal = isFunction(value) ? value() : value // TODO: async
+          .map(async ([ key, value ]) => {
+            const execVal = isFunction(value) ? await value() : value
             environment.set(key, execVal)
           })
+        )
 
-        return pipelines.map(pipeline => { // TODO: await pipelines
+        return await Promise.all(pipelines.map(async pipeline => {
           const pipelineOutput = pipeline.build()
-          return pipelineOutput()
-        })
+          return await pipelineOutput()
+        }))
       }
     }
   }

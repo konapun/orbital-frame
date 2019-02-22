@@ -2,7 +2,6 @@ function jobs ({ jobService }) {
   return {
     name: 'jobs',
     description: 'TODO',
-    options: {},
     format (output) {
       // TODO: should have a default formatter in core for list output, etc
     },
