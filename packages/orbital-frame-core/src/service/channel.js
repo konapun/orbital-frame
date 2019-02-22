@@ -1,23 +1,14 @@
-const channel = frame => () => ({
-  async find (criteria) { // ex: find({ name: 'general' })
-    const matcher = channel => Object.entries(criteria).every(([ key, value ]) => channel[key] === value)
-    const allChannels = await this.list()
+import search from '../util/search'
 
-    return allChannels.filter(matcher)
-  },
+const channel = frame => () => {
+  const list = async () => await frame.getChannels()
+  const { find, findOne } = search(list)
 
-  async findOne (criteria) {
-    const matches = await this.find(criteria)
-    if (matches.length === 0) {
-      throw new Error('No channels found for search criteria')
-    }
-
-    return matches[0]
-  },
-
-  async list () {
-    return await frame.getChannels()
+  return {
+    find,
+    findOne,
+    list
   }
-})
+}
 
 export default channel

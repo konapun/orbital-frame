@@ -41,8 +41,24 @@ The Orbital Frame lifecycle consists of the following stages:
 Orbital Frame uses dependency injection (DI) to expose its various configured
 subsystems for use within the lifecycle and user-defined commands and plugins.
 
+### channelService
+The channel service retrieves channels from the chat service the bot is running
+on.
+  * **`async channelService.list`** `-> Array<Channel>` Get all channels
+  * **`async channelService.find`** `Object searchCriteria -> Array<channel>` Find channels matching the given criteria
+  * **`async channelService.findOne`** `Object searchCriteria -> channel [throws Error on no channel found]` Returns the first channel matching the given criteria
+
+#### Example
+```js
+const example = async ({ channelService }) => {
+  const channels = await channelService.findOne({ id: 123 })
+}
+```
+
 ### commandService
 The command service enables the loading of commands into the bot.
+  * **`get commandService.registry`** `-> Array<Command>` Get all loaded commands
+  * **`commandService.load`** `Array<Commands> | Command -> Nil` load a command
 
 #### Example
 ```js
@@ -56,6 +72,7 @@ const example = ({ commandService }) => {
 ### compilerService
 The compiler service takes a source string and produces an executable command.
   * **`compilerService.compile`** `String -> Fn`
+
 #### Example
 ```js
 const example = ({ compilerService }) => {
@@ -101,8 +118,9 @@ const example = ({ environmentService, compilerService }) => {
 ### jobService
 The job service associates commands with users and provides operations for
 retrieving information for jobs.
-  * **`jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
-  * **`userService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
+  * **`async jobService.list`** `-> Array<Job>` Get all jobs
+  * **`async jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
+  * **`async jobService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
 
 #### Example
 ```js
@@ -152,8 +170,9 @@ const example = ({ pluginService }) => {
 
 ### userService
 The user service retrieves users running on the bot adapter.
-  * **`userService.find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
-  * **`userService.findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
+  * **`async userService.list`** `-> Array<User>` get all users
+  * **`async userService.find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
+  * **`async userService.findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
 
 #### Example
 ```js

@@ -12,6 +12,7 @@ import cdr from './cdr'
 import sleep from './sleep'
 import alias from './alias'
 import jobs from './jobs'
+import whoami from './whoami'
 
 export default [
   calc,
@@ -27,5 +28,6 @@ export default [
   cdr,
   sleep,
   alias,
-  jobs
+  jobs,
+  whoami
 ]
