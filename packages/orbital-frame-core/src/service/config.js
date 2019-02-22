@@ -3,7 +3,6 @@ const config = frame => () => ({
   commands: frame.commands,
   plugins: frame.plugins,
   adapter: frame.adapter
-  // TODO:
 })
 
 export default config

@@ -25,6 +25,7 @@ function echo () {
       return `Formatted: ${output}`
     },
     execute (args, opts) {
+      console.log('THIS', this)
       console.log('Echo got options', opts)
       return args.join(' ')
     }

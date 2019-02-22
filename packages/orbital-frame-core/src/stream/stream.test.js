@@ -2,14 +2,14 @@ import stream from './stream'
 
 describe('stream', () => {
   it('should return a reader and a writer', () => {
-    const {reader, writer} = stream()
+    const { reader, writer } = stream()
 
     expect(reader).toBeDefined()
     expect(writer).toBeDefined()
   })
 
   it('should notify reader when writer is written to', () => {
-    const {reader, writer} = stream()
+    const { reader, writer } = stream()
 
     let pipedData
     reader.pipe(data => {
@@ -24,7 +24,7 @@ describe('stream', () => {
   })
 
   it('should ignore stream data that doesn\'t have a pipe attached', () => {
-    const {reader, writer} = stream()
+    const { reader, writer } = stream()
 
     writer.send('data1')
 
@@ -101,7 +101,7 @@ describe('stream', () => {
   })
 
   it('should work with multisegmented pipes', async () => {
-    const {reader, writer} = stream()
+    const { reader, writer } = stream()
 
     let segment1Data, segment1aData, segment1bData
     const segment1 = reader.pipe(data => {

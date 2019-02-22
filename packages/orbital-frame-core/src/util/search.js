@@ -4,7 +4,6 @@ function search (buildList) {
       const matcher = item => Object.entries(criteria).every(([ key, value ]) => item[key] == value)
       const allItems = await buildList()
 
-      console.log('Have all items', allItems)
       return allItems.filter(matcher)
     },
 
