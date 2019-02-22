@@ -91,10 +91,12 @@ function builder (commandRegistry, environment) {
         return async incoming => {
           const execArgs = incoming ? [ incoming, ...args ] : args
           const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
-          const execOptions = options
-            .map(opt => opt.build())
-            .map(async ([ key, value ]) => isFunction(value) ? [ key, await value() ] : [ key, value ]) // TODO: await this as well
-            .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
+          const execOptionsP = await Promise.all(
+            options
+              .map(opt => opt.build())
+              .map(async ([ key, value ]) => isFunction(value) ? [ key, await value() ] : [ key, value ])
+          )
+          const execOptions = execOptionsP.reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
           return await command.execute(...getPromotedArgsOpts(interpolatedArgs, execOptions, command.options))
         }

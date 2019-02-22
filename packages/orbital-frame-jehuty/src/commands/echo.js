@@ -13,7 +13,7 @@ function echo () {
       v: {
         alias: 'test2',
         describe: 'Boolean test',
-        type: 'boolean'
+        type: 'string'
       },
       w: {
         alias: 'test3',
@@ -25,7 +25,7 @@ function echo () {
       return `Formatted: ${output}`
     },
     execute (args, opts) {
-      console.log('THIS', this)
+      // console.log('THIS', this)
       console.log('Echo got options', opts)
       return args.join(' ')
     }
