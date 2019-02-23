@@ -26,7 +26,9 @@ function builder (commandRegistry, environment) {
 
       build () {
         const [ first, ...rest ] = commands.map(command => command.build())
-        return async () => await rest.reduce(async (val, cmd) => await cmd(val), await first())
+        const [ last ] = commands.slice(-1)
+        const formatter = commandRegistry[last.name].format
+        return async () => formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first()))
       }
     }
   }
@@ -36,6 +38,8 @@ function builder (commandRegistry, environment) {
     const args = []
 
     return {
+      name,
+
       addOption (key) {
         const option = optionBuilder(key, environment)
         options.push(option)

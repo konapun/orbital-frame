@@ -26,7 +26,7 @@ function echo () {
     },
     execute (args, opts) {
       // console.log('THIS', this)
-      console.log('Echo got options', opts)
+      // console.log('Echo got options', opts)
       return args.join(' ')
     }
   }

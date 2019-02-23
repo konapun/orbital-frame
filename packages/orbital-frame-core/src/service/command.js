@@ -3,11 +3,11 @@ const commandRegistry = {}
 
 const loadOne = (command, services) => {
   const commandDefinition = command(services)
-  const { error } = schemaValidator.validate(commandDefinition)
+  const { value, error } = schemaValidator.validate(commandDefinition)
   if (error) {
     throw Error(error)
   }
-  commandRegistry[commandDefinition.name] = commandDefinition
+  commandRegistry[commandDefinition.name] = value
 }
 
 const commandService = () => (services) => ({

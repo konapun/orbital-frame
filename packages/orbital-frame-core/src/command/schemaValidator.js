@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import defaultFormatter from './defaultFormatter'
 
 export const optionType = {
   NUMBER: 'number',
@@ -17,7 +18,7 @@ export const schema = Joi.object().keys({
     required: Joi.boolean().default(false),
     default: Joi.any() // TODO should make sure this is the same type as defined above
   })).default({}),
-  format: Joi.func().default(() => {}),
+  format: Joi.func().default(defaultFormatter),
   execute: Joi.func().required()
 })
 

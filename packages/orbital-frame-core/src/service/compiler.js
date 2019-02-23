@@ -9,7 +9,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
    * @param {String} string source to parse into executable pipeline
    * @returns {Function} function that when executed evaluates the source string
    */
-  compile (string) {
+  compile (string) { // TODO: pass compile options for formatting or something? use this to assign an id to a command on execute?
     const ast = parser.parse(string)
     return this.buildCommand(ast)
   },
