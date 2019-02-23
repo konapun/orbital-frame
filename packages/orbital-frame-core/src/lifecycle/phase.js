@@ -1,4 +1,3 @@
-
 function phase (fn) {
   const extensions = {
     before: [],

@@ -39,7 +39,14 @@ LongOption
 
 ShortOption
   = "-" options:Letter+ _ ?arg:Argument {
-      return options.map(letter => ({ type: "Option", body: [ letter, arg ] })) // FIXME: arg should only apply to the last option
+      const chainArgument = {
+        type: "Argument",
+        body: []
+      }
+      return options
+        .map((letter, index) => {
+          return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }
+        })
     }
 
 Argument

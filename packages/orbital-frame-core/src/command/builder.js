@@ -87,7 +87,7 @@ function builder (commandRegistry, environment) {
           }
 
           const booleanOpts = Object.entries(validOptions).filter(([ , value ]) => value.type === 'boolean').reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
-          const distributedArgs = [ ...args, ...Object.entries(opts).filter(([ key ]) => booleanOpts[key]).map(([ , val ]) => val) ]
+          const distributedArgs = [ ...args, ...Object.entries(opts).filter(([ key ]) => booleanOpts[key]).map(([ , val ]) => val) ].filter(arg => arg)
           const distributedOpts = Object.entries(opts).map(([ key, val ]) => booleanOpts[key] ? { [key]: true } : { [key]: val }).reduce((acc, curr) => ({ ...acc, ...curr }), {})
           return [ distributedArgs, distributedOpts ]
         }

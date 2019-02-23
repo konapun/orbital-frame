@@ -172,7 +172,14 @@ function peg$parse(input, options) {
       peg$c19 = "-",
       peg$c20 = peg$literalExpectation("-", false),
       peg$c21 = function(options, arg) {
-            return options.map(letter => ({ type: "Option", body: [ letter, arg ] }))
+            const chainArgument = {
+              type: "Argument",
+              body: []
+            }
+            return options
+              .map((letter, index) => {
+                return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }
+              })
           },
       peg$c22 = function(text) { return { type: "Argument", body: [ text ] } },
       peg$c23 = "\"",

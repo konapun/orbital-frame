@@ -13,11 +13,16 @@ function echo () {
       v: {
         alias: 'test2',
         describe: 'Boolean test',
-        type: 'string'
+        type: 'boolean'
       },
       w: {
         alias: 'test3',
         describe: 'Boolean test2',
+        type: 'boolean'
+      },
+      x: {
+        alias: 'test4',
+        describe: 'Boolean test3',
         type: 'boolean'
       }
     },
@@ -27,6 +32,7 @@ function echo () {
     execute (args, opts) {
       // console.log('THIS', this)
       // console.log('Echo got options', opts)
+      // console.log('Echo got args', args)
       return args.join(' ')
     }
   }
