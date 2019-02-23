@@ -22,7 +22,7 @@ function phase (fn) {
         if (errorHandlers.length === 0) {
           throw err // don't silently swallow errors if no custom handlers are available
         } else {
-          errorHandlers.forEach(extension => extension(err)) // TODO: can extensions can be async?
+          errorHandlers.forEach(extension => extension(err, ...args)) // TODO: can extensions can be async?
         }
       }
     },

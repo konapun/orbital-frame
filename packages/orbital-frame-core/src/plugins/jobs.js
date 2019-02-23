@@ -27,11 +27,14 @@ const jobsPlugin = ({ jobService }) => {
           output,
           finished: Date.now()
         })
+      },
+      error (err, { state }) {
+        const job = state.get(`${namespace}.job`)
+        jobService.update(job.id, {
+          status: jobService.status.REJECTED,
+          finished: Date.now()
+        })
       }
-      // error ({ error, state }) { //TODO: error phase doesn't currently pass a hash with state
-      //   const job = state.get(`${namespace}.job`)
-      //   job.status = jobStatus.REJECTED
-      // }
     }
   }
 }

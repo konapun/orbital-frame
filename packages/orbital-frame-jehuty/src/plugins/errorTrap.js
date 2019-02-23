@@ -4,12 +4,11 @@ function errorTrapPlugin ({ messengerService }) {
   return Object.values(phase)
     .map(phaseKey => ({
       [phaseKey]: {
-        error (e) {
+        error (e, { context }) {
           const message = `Error: ${e.message}`
 
-          console.error(message)
+          messengerService.respond(context, `\`${message}\``)
           // throw message
-          // messengerService.respond(`\`${message}\``) // FIXME: need context...
         }
       }
     }))
