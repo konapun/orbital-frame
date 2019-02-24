@@ -25,7 +25,7 @@ function command (cmd) {
           [key]: value
         }
       })
-      .reduce((acc, curr) => ({ ...acc, ...curr }))
+      .reduce((acc, curr) => ({ ...acc, ...curr }), {})
   }
 
   const getPromotedArgsOpts = (args, opts) => { // the distribution of arguments to options isn't known until runtime since some options can be boolean switches. Determine which option values should actually be arguments and repartition

@@ -8,7 +8,7 @@ function alias ({ commandService, compilerService }) {
       commandService.load(() => ({
         name,
         description: `Alias for "${command}"`,
-        execute: args => compiled(args)
+        execute: (args, opts) => compiled(args, opts) // FIXME: compiled can't take args and opts yet
       }))
     }
   }

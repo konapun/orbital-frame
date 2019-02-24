@@ -28,7 +28,7 @@ function builder (commandRegistry, environment) {
         const [ first, ...rest ] = commands.map(command => command.build())
         const [ last ] = commands.slice(-1)
         const formatter = commandRegistry[last.name].format
-        return async () => formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first()))
+        return async args => formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first(args)))
       }
     }
   }
@@ -132,7 +132,7 @@ function builder (commandRegistry, environment) {
     },
 
     build () {
-      return async () => {
+      return async args => {
         await Promise.all(assignments
           .map(assignment => assignment.build())
           .map(async ([ key, value ]) => {
@@ -143,7 +143,7 @@ function builder (commandRegistry, environment) {
 
         return await Promise.all(pipelines.map(async pipeline => {
           const pipelineOutput = pipeline.build()
-          return await pipelineOutput()
+          return await pipelineOutput(args)
         }))
       }
     }
