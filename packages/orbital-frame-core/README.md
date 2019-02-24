@@ -9,13 +9,14 @@ import orbitalFrame, { adapter } from '@orbital-frame/core'
 import commands from './commands' // these are commands that you define
 import plugins from './plugins' // these are plugins that you define
 
-export default hubot => orbitalFrame(hubot, {
+const jehuty = hubot => orbitalFrame(hubot, {
   name: 'jehuty', // name that the bot will respond to. For instance `@jehuty echo "hi"`
   commands,
   plugins,
   adapter: adapter.HUBOT
 })
 
+jehuty(hubotInstance).run()
 ```
 
 ## Adapters
