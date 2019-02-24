@@ -13,6 +13,7 @@ import sleep from './sleep'
 import alias from './alias'
 import jobs from './jobs'
 import whoami from './whoami'
+import choose from './choose'
 
 export default [
   calc,
@@ -29,5 +30,6 @@ export default [
   sleep,
   alias,
   jobs,
-  whoami
+  whoami,
+  choose
 ]

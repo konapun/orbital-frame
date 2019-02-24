@@ -147,11 +147,20 @@ const example = ({ listenerService }) => {
 ```
 ### messengerService
 The messenger service sends output to the adapter the bot is running on.
+  * **`messengerService.respond`** `Context, String -> Nil` Send a message in response to the sending context
+  * **`messengerService.send`** `Channel, String -> Nil` Send a message to a channel
+  * **`messengerService.reply`** `Context, String` Reply to a sending context
 
 #### Example
 ```js
-const example = ({ messengerService }) => {
-  // TODO: this service isn't finalized
+import {phase} from '@orbital-frame/core'
+
+const examplePlugin = ({ messengerService }) => {
+  [phase.EXECUTE]: {
+    error (err, { context }) {
+      messengerService.respond(context, `Error: ${err.message}`)
+    }
+  }
 }
 ```
 
@@ -253,7 +262,43 @@ export default plugin
 ```
 
 ## Commands
-TODO
+Commands are the primary means of extension for an Orbital Frame instance. A
+command is a function which takes as input injected services (in the same way as
+a plugin function) and returns an object with the following structure:
+  * **name** the name the command will be invoked with
+  * **description** help text for the command
+  * **options** a mapping of single letter short options to:
+    * **alias** long option alias for short option
+    * **describe** help text for option
+    * **type** one of `number`, `string`, or `boolean`
+    * **required** whether or not the option is required
+    * **default** a default value for the option if the option isn't explicitly set
+  * **execute** `Array<Any>, Object<String, Any> -> Any` a function which takes an array of arguments and a map of option keys to values from the command line and returns a value
+  * **format** `Any -> String` a function which takes as input the output from `execute` and returns a formatted string for display
+
+### Example Command
+```js
+import { take, shuffle } from 'lodash'
+
+export default () => ({
+  name: 'choose',
+  description: 'Choose from multiple choices',
+  options: {
+    n: {
+      alias: 'number',
+      describe: 'Take n choices',
+      type: 'number',
+      default: 1
+    }
+  },
+  format (choices) {
+    return choices.join(' ')
+  },
+  execute (args, opts) {
+    return take(shuffle(args), opts.number)
+  }
+})
+```
 
 ### Interactive Commands
-TODO
+Interactive commands are built using `interactionService`. This is still a WIP.
