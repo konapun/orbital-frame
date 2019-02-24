@@ -4,7 +4,7 @@ import validator from './runtimeValidator'
 // distribute boolean opt args to arguments
 // validate runtime
 function command (cmd) {
-  const getOptionValues = execOpts => {
+  const getOptionValues = (execOpts, args) => {
     const options = cmd.options
     const spreadOptions = {
       ...options,
@@ -14,9 +14,17 @@ function command (cmd) {
     }
 
     return Object.entries(spreadOptions)
-      .map(([ key, definition ]) => ({
-        [key]: execOpts[key] || execOpts[definition.alias] || definition.default
-      }))
+      .map(([ key, definition ]) => {
+        const value = execOpts[key] || execOpts[definition.alias] || definition.default
+        const isValid = definition.valid(value, args)
+        if (!isValid) {
+          throw new Error(`Invalid argument for option "${key}": ${value}`)
+        }
+
+        return {
+          [key]: value
+        }
+      })
       .reduce((acc, curr) => ({ ...acc, ...curr }))
   }
 
@@ -34,7 +42,7 @@ function command (cmd) {
   // TODO: Validate opts against their option definition
   return {
     async execute (args, opts) {
-      return await cmd.execute(...getPromotedArgsOpts(args, getOptionValues(opts)))
+      return await cmd.execute(...getPromotedArgsOpts(args, getOptionValues(opts, args)))
     }
   }
 }

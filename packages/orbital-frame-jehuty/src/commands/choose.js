@@ -9,7 +9,8 @@ function choose () {
         alias: 'number',
         describe: 'Take n choices',
         type: 'number',
-        default: 1
+        default: 1,
+        valid: (value, args) => value > 0 && value <= args.length
       }
     },
     format (choices) {

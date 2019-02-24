@@ -274,6 +274,7 @@ a plugin function) and returns an object with the following structure:
     * **type** one of `number`, `string`, or `boolean`
     * **required** whether or not the option is required
     * **default** a default value for the option if the option isn't explicitly set
+    * **valid** `Object<String, Any>, Array<Any> -> Boolean` validator for the option value
   * **execute** `Array<Any>, Object<String, Any> -> Any` a function which takes an array of arguments and a map of option keys to values from the command line and returns a value
   * **format** `Any -> String` a function which takes as input the output from `execute` and returns a formatted string for display
 
