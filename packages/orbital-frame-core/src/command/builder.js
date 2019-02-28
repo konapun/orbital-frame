@@ -1,7 +1,11 @@
 import { isFunction, flatten } from 'lodash'
 import commandWrapper from './wrapper'
+import cyclicIncrementor from '../util/cyclicIncrementor'
+
+const pidGenerator = cyclicIncrementor(1)
 
 function builder (commandRegistry, environment) {
+  const pid = pidGenerator.next()
   const pipelines = []
   const assignments = []
 
@@ -28,6 +32,7 @@ function builder (commandRegistry, environment) {
         const [ first, ...rest ] = commands.map(command => command.build())
         const [ last ] = commands.slice(-1)
         const formatter = commandRegistry[last.name].format
+
         return async args => formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first(args)))
       }
     }
@@ -62,7 +67,7 @@ function builder (commandRegistry, environment) {
           throw new Error(`Command not found: ${name}`)
         }
 
-        const wrapper = commandWrapper(command)
+        const wrapper = commandWrapper(pid, command)
         return async incoming => {
           const execArgs = incoming ? [ incoming, ...args ] : args
           const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
@@ -132,7 +137,7 @@ function builder (commandRegistry, environment) {
     },
 
     build () {
-      return async args => {
+      const process = async args => {
         await Promise.all(assignments
           .map(assignment => assignment.build())
           .map(async ([ key, value ]) => {
@@ -146,6 +151,9 @@ function builder (commandRegistry, environment) {
           return await pipelineOutput(args)
         }))
       }
+
+      process.pid = pid
+      return process
     }
   }
 }

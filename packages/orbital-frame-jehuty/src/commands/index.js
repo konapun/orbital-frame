@@ -14,6 +14,7 @@ import alias from './alias'
 import jobs from './jobs'
 import whoami from './whoami'
 import choose from './choose'
+import interactive from './interactive'
 
 export default [
   calc,
@@ -31,5 +32,6 @@ export default [
   alias,
   jobs,
   whoami,
-  choose
+  choose,
+  interactive
 ]

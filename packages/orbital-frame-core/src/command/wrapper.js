@@ -3,7 +3,7 @@ import validator from './runtimeValidator'
 // distribute duplicate long and short opts and distribute values
 // distribute boolean opt args to arguments
 // validate runtime
-function command (cmd) {
+function wrapper (pid, cmd) {
   const getOptionValues = (execOpts, args) => {
     const options = cmd.options
     const spreadOptions = {
@@ -39,12 +39,17 @@ function command (cmd) {
     return [ distributedArgs, distributedOpts ]
   }
 
+  const getExecutionContext = () => ({
+    ...cmd,
+    pid
+  })
+
   // TODO: Validate opts against their option definition
   return {
     async execute (args, opts) {
-      return await cmd.execute(...getPromotedArgsOpts(args, getOptionValues(opts, args)))
+      return await cmd.execute.call(getExecutionContext(), ...getPromotedArgsOpts(args, getOptionValues(opts, args)))
     }
   }
 }
 
-export default command
+export default wrapper

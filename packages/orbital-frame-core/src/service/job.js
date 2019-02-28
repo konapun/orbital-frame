@@ -1,6 +1,7 @@
 import search from '../util/search'
+import cyclicIncrementor from '../util/cyclicIncrementor'
 
-let id = 1
+const idGenerator = cyclicIncrementor(1)
 const jobs = {}
 
 const status = {
@@ -15,7 +16,7 @@ const job = () => () => {
 
   return {
     create (userId, overrides) {
-      const jobId = id++ // TODO: wrap this back to 0 before MAXINT
+      const jobId = idGenerator.next()
       const newJob = { // TODO: use joi for schema validation
         id: jobId,
         userId,

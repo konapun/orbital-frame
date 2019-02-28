@@ -4,6 +4,7 @@ import commandService from './command'
 import compilerService from './compiler'
 import configService from './config'
 import environmentService from './environment'
+import interactionService from './interaction'
 import jobService from './job'
 import listenerService from './listener'
 import messengerService from './messenger'
@@ -16,6 +17,7 @@ const services = {
   compilerService,
   configService,
   environmentService,
+  interactionService,
   jobService,
   listenerService,
   messengerService,
