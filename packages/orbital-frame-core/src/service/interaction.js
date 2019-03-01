@@ -1,20 +1,23 @@
+const prompt = '>'
+
 /**
  * Service for backgrounding for interactive commands
  */
-const interaction = ({ jobService, listenerService, messengerService }) => () => ({
-  getInteractionChannel (commandId) {
-    const { context, userId } = jobService.findOne({ command: commandId }) // FIXME: this might be 'command.id': commandId which `findOne` doesn't currently understand
+const interaction = () => ({ jobService, listenerService, messengerService }) => ({
+  async createInteractionChannel (commandId) {
+    const { context, userId } = await jobService.findOne({ 'command.pid': commandId })
+    const channelListener = listenerService.listen(`^${prompt}`) // TODO: prevent multiple interactions to be run for the same user
 
     return {
       async prompt (string) {
         return new Promise(resolve => {
           messengerService.respond(context, string)
-          const stream = listenerService.listen()
-          stream.pipe(({ message }) => {
+          let stream
+          stream = channelListener.pipe(({ message }) => {
             const { user, text } = message
             if (user.id === userId) {
               stream.detach()
-              resolve(text)
+              resolve(text.substring(prompt.length))
             }
           })
         })

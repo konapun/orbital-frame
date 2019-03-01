@@ -1,7 +1,9 @@
+import { get } from 'lodash'
+
 function search (buildList) {
   return {
     async find (criteria) {
-      const matcher = item => Object.entries(criteria).every(([ key, value ]) => item[key] == value)
+      const matcher = item => Object.entries(criteria).every(([ key, value ]) => get(item, key) == value)
       const allItems = await buildList()
 
       return allItems.filter(matcher)

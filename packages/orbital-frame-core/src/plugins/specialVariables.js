@@ -6,6 +6,7 @@ import { phaseEnum } from '../lifecycle'
 const specialVariablesPlugin  = ({ environmentService }) => ({
   [phaseEnum.LOAD_PLUGINS]: {
     exit () {
+      // TODO:
       console.log('VARIABLES PLUGIN!')
     }
   }

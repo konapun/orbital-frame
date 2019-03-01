@@ -39,15 +39,15 @@ function wrapper (pid, cmd) {
     return [ distributedArgs, distributedOpts ]
   }
 
-  const getExecutionContext = () => ({
+  const executionContext = {
     ...cmd,
     pid
-  })
+  }
 
   // TODO: Validate opts against their option definition
   return {
     async execute (args, opts) {
-      return await cmd.execute.call(getExecutionContext(), ...getPromotedArgsOpts(args, getOptionValues(opts, args)))
+      return await cmd.execute.call(executionContext, ...getPromotedArgsOpts(args, getOptionValues(opts, args)))
     }
   }
 }

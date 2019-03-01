@@ -17,7 +17,7 @@ This project is organized as a monorepo consisting of the following:
 The examples below are using `@orbital-frame/jehuty`, a reference implementation
 which is ready right out of the box.
 
-```
+```sh
 @jehuty echo "hello, world!"
 @jehuty NUM=10; calc $NUM + 2
 @jehuty NUM=$(calc 9 + $(calc 1 + 1)); echo $NUM | calc + 2

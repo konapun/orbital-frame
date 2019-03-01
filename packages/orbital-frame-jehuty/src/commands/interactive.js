@@ -1,20 +1,19 @@
-function interactive ({ interactionService, listenerService }) {
+function interactive ({ interactionService }) {
   return {
     name: 'interactive',
     description: 'Testing interactive commands',
-    // format ({ name, age }) {
-    //   return `Name: ${name}, Age: ${age}`
-    // },
-    async execute (args, opts) {
-      const pid = this.pid // PID is added when this definition is wrapped and is only available to execute
-      console.log('Have PID', pid)
-      // const interaction = interactionService.getInteractionChannel(pid)
+    format ({ name, age, color }) {
+      return `Name: ${name}, Age: ${age}, Favorite Color: ${color}`
+    },
+    async execute () {
+      const pid = this.pid
+      const interaction = await interactionService.createInteractionChannel(pid)
 
-      // // TODO: this stuff probably needs to take place in a separate interaction function
-      // const name = await interaction.prompt('What is your name?')
-      // const age = await interaction.prompt('What is your age?')
+      const name = await interaction.prompt('What is your name?')
+      const age = await interaction.prompt('What is your age?')
+      const color = await interaction.prompt('What is your favorite color?')
 
-      // return { name, age }
+      return { name, age, color }
     }
   }
 }
