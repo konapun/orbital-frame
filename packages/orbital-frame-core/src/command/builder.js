@@ -28,12 +28,19 @@ function builder (commandRegistry, environment) {
         return this
       },
 
+      getMetadata () {
+        return {
+          commands: commands.map(command => command.getMetadata())
+        }
+      },
+
       build () {
         const [ first, ...rest ] = commands.map(command => command.build())
         const [ last ] = commands.slice(-1)
         const formatter = commandRegistry[last.name].format
 
-        return async args => formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first(args)))
+        return async (args, opts) =>
+          formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first(args, opts)))
       }
     }
   }
@@ -61,6 +68,14 @@ function builder (commandRegistry, environment) {
         this.addArgument(() => environment.get(key))
       },
 
+      getMetadata () {
+        return {
+          name,
+          options: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+          arguments: args
+        }
+      },
+
       build () {
         const command = commandRegistry[name]
         if (!command) {
@@ -68,7 +83,7 @@ function builder (commandRegistry, environment) {
         }
 
         const wrapper = commandWrapper(pid, command)
-        return async incoming => {
+        return async (incoming, opts = {}) => {
           const execArgs = incoming ? [ incoming, ...args ] : args
           const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
           const execOptionsP = await Promise.all(
@@ -78,7 +93,7 @@ function builder (commandRegistry, environment) {
           )
           const execOptions = execOptionsP.reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
-          return await wrapper.execute(interpolatedArgs, execOptions)
+          return await wrapper.execute(interpolatedArgs, { ...opts, ...execOptions })
         }
       }
     }
@@ -101,6 +116,10 @@ function builder (commandRegistry, environment) {
         this.addArgument(() => environment.get(key))
       },
 
+      getMetadata () {
+        return { [key]: optionValue }
+      },
+
       build () {
         return [ key, optionValue ]
       }
@@ -113,6 +132,10 @@ function builder (commandRegistry, environment) {
     return {
       addArgument (val) {
         value = val
+      },
+
+      getMetadata () {
+        return { variable, value }
       },
 
       build () {
@@ -136,8 +159,15 @@ function builder (commandRegistry, environment) {
       return builder
     },
 
+    getMetadata () {
+      return {
+        assignments: assignments.map(assignment => assignment.getMetadata()),
+        pipelines: pipelines.map(pipeline => pipeline.getMetadata())
+      }
+    },
+
     build () {
-      const process = async args => {
+      const process = async (args, opts) => {
         await Promise.all(assignments
           .map(assignment => assignment.build())
           .map(async ([ key, value ]) => {
@@ -148,7 +178,7 @@ function builder (commandRegistry, environment) {
 
         return await Promise.all(pipelines.map(async pipeline => {
           const pipelineOutput = pipeline.build()
-          return await pipelineOutput(args)
+          return await pipelineOutput(args, opts)
         }))
       }
 

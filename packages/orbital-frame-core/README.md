@@ -74,13 +74,17 @@ const example = ({ commandService }) => {
 ### compilerService
 The compiler service takes a source string and produces an executable command.
   * **`compilerService.compile`** `String -> Fn`
+  * **`compilerService.compileWithMetadata`** `String -> { metadata: Object, command: Fn }` Build an executable command and metadata describing the command from a source string
 
 #### Example
 ```js
 const example = ({ compilerService }) => {
   const source = 'VAR=test; echo $VAR | transform-text --uppercase'
   const command = compilerService.compile(source)
+  const { metadata } = compilerService.compileWithMetadata(source)
+
   const output = command()
+  metadata.pipelines[0].commands[0].name // "echo"
 }
 ```
 

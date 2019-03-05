@@ -2,13 +2,18 @@ function alias ({ commandService, compilerService }) {
   return {
     name: 'alias',
     description: 'Create an alias for a command string',
-    execute ([ name, command ]) {
-      const compiled = compilerService.compile(command)
+    execute ([ name, source ]) {
+      const { command, metadata } = compilerService.compileWithMetadata(source)
+      const firstCommandName = metadata.pipelines[0].commands[0].name // TODO: add nicer way to walk this
+      const firstCommand = commandService.registry[firstCommandName]
 
       commandService.load(() => ({
         name,
-        description: `Alias for "${command}"`,
-        execute: (args, opts) => compiled(args, opts) // FIXME: compiled can't take args and opts yet
+        options: firstCommand.options,
+        description: `Alias for "${source}"`,
+        execute (args, opts) {
+          return command(args, opts)
+        }
       }))
     }
   }
