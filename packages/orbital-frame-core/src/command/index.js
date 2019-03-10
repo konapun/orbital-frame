@@ -1,4 +1,5 @@
 import builder from './builder'
 import schemaValidator from './schemaValidator'
+import metadataWalker from './metadataWalker'
 
-export { builder, schemaValidator }
+export { builder, schemaValidator, metadataWalker }

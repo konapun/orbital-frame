@@ -1,5 +1,5 @@
 import parser, { walker, type } from '@orbital-frame/parser'
-import { builder } from '../command'
+import { builder, metadataWalker } from '../command'
 
 const compiler = () => ({ commandService, environmentService })  => ({
 
@@ -18,7 +18,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
   compileWithMetadata (string) {
     const ast = parser.parse(string)
     const builder = this._getBuilder(ast)
-    const metadata = builder.getMetadata()
+    const metadata = metadataWalker(builder.getMetadata()) //builder.getMetadata() //metadataWalker(builder.getMetadata())
     const command = builder.build()
 
     return { metadata, command }
@@ -46,9 +46,9 @@ const compiler = () => ({ commandService, environmentService })  => ({
       }
       case type.INTERPOLATION: {
         const [ source ] = node.body
-        const cmd = this.buildCommand(source)
+        const cmd = this._getBuilder(source)
         currentBuilder.addArgument(cmd)
-        return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of buildCommand
+        return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder
       }
       case type.COMMAND: {
         const [ name ] = node.body

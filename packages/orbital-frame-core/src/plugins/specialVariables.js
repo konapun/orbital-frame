@@ -12,7 +12,7 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
   },
   [phaseEnum.PROCESS]: {
     exit ({ metadata }) {
-      console.log('PROCESS returned metadata', metadata.pipelines[0].commands[0].options)
+      console.log('PROCESS returned metadata', metadata.data.pipelines[0].commands[0].options)
     }
   },
   [phaseEnum.EXECUTE]: {

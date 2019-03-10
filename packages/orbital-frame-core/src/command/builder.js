@@ -1,5 +1,6 @@
 import { isFunction, flatten } from 'lodash'
 import commandWrapper from './wrapper'
+import type from './metadataTypes'
 import cyclicIncrementor from '../util/cyclicIncrementor'
 
 const pidGenerator = cyclicIncrementor(1)
@@ -30,7 +31,7 @@ function builder (commandRegistry, environment) {
 
       getMetadata () {
         return {
-          commands: commands.map(command => command.getMetadata())
+          [type.COMMAND]: commands.map(command => command.getMetadata())
         }
       },
 
@@ -71,8 +72,8 @@ function builder (commandRegistry, environment) {
       getMetadata () {
         return {
           name,
-          options: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-          arguments: args
+          [type.OPTION]: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+          [type.ARGUMENT]: args.map(arg => arg.getMetadata ? arg.getMetadata() : arg)
         }
       },
 
@@ -161,8 +162,8 @@ function builder (commandRegistry, environment) {
 
     getMetadata () {
       return {
-        assignments: assignments.map(assignment => assignment.getMetadata()),
-        pipelines: pipelines.map(pipeline => pipeline.getMetadata())
+        [type.ASSIGNMENT]: assignments.map(assignment => assignment.getMetadata()),
+        [type.PIPELINE]: pipelines.map(pipeline => pipeline.getMetadata())
       }
     },
 

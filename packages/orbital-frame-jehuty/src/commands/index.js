@@ -15,6 +15,9 @@ import jobs from './jobs'
 import whoami from './whoami'
 import choose from './choose'
 import interactive from './interactive'
+import args from './arguments'
+import get from './get'
+import noop from './noop'
 
 export default [
   calc,
@@ -33,5 +36,8 @@ export default [
   jobs,
   whoami,
   choose,
-  interactive
+  interactive,
+  args,
+  get,
+  noop
 ]
