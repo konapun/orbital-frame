@@ -1,21 +1,23 @@
 import { isObject } from 'lodash'
 import type from './metadataTypes'
 
-const findRec = (node, fn) => {
+const findRec = (node, fn, found = []) => {
   if (isObject(node)) {
-    return Object.entries(node)
+    Object.entries(node)
       .forEach(([ type, value ]) => {
         if (fn({ type, value })) {
-          console.log('FOUND', { type, value })
+          found.push({ type, value })
         }
 
         if (Array.isArray(value)) {
-          value.map(child => findRec(child, fn))
+          value.map(child => findRec(child, fn, found))
         } else if (isObject(value)) {
-          findRec(value, fn)
+          findRec(value, fn, found)
         }
       })
   }
+
+  return found
 }
 
 function metadataWalker (data) {
@@ -27,12 +29,13 @@ function metadataWalker (data) {
     },
     findOne (fn) {
       const found = this.find(fn)
-      console.log('FOUND', found)
       if (found.length === 0) {
         throw new Error('No data found matching criteria')
       }
-
-      return found[0]
+      const value = found[0].value
+      if (Array.isArray(value)) { // FIXME:
+        return value[0]
+      }
     }
   }
 }
