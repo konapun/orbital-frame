@@ -12,7 +12,16 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
   },
   [phaseEnum.PROCESS]: {
     exit ({ metadata }) {
-      console.log('PROCESS returned metadata', metadata.data.pipelines[0].commands[0].options)
+      try {
+        // FIXME: this will only work for the first command as there's currently no way to extend this at runtime
+        const command = metadata.findOne(({ type }) => type === metadata.type.COMMAND)
+        environmentService.set('0', command.name)
+        command.arguments.forEach((arg, index) => {
+          environmentService.set(index + 1, arg)
+        })
+      } catch (err) {
+        // pass
+      }
     }
   },
   [phaseEnum.EXECUTE]: {

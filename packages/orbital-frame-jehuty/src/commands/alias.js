@@ -12,6 +12,7 @@ function alias ({ commandService, compilerService }) {
         options: firstCommand.options,
         description: `Alias for "${source}"`,
         execute (args, opts) {
+          // console.log('EXECUTE WITH ARGS', args) // FIXME: args are being prepended to the beginning?
           return command(args, opts)
         }
       }))
