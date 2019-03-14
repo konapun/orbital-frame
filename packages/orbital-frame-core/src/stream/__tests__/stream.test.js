@@ -1,4 +1,4 @@
-import stream from './stream'
+import stream from '../stream'
 
 describe('stream', () => {
   it('should return a reader and a writer', () => {
