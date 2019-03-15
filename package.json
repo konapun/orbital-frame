@@ -19,6 +19,7 @@
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
     "clean": "lerna exec --parallel -- rm -rf dist",
     "test": "jest",
+    "test:watch": "jest --watch",
     "dev": "yarn watch && ./packages/orbital-frame-jehuty/bin/hubot"
   },
   "devDependencies": {

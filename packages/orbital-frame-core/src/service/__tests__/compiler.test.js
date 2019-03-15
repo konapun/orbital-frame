@@ -1,3 +1,6 @@
+import compilerService from '../compiler'
+
+// TODO: automocks
 describe('compiler service', () => {
   it('should work with single commands', () => {
     // test opts

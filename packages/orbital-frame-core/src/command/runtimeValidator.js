@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-function runtimeValidator ({ alias, type, default: deflt, required }) {
+function runtimeValidator ({ type, default: deflt, required }) {
   const validator = Joi[type]()
   if (deflt) {
     validator.default(deflt)

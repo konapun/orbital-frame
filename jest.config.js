@@ -3,9 +3,9 @@ module.exports = {
   collectCoverage: false, //TODO: do eventually
   collectCoverageFrom: [
     'packages/**/*.{js}',
-    '!**/node_modules/**',
+    '!**/node_modules/**'
   ],
   roots: [
-    'packages/',
-  ],
+    'packages/'
+  ]
 }

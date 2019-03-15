@@ -17,7 +17,7 @@ describe('cyclicIncrementor', () => {
     expect(third).toBe(3)
   })
 
-  it('should wrap to startafter max', () => {
+  it('should wrap to start after max', () => {
     const incrementor = cyclicIncrementor(3, 5)
     incrementor.next()
     incrementor.next()
