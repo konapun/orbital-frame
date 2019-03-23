@@ -1,30 +1,61 @@
 import interactionService from '../interaction'
 
-const jobService = {
-  findOne: jest.fn(() => ({
-    context: jest.fn(),
-    userId: 1
-  }))
-}
+let jobService, listenerService, messengerService, interaction, listenCallback
 
-const listenerService = {
+beforeEach(() => {
+  jobService = {
+    findOne: jest.fn(() => ({
+      context: jest.fn(),
+      userId: 1
+    }))
+  }
 
-}
+  listenerService = {
+    listen (prompt) {
+      return {
+        pipe (fn) {
+          listenCallback = fn
+          return {
+            detach: jest.fn()
+          }
+        },
+        detach: jest.fn()
+      }
+    }
+  }
 
-const messengerService = {
+  messengerService = {
+    respond: jest.fn()
+  }
 
-}
+  interaction = interactionService()({ jobService, listenerService, messengerService })
+})
 
 describe('interaction service', () => {
-  const interaction = interactionService()({ jobService, listenerService, messengerService })
+  it('should ignore input from other channels', async () => {
+    const interactionChannel = await interaction.createInteractionChannel(1)
+    const promptPromise = interactionChannel.prompt('What is your name?')
 
-  it('should ignore input from other channels', () => {
-    const interactionChannel = interaction.createInteractionChannel(1)
+    listenCallback({ message: { text: '>someone', user: { id: 2 } } })
+    listenCallback({ message: { text: '>konapun', user: { id: 1 } } })
+
+    const name = await promptPromise
+
+    expect(name).toEqual('konapun')
+  })
+
+  it('should run interaction channels for separate PIDs separately', async () => {
+    const channel1 = await interaction.createInteractionChannel(2)
+    const channel2 = await interaction.createInteractionChannel(3)
+
     // TODO:
   })
 
-  it('should allow prompting for user input', () => {
-    // TODO:
+  it('should allow prompting for user input', async () => {
+    const interactionChannel = await interaction.createInteractionChannel(1)
+    interactionChannel.prompt('What is your age?')
+
+    expect(messengerService.respond).toHaveBeenCalledWith(expect.any(Function), 'What is your age?')
   })
 
   it('should require a ">" for interaction responses', () => {
