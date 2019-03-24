@@ -2,17 +2,17 @@ import compilerService from '../compiler'
 
 let compiler, commandService, environmentService
 
-const testCommand1 = jest.fn(() => ({
-  name: 'test-command1',
+const testCommand1 = {
+  name: 'testCommand1',
   description: 'test command 1',
   execute: jest.fn()
-}))
+}
 
-const testCommand2 = () => ({
-  name: 'test-command2',
+const testCommand2 = {
+  name: 'testCommand2',
   description: 'test command 2',
   execute: jest.fn()
-})
+}
 
 beforeEach(() => {
   commandService = {
@@ -31,9 +31,9 @@ beforeEach(() => {
 })
 
 describe('compiler service', () => {
-  it('should work with single commands', () => {
-    const executable = compiler.compile('test-command1')
-    executable()
+  it('should work with single commands', async () => {
+    // const executable = compiler.compile('testCommand1')
+    // await executable()
     // expect(testCommand1).toHaveBeenCalledWith()
     // test opts
     // test args

@@ -1,18 +1,8 @@
-const cycleState = () => {
-  const state = {}
-  return {
-    set (key, value) {
-      state[key] = value
-    },
-    get (key) {
-      return state[key]
-    }
-  }
-}
+import state from '../../util/state'
 
 const listen = ({ configService, listenerService }) => next => () => {
   listenerService.listen(configService.name).pipe(context => {
-    next({ context, state: cycleState() })
+    next({ context, state: state() }) // each downstream phase will share state
   })
 }
 

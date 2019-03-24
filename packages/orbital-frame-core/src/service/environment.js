@@ -1,12 +1,6 @@
-const env = {}
-const environment = () => () => ({
-  get (key) {
-    return env[key]
-  },
+import stateHash from '../util/state'
 
-  set (key, value) {
-    env[key] = value
-  }
-})
+const state = stateHash()
+const environment = () => () => state
 
 export default environment
