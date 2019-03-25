@@ -1,4 +1,4 @@
-import stream from '../stream'
+import stream from '../util/stream'
 
 // TODO: multiple listeners can consume the same message. Modify this so a message can only be processed by a single listener?
 const listener = frame => () => ({
