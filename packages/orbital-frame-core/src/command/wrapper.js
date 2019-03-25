@@ -3,17 +3,17 @@ import validator from './runtimeValidator'
 // distribute duplicate long and short opts and distribute values
 // distribute boolean opt args to arguments
 // validate runtime
+// TODO: this is a mess. clean it up
 function wrapper (pid, cmd) {
-  const getOptionValues = (execOpts, args) => {
-    const options = cmd.options
-    const spreadOptions = {
-      ...options,
-      ...Object.entries(options)
-        .map(([ key, definition ]) => ({ [definition.alias]: { ...definition, alias: key } }))
-        .reduce((acc, curr) => ({ ...acc, ...curr }), {})
-    }
+  const options = [
+    ...Object.entries(cmd.options),
+    ...Object.entries(cmd.options) // include entries for aliases for consistent lookup
+      .map(([ key, definition ]) => [ definition.alias, { ...definition, alias: key } ])
+  ].reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
-    return Object.entries(spreadOptions)
+  // Check value validity and assign defaults
+  const getOptionValues = (execOpts, args) => {
+    return Object.entries(options)
       .map(([ key, definition ]) => {
         const value = execOpts[key] || execOpts[definition.alias] || definition.default
         const isValid = definition.valid(value, args)
@@ -34,7 +34,16 @@ function wrapper (pid, cmd) {
       ...Object.entries(opts).filter(([ key ]) => booleanOpts[key]).map(([ , val ]) => val),
       ...args
     ].filter(arg => arg)
-    const distributedOpts = Object.entries(opts).map(([ key, val ]) => booleanOpts[key] ? { [key]: !!val } : { [key]: val }).reduce((acc, curr) => ({ ...acc, ...curr }), {})
+
+    const expandedBooleanOpts = [
+      ...Object.entries(booleanOpts),
+      ...Object.entries(booleanOpts)
+        .map(([ key, value ]) => [ options[key].alias, value ])
+    ].reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
+
+    const distributedOpts = Object.entries(opts)
+      .map(([ key, val ]) => expandedBooleanOpts[key] ? [ key, !!val ] : [ key, val ])
+      .reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})
 
     return [ distributedArgs, distributedOpts ]
   }
