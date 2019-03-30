@@ -11,10 +11,6 @@ describe('command builder', () => {
 
     })
 
-    it('should allow adding arguments', () => {
-
-    })
-
     it('should build metadata', () => {
 
     })
