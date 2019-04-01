@@ -1,17 +1,18 @@
 import lifecycle from '../lifecycle'
-import phases from '../phases'
+import { phase1, phase2, phase3 } from '../phases'
 
 jest.mock('../phases')
 
+const services = {
+  testService: jest.fn()
+}
 describe('lifecycle', () => {
   it('should compose lifecycle phases and start the composition on run', () => {
-    const lc = lifecycle()
+    const lc = lifecycle(services)
 
     lc.run()
-    expect(phases.phase1.toHaveBeenCalledWith())
-  })
-
-  it('should work with async phases', () => {
-
+    expect(phase1).toHaveBeenCalledWith(services, expect.any(Function), undefined)
+    expect(phase2).toHaveBeenCalledWith(services, expect.any(Function), 'phase1')
+    expect(phase3).toHaveBeenCalledWith(services, expect.any(Function), 'phase1 phase2')
   })
 })
