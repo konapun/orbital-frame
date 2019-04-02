@@ -15,4 +15,8 @@ describe('lifecycle', () => {
     expect(phase2).toHaveBeenCalledWith(services, expect.any(Function), 'phase1')
     expect(phase3).toHaveBeenCalledWith(services, expect.any(Function), 'phase1 phase2')
   })
+
+  it('should work with async phases', async () => {
+    // TODO:
+  })
 })

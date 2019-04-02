@@ -7,5 +7,6 @@ module.exports = {
   ],
   roots: [
     'packages/'
-  ]
+  ],
+  setupTestFrameworkScriptFile: 'jest-extended'
 }

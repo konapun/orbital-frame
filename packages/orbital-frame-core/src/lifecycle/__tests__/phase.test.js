@@ -17,34 +17,126 @@ describe('lifecycle phase', () => {
     expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
-  it('should work with async phases', async () => {
-    const phaseAction = jest.fn(async () => {
-      await new Promise(res => {
-        setTimeout(() => {
-          res()
-        }, 500)
-      })
-
-      return 'yee'
+  it('should provide an extension point before the phase is started', () => {
+    const phaseAction = jest.fn()
+    const myPhase = phase(services => next => args => {
+      phaseAction(services, next, args)
     })
 
-    // TODO:
-  })
+    const enter = jest.fn()
+    myPhase.extend({
+      enter
+    })
 
-  it('should provide an extension point before the phase is started', () => {
-
+    myPhase.call(services)(next)('args')
+    expect(enter).toHaveBeenCalledBefore(phaseAction)
+    expect(enter).toHaveBeenCalledWith('args')
+    expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
   it('should provide an extension point after the phase runs', () => {
+    const phaseAction = jest.fn((services, next, args) => next(`${args} AFTER`))
+    const myPhase = phase(services => next => args => {
+      phaseAction(services, next, args)
+    })
 
+    const exit = jest.fn()
+    myPhase.extend({
+      exit
+    })
+
+    myPhase.call(services)(next)('args')
+    expect(exit).toHaveBeenCalledAfter(phaseAction)
+    expect(exit).toHaveBeenCalledWith('args AFTER')
+    expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
   it('should provide an extension point for phase errors', () => {
+    const phaseError = new Error('Phase Error')
+    const phaseAction = jest.fn(() => {
+      throw phaseError
+    })
+    const myPhase = phase(services => next => args => {
+      phaseAction(services, next, args)
+    })
 
+    const error = jest.fn()
+    myPhase.extend({
+      error
+    })
+
+    myPhase.call(services)(next)('args')
+    expect(error).toHaveBeenCalledAfter(phaseAction)
+    expect(error).toHaveBeenCalledWith(phaseError, 'args')
+    expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
-  it('should invoke error extensions if before/after extensions throw errors', () => {
+  it('should work with async actions', async () => {
+    const phaseAction = jest.fn((services, next, args) => next(`${args} AFTER`))
+    const myPhase = phase(services => next => async args => {
+      await new Promise(resolve => {
+        setTimeout(() => {
+          resolve()
+        }, 200)
+      })
 
+      phaseAction(services, next, args)
+    })
+
+    const enter = jest.fn()
+    const exit = jest.fn()
+    myPhase.extend({
+      enter,
+      exit
+    })
+
+    await myPhase.call(services)(next)('args')
+    expect(enter).toHaveBeenCalledBefore(phaseAction)
+    expect(exit).toHaveBeenCalledAfter(phaseAction)
+    expect(exit).toHaveBeenCalledWith('args AFTER')
+    expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
+  })
+
+  it('should invoke error extensions if any before extensions throw errors', () => {
+    const phaseError = new Error('Phase Error')
+    const phaseAction = jest.fn()
+    const myPhase = phase(services => next => args => {
+      phaseAction(services, next, args)
+    })
+
+    const enter = jest.fn(() => {
+      throw phaseError
+    })
+    const error = jest.fn()
+    myPhase.extend({
+      enter,
+      error
+    })
+
+    myPhase.call(services)(next)('args')
+    expect(error).toHaveBeenCalledWith(phaseError, 'args')
+    expect(phaseAction).not.toHaveBeenCalled()
+  })
+
+  it('should invoke error extensions if any after extensions throw errors', () => {
+    const phaseError = new Error('Phase Error')
+    const phaseAction = jest.fn((services, next, args) => next(args))
+    const myPhase = phase(services => next => args => {
+      phaseAction(services, next, args)
+    })
+
+    const exit = jest.fn(() => {
+      throw phaseError
+    })
+    const error = jest.fn()
+    myPhase.extend({
+      exit,
+      error
+    })
+
+    myPhase.call(services)(next)('args')
+    expect(error).toHaveBeenCalledWith(phaseError, 'args')
+    expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
   it('should throw phase errors if no error extensions are registered', () => {

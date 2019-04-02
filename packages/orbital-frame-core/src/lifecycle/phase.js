@@ -12,10 +12,9 @@ function phase (fn) {
         return next(...args)
       }
 
-      const action = fn(services)(nextWrapper)
-      extensions.before.forEach(extension => extension(...args)) // TODO: can extensions can be async?
-
       try {
+        const action = fn(services)(nextWrapper)
+        extensions.before.forEach(extension => extension(...args)) // TODO: can extensions can be async?
         await action(...args)
       } catch (err) {
         const errorHandlers = extensions.error
