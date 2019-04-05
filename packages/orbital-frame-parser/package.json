@@ -1,6 +1,6 @@
 {
   "name": "@orbital-frame/parser",
-  "version": "1.0.1",
+  "version": "0.1.1",
   "description": "A unix-like command line parser",
   "main": "dist/index.js",
   "files": [

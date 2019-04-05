@@ -1,6 +1,5 @@
 {
   "name": "@orbital-frame/core",
-  "version": "1.0.1",
   "description": "A framework for hubot-based chatbots based on the unix command line",
   "main": "dist/index.js",
   "files": [
@@ -12,9 +11,10 @@
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
   "dependencies": {
-    "@orbital-frame/parser": "^1.0.1",
+    "@orbital-frame/parser": "^0.1.1",
     "awilix": "^4.0.1",
     "joi": "^14.3.1",
     "lodash": "^4.17.11"
-  }
+  },
+  "version": "0.1.1"
 }
