@@ -1,6 +1,6 @@
 {
   "name": "@orbital-frame/jehuty",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "author": "Bremen Braun (konapun)",
   "description": "Command line as a chatbot",
