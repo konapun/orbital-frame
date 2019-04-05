@@ -1,6 +1,5 @@
 {
   "name": "@orbital-frame/parser",
-  "version": "0.1.1",
   "description": "A unix-like command line parser",
   "main": "dist/index.js",
   "files": [
@@ -10,8 +9,10 @@
     "build:parser": "./node_modules/.bin/pegjs src/grammar/unix.pegjs"
   },
   "author": "Bremen Braun (konapun)",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "pegjs": "^0.10.0"
-  }
+  },
+  "version": "0.1.1"
 }
