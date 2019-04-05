@@ -1,7 +1,6 @@
 {
   "name": "orbital-frame",
   "description": "Command line as a chatbot",
-  "version": "0.1.0",
   "main": "",
   "repository": {
     "type": "git",
@@ -18,9 +17,9 @@
     "build": "NODE_ENV=production lerna exec --parallel -- babel src -d dist",
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
     "clean": "lerna exec --parallel -- rm -rf dist",
+    "lerna:publish": "lerna publish",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "dev": "yarn watch && ./packages/orbital-frame-jehuty/bin/hubot"
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
