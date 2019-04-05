@@ -139,11 +139,38 @@ describe('lifecycle phase', () => {
     expect(phaseAction).toHaveBeenCalledWith(services, expect.any(Function), 'args')
   })
 
-  it('should throw phase errors if no error extensions are registered', () => {
+  it('should throw phase errors if no error extensions are registered', async () => {
+    const phaseError = new Error('Phase Error')
+    const myPhase = phase(() => () => () => {
+      throw phaseError
+    })
 
+    let error
+    try {
+      await myPhase.call(services)(next)('args')
+    } catch (err) {
+      error = err
+    }
+
+    expect(error).toBe(phaseError)
   })
 
-  it('should defer to error extensions rather than throwing errors if extensions are available', () => {
+  it('should defer to error extensions rather than throwing errors if extensions are available', async () => {
+    const phaseError = new Error('Phase Error')
+    const myPhase = phase(() => () => () => {
+      throw phaseError
+    })
 
+    const error = jest.fn()
+    myPhase.extend({ error })
+
+    let err
+    try {
+      await myPhase.call(services)(next)('args')
+    } catch (e) {
+      err = e
+    }
+
+    expect(err).toBeUndefined()
   })
 })
