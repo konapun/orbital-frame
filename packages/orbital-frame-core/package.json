@@ -5,12 +5,12 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "build:parser": "./node_modules/.bin/pegjs src/command/parser/grammar.pegjs"
-  },
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test:coverage": "jest --coverage"
+  },
   "dependencies": {
     "@orbital-frame/parser": "^0.1.3",
     "awilix": "^4.0.1",

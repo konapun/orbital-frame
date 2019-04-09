@@ -7,7 +7,6 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
   [phaseEnum.LOAD_PLUGINS]: {
     exit () {
       // TODO:
-      console.log('VARIABLES PLUGIN!')
     }
   },
   [phaseEnum.PROCESS]: {
@@ -15,7 +14,7 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
       try {
         // FIXME: this will only work for the first command as there's currently no way to extend this at runtime
         const command = metadata.findOne(({ type }) => type === metadata.type.COMMAND)
-        environmentService.set('0', command.name)
+        environmentService.set(0, command.name)
         command.arguments.forEach((arg, index) => {
           environmentService.set(index + 1, arg)
         })

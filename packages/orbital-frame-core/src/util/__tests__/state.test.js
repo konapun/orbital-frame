@@ -18,6 +18,16 @@ describe('state', () => {
     expect(value).toEqual('yoyo')
   })
 
+  it('should work with fuzzy types', () => {
+    s.set(0, 'zero')
+    s.set('1', 'one')
+    const zero = s.get('0')
+    const one = s.get(1)
+
+    expect(zero).toEqual('zero')
+    expect(one).toEqual('one')
+  })
+
   it('should return undefined for a get with unknown keys', () => {
     const value = s.get('fake')
 

@@ -19,7 +19,9 @@
     "clean": "lerna exec --parallel -- rm -rf dist",
     "lerna:publish": "lerna publish",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:coverage:core": "lerna run --scope @orbital-frame/core test:coverage"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
