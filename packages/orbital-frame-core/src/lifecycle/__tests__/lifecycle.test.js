@@ -17,6 +17,6 @@ describe('lifecycle', () => {
   })
 
   it('should work with async phases', async () => {
-    // TODO:
+    // TODO: even though phase is tested separately, check that async composition is working
   })
 })
