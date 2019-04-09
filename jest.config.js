@@ -1,9 +1,10 @@
 // TODO: https://codeburst.io/monorepos-by-example-part-2-4153712cfa31
 module.exports = {
-  collectCoverage: false, //TODO: do eventually
+  collectCoverage: false,
   collectCoverageFrom: [
-    'packages/**/*.{js}',
-    '!**/node_modules/**'
+    'packages/*/src/**/*.{js}',
+    '!**/node_modules/**',
+    '!**/dist/**'
   ],
   roots: [
     'packages/'
