@@ -1,5 +1,5 @@
 import builder from './builder'
 import schemaValidator from './schemaValidator'
-import metadataWalker from './metadataWalker'
+import metadataWalker from './metadata/walker'
 
 export { builder, schemaValidator, metadataWalker }

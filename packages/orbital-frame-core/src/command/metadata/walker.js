@@ -1,5 +1,5 @@
 import { isObject } from 'lodash'
-import type from './metadataTypes'
+import type from './types'
 
 const findRec = (node, fn, found = []) => {
   if (isObject(node)) {
