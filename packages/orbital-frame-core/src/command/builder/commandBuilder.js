@@ -24,7 +24,7 @@ function commandBuilder (name, context) {
     },
 
     addVariable (key) {
-      this.addArgument(() => environment.get(key))
+      return this.addArgument(() => environment.get(key))
     },
 
     getMetadata () {
