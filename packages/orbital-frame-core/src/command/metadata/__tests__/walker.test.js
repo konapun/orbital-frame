@@ -1,4 +1,4 @@
-import metadataWalker from '../metadataWalker'
+import metadataWalker from '../walker'
 
 describe('metadata walker', () => {
   const metadata = {

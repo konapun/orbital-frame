@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/konapun/orbital-frame#readme",
   "scripts": {
-    "init": "lerna bootstrap && yarn build",
+    "dev": "lerna bootstrap && yarn build",
     "build": "NODE_ENV=production lerna exec --parallel -- babel src -d dist",
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
     "clean": "lerna exec --parallel -- rm -rf dist",
