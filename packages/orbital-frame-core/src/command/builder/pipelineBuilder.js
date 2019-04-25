@@ -22,7 +22,7 @@ function pipelineBuilder (context) {
 
     getMetadata () {
       return {
-        [type.COMMAND]: pipeline.map(segment => segment.getMetadata()) // TODO: change format
+        [type.PIPELINE]: pipeline.map(segment => segment.getMetadata())
       }
     },
 

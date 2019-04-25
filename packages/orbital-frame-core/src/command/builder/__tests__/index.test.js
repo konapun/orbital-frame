@@ -39,7 +39,7 @@ describe('builder', () => {
     const metadata = commandBuilder.getMetadata()
     expect(pipelineChain.getMetadata).toHaveBeenCalled()
     expect(variableChain.getMetadata).toHaveBeenCalled()
-    expect(metadata).toEqual({ assignments: [ 'assignment' ], pipelines: [ 'pipeline' ] })
+    expect(metadata).toEqual({ program: { assignments: [ 'assignment' ], pipelines: [ 'pipeline' ] } })
   })
 
   it('should build a function', async () => {

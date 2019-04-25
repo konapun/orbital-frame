@@ -8,7 +8,7 @@ function errorTrapPlugin ({ messengerService }) {
           const message = `Error: ${e.message}`
 
           messengerService.respond(context, `\`${message}\``)
-          // throw message
+          // throw e
         }
       }
     }))

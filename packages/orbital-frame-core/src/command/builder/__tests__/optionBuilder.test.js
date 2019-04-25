@@ -42,7 +42,7 @@ describe('option builder', () => {
     builder.addArgument('value')
 
     const metadata = builder.getMetadata()
-    expect(metadata).toEqual({ key: 'value' })
+    expect(metadata).toEqual({ option: { key: 'key', value: 'value' } })
   })
 
   it('should build a runtime representation of options', () => {

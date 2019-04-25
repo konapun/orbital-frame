@@ -29,8 +29,10 @@ function builder (commandRegistry, environment) {
 
     getMetadata () {
       return {
-        [type.ASSIGNMENT]: assignments.map(assignment => assignment.getMetadata()),
-        [type.PIPELINE]: pipelines.map(pipeline => pipeline.getMetadata())
+        [type.PROGRAM]: {
+          assignments: assignments.map(assignment => assignment.getMetadata()),
+          pipelines: pipelines.map(pipeline => pipeline.getMetadata())
+        }
       }
     },
 

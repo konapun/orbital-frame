@@ -4,7 +4,7 @@ function interpolationBuilder (interpolation) {
   return {
     getMetadata () {
       return {
-        type: type.INTERPOLATION
+        [type.INTERPOLATION]: interpolation
       }
     },
 

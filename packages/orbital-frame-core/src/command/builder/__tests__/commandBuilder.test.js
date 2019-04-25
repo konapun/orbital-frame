@@ -54,7 +54,7 @@ describe('command builder', () => {
       builder.addArgument('argument')
       const metadata = builder.getMetadata()
 
-      expect(metadata).toEqual({ name: 'test', arguments: [ 'argument' ], options: { o: 'option' } })
+      expect(metadata).toEqual({ command: { name: 'test', arguments: [ 'argument' ], options: { o: 'option' } } })
     })
 
     it('should build metadata with complex arguments', () => {
@@ -65,7 +65,7 @@ describe('command builder', () => {
       builder.addArgument({ getMetadata: () => 'complex' })
       const metadata = builder.getMetadata()
 
-      expect(metadata).toEqual({ name: 'test', arguments: [ 'complex' ], options: { o: 'option' } })
+      expect(metadata).toEqual({ command: { name: 'test', arguments: [ 'complex' ], options: { o: 'option' } } })
     })
   })
 

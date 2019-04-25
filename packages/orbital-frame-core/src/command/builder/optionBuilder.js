@@ -1,3 +1,5 @@
+import type from '../metadata/types'
+
 function optionBuilder (key, context) {
   let optionValue
 
@@ -16,7 +18,12 @@ function optionBuilder (key, context) {
     },
 
     getMetadata () {
-      return { [key]: optionValue }
+      return {
+        [type.OPTION]: {
+          key,
+          value: optionValue
+        }
+      }
     },
 
     build () {

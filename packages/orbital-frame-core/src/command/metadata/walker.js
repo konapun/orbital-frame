@@ -33,9 +33,7 @@ function metadataWalker (data) {
         throw new Error('No data found matching criteria')
       }
       const value = found[0].value
-      if (Array.isArray(value)) { // FIXME:
-        return value[0]
-      }
+      return Array.isArray(value) ? value[0] : value
     }
   }
 }

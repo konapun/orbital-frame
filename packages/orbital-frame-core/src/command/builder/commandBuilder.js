@@ -29,9 +29,11 @@ function commandBuilder (name, context) {
 
     getMetadata () {
       return {
-        name,
-        [type.OPTION]: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-        [type.ARGUMENT]: args.map(arg => arg.getMetadata ? arg.getMetadata() : arg)
+        [type.COMMAND]: {
+          name,
+          options: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+          arguments: args.map(arg => arg.getMetadata ? arg.getMetadata() : arg)
+        }
       }
     },
 

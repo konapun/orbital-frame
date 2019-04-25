@@ -1,3 +1,5 @@
+import type from '../metadata/types'
+
 function assignmentBuilder (variable) {
   let value
 
@@ -7,7 +9,12 @@ function assignmentBuilder (variable) {
     },
 
     getMetadata () {
-      return { variable, value }
+      return {
+        [type.ASSIGNMENT]: {
+          variable,
+          value
+        }
+      }
     },
 
     build () {

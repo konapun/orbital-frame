@@ -11,7 +11,7 @@ describe('assignment builder', () => {
     builder.addArgument('value')
 
     const metadata = builder.getMetadata()
-    expect(metadata).toEqual({ variable: 'key', value: 'value' })
+    expect(metadata).toEqual({ assignment: { variable: 'key', value: 'value' } })
   })
 
   it('should return a build representation', () => {
