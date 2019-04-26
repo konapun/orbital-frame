@@ -84,7 +84,7 @@ EscapeSequence
 Variable
   = "$" variable:Word { return { type: "Variable", body: [ variable ] } }
 
-Word = word:[a-zA-Z0-9_%\-\+\*\^]+ { return word.join('')  }
+Word = word:[a-zA-Z0-9_%\-\+\*\^\?\!]+ { return word.join('')  }
 
 Letter = [a-zA-Z]
 

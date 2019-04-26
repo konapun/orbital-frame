@@ -23,4 +23,18 @@ describe('special variables plugin', () => {
     expect(environmentService.set).toHaveBeenCalledWith(2, 'arg2')
     expect(environmentService.set).toHaveBeenCalledWith(3, 'arg3')
   })
+
+  it('should set exit status variables', () => {
+    plugin[phaseEnum.EXECUTE].exit({ command: { pid: 1 } })
+    expect(environmentService.set).toHaveBeenCalledWith('?', 0)
+
+    plugin[phaseEnum.EXECUTE].error()
+    expect(environmentService.set).toHaveBeenCalledWith('?', 1)
+  })
+
+  it('should set exit PID variable', () => {
+    plugin[phaseEnum.EXECUTE].exit({ command: { pid: 10 } })
+    expect(environmentService.set).toHaveBeenCalledWith('!', 10)
+
+  })
 })

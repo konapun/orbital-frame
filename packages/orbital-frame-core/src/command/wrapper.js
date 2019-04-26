@@ -1,4 +1,5 @@
 import validator from './runtimeValidator'
+import { isNil } from 'lodash'
 
 // distribute duplicate long and short opts and distribute values
 // distribute boolean opt args to arguments
@@ -33,7 +34,7 @@ function wrapper (pid, cmd) {
     const distributedArgs = [
       ...Object.entries(opts).filter(([ key ]) => booleanOpts[key]).map(([ , val ]) => val),
       ...args
-    ].filter(arg => arg)
+    ].filter(arg => !isNil(arg))
 
     const expandedBooleanOpts = [
       ...Object.entries(booleanOpts),

@@ -88,17 +88,6 @@ describe('pipeline builder', () => {
   })
 
   describe('build', () => {
-    it('should build a pipeline function for commands', async () => {
-      const builder = pipelineBuilder(context)
-
-      builder.addCommand('command1')
-      builder.addCommand('command2')
-      // const pipeline = builder.build()
-
-      // const result = await pipeline()
-      // TODO:
-    })
-
     it('should allow passing arguments and options to the built pipeline function', async () => {
       // TODO:
     })

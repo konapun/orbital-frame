@@ -18,6 +18,9 @@ import interactive from './interactive'
 import args from './arguments'
 import get from './get'
 import noop from './noop'
+import noFormat from './no-format'
+import length from './length'
+import flatten from './flatten'
 
 export default [
   calc,
@@ -39,5 +42,8 @@ export default [
   interactive,
   args,
   get,
-  noop
+  noop,
+  noFormat,
+  length,
+  flatten
 ]

@@ -18,7 +18,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
   compileWithMetadata (string) {
     const ast = parser.parse(string)
     const builder = this._getBuilder(ast)
-    const metadata = metadataWalker(builder.getMetadata()) //builder.getMetadata() //metadataWalker(builder.getMetadata())
+    const metadata = metadataWalker(builder.getMetadata())
     const command = builder.build()
 
     return { metadata, command }

@@ -12,7 +12,7 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
   [phaseEnum.PROCESS]: {
     exit ({ metadata }) {
       try {
-        // FIXME: this will only work for the first command as there's currently no way to extend this at runtime
+        // FIXME: this will only work for the first command as there's currently no way to extend this at runtime to force a separate positional variable per-command
         const command = metadata.findOne(({ type }) => type === metadata.type.COMMAND)
         environmentService.set(0, command.name)
         command.arguments.forEach((arg, index) => {
@@ -47,10 +47,13 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
     /**
      * $?: exit value of last command
      * $!: pid of last command
-     * @param {*} param0
      */
     exit ({ command }) {
-
+      environmentService.set('?', 0)
+      environmentService.set('!', command.pid)
+    },
+    error () {
+      environmentService.set('?', 1)
     }
   }
 })
