@@ -1,11 +1,8 @@
 import execute from '../execute'
 
-let next, args, command
-beforeEach(() => {
-  next = jest.fn()
-  command = jest.fn(() => 'output')
-  args = { command }
-})
+const next = jest.fn()
+const command = jest.fn(() => 'output')
+const args = { command }
 
 describe('execute phase', () => {
   it('should execute commands', async () => {

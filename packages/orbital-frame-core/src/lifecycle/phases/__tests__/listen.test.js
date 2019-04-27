@@ -7,12 +7,13 @@ const listenerService = {
   }))
 }
 const next = jest.fn()
+const args = { arg: 'passthrough' }
 
 describe('listen phase', () => {
   it('should use the listener service to listen for the name provided by the config service', () => {
-    listen({ configService, listenerService })(next)()
+    listen({ configService, listenerService })(next)(args)
 
     expect(listenerService.listen).toHaveBeenCalledWith('name')
-    expect(next).toHaveBeenCalledWith({ context: 'context', state: { get: expect.any(Function), set: expect.any(Function) } })
+    expect(next).toHaveBeenCalledWith({ arg: 'passthrough', context: 'context', state: { get: expect.any(Function), set: expect.any(Function) } })
   })
 })

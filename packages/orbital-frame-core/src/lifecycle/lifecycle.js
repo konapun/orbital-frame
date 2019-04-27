@@ -3,8 +3,9 @@ import phases from './phases'
 
 // Add start and end phases to enforce regularity in normal lifecycle phases
 const primeLifecycle = phases => [
+  next => () => next({}),
   ...phases,
-  () => () => () => {}
+  () => () => {}
 ]
 
 const lifecycle = services => {

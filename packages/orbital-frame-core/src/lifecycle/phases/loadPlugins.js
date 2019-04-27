@@ -1,9 +1,9 @@
 import corePlugins from '../../plugins'
 
-const loadPlugins = ({ configService, pluginService }) => next => () => {
+const loadPlugins = ({ configService, pluginService }) => next => args => {
   const plugins = [ ...corePlugins, ...configService.plugins ]
   pluginService.load(plugins)
-  next()
+  next(args)
 }
 
 export default loadPlugins

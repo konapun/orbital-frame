@@ -7,8 +7,11 @@ function errorTrapPlugin ({ messengerService }) {
         error (e, { context }) {
           const message = `Error: ${e.message}`
 
-          messengerService.respond(context, `\`${message}\``)
-          // throw e
+          if (context) {
+            messengerService.respond(context, `\`${message}\``)
+          } else {
+            throw e // error happened outside of main runloop
+          }
         }
       }
     }))

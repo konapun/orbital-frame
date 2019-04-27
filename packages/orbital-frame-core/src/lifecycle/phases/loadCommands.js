@@ -1,7 +1,7 @@
-const loadCommands = ({ configService, commandService }) => next => () => {
+const loadCommands = ({ configService, commandService }) => next => args => {
   const commands = configService.commands
   commandService.load(commands)
-  next()
+  next(args)
 }
 
 export default loadCommands
