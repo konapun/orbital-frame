@@ -26,11 +26,11 @@ function pipelineBuilder (context) {
       }
     },
 
-    build () {
-      const [ first, ...rest ] = pipeline.map(segment => segment.build())
+    build (buildOpts = {}) {
+      const [ first, ...rest ] = pipeline.map(segment => segment.build(buildOpts))
       const [ last ] = pipeline.slice(-1)
       const lastCommand = context.commandRegistry[last.name]
-      const formatter = lastCommand ? lastCommand.format : output => output // last command won't exist if entire pipeline is interpolations
+      const formatter = (buildOpts.format !== false && lastCommand) ? lastCommand.format : output => output // last command won't exist if entire pipeline is interpolations
 
       return async (args, opts) =>
         formatter(await rest.reduce(async (val, cmd) => await cmd(val), await first(args, opts)))

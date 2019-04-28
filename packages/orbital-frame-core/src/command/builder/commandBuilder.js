@@ -37,7 +37,7 @@ function commandBuilder (name, context) {
       }
     },
 
-    build () {
+    build (buildOpts = {}) {
       const command = commandRegistry[name]
       if (!command) {
         throw new Error(`Command not found: ${name}`)
@@ -49,7 +49,7 @@ function commandBuilder (name, context) {
         const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
         const execOptionsP = await Promise.all(
           options
-            .map(opt => opt.build())
+            .map(opt => opt.build(buildOpts))
             .map(async ([ key, value ]) => isFunction(value) ? [ key, await value() ] : [ key, value ])
         )
         const execOptions = execOptionsP.reduce((acc, [ key, val ]) => ({ ...acc, [key]: val }), {})

@@ -84,17 +84,19 @@ describe('command builder', () => {
 
     it('should produce a function on build', async () => {
       const wrapFn = jest.fn()
+      const buildOption = jest.fn(() => [ 'key', 'value' ])
       commandWrapper.mockReturnValue({ execute: wrapFn })
-      optionBuilder.mockReturnValue({ build: jest.fn(() => [ 'key', 'value' ]) })
+      optionBuilder.mockReturnValue({ build: buildOption })
 
       const builder = commandBuilder('test', context)
       builder.addArgument('argument')
       builder.addOption('option')
 
-      const executable = builder.build()
+      const executable = builder.build({ buildOpt: 'test' })
       expect(commandWrapper).toHaveBeenCalledWith(9, context.commandRegistry.test)
       await executable()
       expect(wrapFn).toHaveBeenCalledWith([ 'argument' ], { key: 'value' })
+      expect(buildOption).toHaveBeenCalledWith({ buildOpt: 'test' })
     })
 
     it('should work with incoming arguments and options', async () => { // TODO: wrap these exec tests in a separate describe
@@ -114,17 +116,19 @@ describe('command builder', () => {
       const wrapFn = jest.fn()
       const argFn = jest.fn(() => 'argument')
       const optFn = jest.fn(() => 'value')
+      const buildOption = jest.fn(() => [ 'key', optFn ])
       commandWrapper.mockReturnValue({ execute: wrapFn })
-      optionBuilder.mockReturnValue({ build: jest.fn(() => [ 'key', optFn ]) })
+      optionBuilder.mockReturnValue({ build: buildOption })
 
       const builder = commandBuilder('test', context)
       builder.addArgument(argFn)
       builder.addOption('key')
 
-      const executable = builder.build()
+      const executable = builder.build({ buildOpt: 'test' })
       expect(commandWrapper).toHaveBeenCalledWith(9, context.commandRegistry.test)
       await executable()
       expect(wrapFn).toHaveBeenCalledWith([ 'argument' ], { key: 'value' })
+      expect(buildOption).toHaveBeenCalledWith({ buildOpt: 'test' })
     })
   })
 })

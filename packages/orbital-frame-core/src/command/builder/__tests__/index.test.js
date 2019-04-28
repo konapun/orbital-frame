@@ -45,15 +45,31 @@ describe('builder', () => {
   it('should build a function', async () => {
     pipelineBuilder.mockReturnValue({ build: jest.fn(() => jest.fn()) })
     assignmentBuilder.mockReturnValue({ build: jest.fn(() => [ 'test', 'assignment' ]) })
+    const buildOpts = { buildOpt: 'test' }
+
+    const pipelineChain = commandBuilder.addPipeline()
+    const variableChain = commandBuilder.addVariable('test')
+
+    const executable = commandBuilder.build(buildOpts)
+    expect(executable.pid).toBe(4)
+
+    await executable()
+    expect(pipelineChain.build).toHaveBeenCalledWith(buildOpts)
+    expect(variableChain.build).toHaveBeenCalledWith(buildOpts)
+  })
+
+  it('should pass an empty object for buildOpts if none are specified', async () => {
+    pipelineBuilder.mockReturnValue({ build: jest.fn(() => jest.fn()) })
+    assignmentBuilder.mockReturnValue({ build: jest.fn(() => [ 'test', 'assignment' ]) })
 
     const pipelineChain = commandBuilder.addPipeline()
     const variableChain = commandBuilder.addVariable('test')
 
     const executable = commandBuilder.build()
-    expect(executable.pid).toBe(4)
+    expect(executable.pid).toBe(5)
 
     await executable()
-    expect(pipelineChain.build).toHaveBeenCalled()
-    expect(variableChain.build).toHaveBeenCalled()
+    expect(pipelineChain.build).toHaveBeenCalledWith({})
+    expect(variableChain.build).toHaveBeenCalledWith({})
   })
 })

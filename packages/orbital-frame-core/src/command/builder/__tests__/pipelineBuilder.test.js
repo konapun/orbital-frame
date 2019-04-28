@@ -89,15 +89,56 @@ describe('pipeline builder', () => {
 
   describe('build', () => {
     it('should allow passing arguments and options to the built pipeline function', async () => {
-      // TODO:
-    })
+      const args = [ 'arg1', 'arg2' ]
+      const opts = { opt1: 'opt1', opt2: 'opt2' }
+      const builtExecutable = jest.fn(() => 'exec')
+      const buildCommand = jest.fn(() => builtExecutable)
+      commandBuilder.mockReturnValue({ build: buildCommand })
 
-    it('should work with a pipeline consisting of only interpolations', async () => {
-      // TODO:
+      const builder = pipelineBuilder(context)
+      builder.addCommand('command')
+      const fn = builder.build()
+      const output = await fn(args, opts)
+
+      expect(output).toBe('exec')
+      expect(buildCommand).toHaveBeenCalledWith({})
+      expect(builtExecutable).toHaveBeenCalledWith(args, opts)
     })
 
     it('should invoke the command formatter', async () => {
-      // TODO:
+      const builtExecutable = jest.fn(() => 'exec')
+      const buildCommand = jest.fn(() => builtExecutable)
+      const format = jest.fn(() => 'formatted')
+      context.commandRegistry.command = { format }
+      commandBuilder.mockReturnValue({ name: 'command', build: buildCommand })
+
+      const builder = pipelineBuilder(context)
+      builder.addCommand('command')
+      const fn = builder.build()
+      const output = await fn()
+
+      expect(output).toBe('formatted')
+      expect(buildCommand).toHaveBeenCalledWith({})
+      expect(builtExecutable).toHaveBeenCalled()
+      expect(format).toHaveBeenCalledWith('exec')
+    })
+
+    it('should not format output if format = false is passed as a build option', async () => {
+      const builtExecutable = jest.fn(() => 'exec')
+      const buildCommand = jest.fn(() => builtExecutable)
+      const format = jest.fn(() => 'formatted')
+      context.commandRegistry.command = { format }
+      commandBuilder.mockReturnValue({ name: 'command', build: buildCommand })
+
+      const builder = pipelineBuilder(context)
+      builder.addCommand('command')
+      const fn = builder.build({ format: false })
+      const output = await fn()
+
+      expect(output).toBe('exec')
+      expect(buildCommand).toHaveBeenCalledWith({ format: false })
+      expect(builtExecutable).toHaveBeenCalled()
+      expect(format).not.toHaveBeenCalled()
     })
   })
 })

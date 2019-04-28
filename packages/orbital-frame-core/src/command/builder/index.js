@@ -36,10 +36,10 @@ function builder (commandRegistry, environment) {
       }
     },
 
-    build () {
+    build (buildOpts = {}) {
       const process = async (args, opts) => {
         await Promise.all(assignments
-          .map(assignment => assignment.build())
+          .map(assignment => assignment.build(buildOpts))
           .map(async ([ key, value ]) => {
             const execVal = isFunction(value) ? await value() : value
             environment.set(key, execVal)
@@ -47,7 +47,7 @@ function builder (commandRegistry, environment) {
         )
 
         return await Promise.all(pipelines.map(async pipeline => {
-          const pipelineOutput = pipeline.build()
+          const pipelineOutput = pipeline.build(buildOpts)
           return await pipelineOutput(args, opts)
         }))
       }
