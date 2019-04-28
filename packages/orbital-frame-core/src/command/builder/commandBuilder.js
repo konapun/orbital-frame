@@ -45,7 +45,7 @@ function commandBuilder (name, context) {
 
       const wrapper = commandWrapper(pid, command)
       return async (incoming, opts = {}) => {
-        const execArgs = incoming ? [ incoming, ...args ] : args
+        const execArgs = incoming ? [ ...args, incoming ] : args
         const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? await arg() : arg)))
         const execOptionsP = await Promise.all(
           options

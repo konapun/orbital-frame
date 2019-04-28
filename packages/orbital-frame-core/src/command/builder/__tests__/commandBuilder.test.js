@@ -30,7 +30,6 @@ describe('command builder', () => {
 
     expect(optionBuilder).toHaveBeenCalledWith('opt', context)
     expect(optionChain).toEqual('option')
-
   })
 
   it('should support adding arguments', () => {
@@ -103,11 +102,12 @@ describe('command builder', () => {
       commandWrapper.mockReturnValue({ execute: wrapFn })
 
       const builder = commandBuilder('test', context)
+      builder.addArgument('own')
 
       const executable = builder.build()
       expect(commandWrapper).toHaveBeenCalledWith(9, context.commandRegistry.test)
-      await executable([ 'argument' ], { key: 'value' })
-      expect(wrapFn).toHaveBeenCalledWith([ 'argument' ], { key: 'value' })
+      await executable([ 'incoming' ], { key: 'value' })
+      expect(wrapFn).toHaveBeenCalledWith([ 'own', 'incoming' ], { key: 'value' })
     })
 
     it('should work with interpolated args and opts', async () => {
