@@ -16,7 +16,7 @@ describe('command service', () => {
       execute: () => {}
     }))
 
-    expect(Object.entries(commandLoader.registry).length).toBe(1)
+    expect(Object.entries(commandLoader.registry)).toHaveLength(1)
   })
 
   it('should throw an error when loading multiple commands with at least one invalid', () => {
@@ -48,7 +48,7 @@ describe('command service', () => {
       })
     ])
 
-    expect(Object.entries(commandLoader.registry).length).toBe(4)
+    expect(Object.entries(commandLoader.registry)).toHaveLength(4)
   })
 
   it('should list loaded commands', () => {

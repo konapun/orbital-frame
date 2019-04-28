@@ -15,11 +15,11 @@ describe('config service', () => {
   })
 
   it('should expose commands loaded into the bot', () => {
-    expect(config.commands.length).toBe(1)
+    expect(config.commands).toHaveLength(1)
   })
 
   it('should expose plugins loaded into the bot', () => {
-    expect(config.plugins.length).toBe(1)
+    expect(config.plugins).toHaveLength(1)
   })
 
   it('should expose the chat service adapter the bot is running on', () => {

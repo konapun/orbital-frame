@@ -39,23 +39,23 @@ describe('search', () => {
 
     it('should find multiple items', async () => {
       const matches = await searchApi.find({ occupation: 'Bounty Hunter' })
-      expect(matches.length).toBe(3)
-      expect(matches).toEqual([ { 'favorite': { 'vice': 'cigarettes', 'planet': 'Earth' }, 'firstName': 'Spike', 'gender': 'male', 'id': 0, 'lastName': 'Spiegel', 'occupation': 'Bounty Hunter' }, { 'favorite': { 'weapon': 'Glock 30', 'planet': 'Earth' }, 'firstName': 'Faye', 'gender': 'female', 'id': 1, 'lastName': 'Valentine', 'occupation': 'Bounty Hunter' }, { 'favorite': { 'weapon': 'Walther P99', 'vice': 'cigarettes' }, 'firstName': 'Jet', 'gender': 'male', 'id': 2, 'lastName': 'Black', 'occupation': 'Bounty Hunter' } ])
+      expect(matches).toHaveLength(3)
+      expect(matches).toEqual([ { favorite: { vice: 'cigarettes', planet: 'Earth' }, firstName: 'Spike', gender: 'male', id: 0, lastName: 'Spiegel', occupation: 'Bounty Hunter' }, { favorite: { weapon: 'Glock 30', planet: 'Earth' }, firstName: 'Faye', gender: 'female', id: 1, lastName: 'Valentine', occupation: 'Bounty Hunter' }, { favorite: { weapon: 'Walther P99', vice: 'cigarettes' }, firstName: 'Jet', gender: 'male', id: 2, lastName: 'Black', occupation: 'Bounty Hunter' } ])
     })
 
     it('should find single matches', async () => {
       const match = await searchApi.findOne({ gender: 'female' })
-      expect(match).toEqual({ 'favorite': { 'weapon': 'Glock 30', 'planet': 'Earth' }, 'firstName': 'Faye', 'gender': 'female', 'id': 1, 'lastName': 'Valentine', 'occupation': 'Bounty Hunter' })
+      expect(match).toEqual({ favorite: { weapon: 'Glock 30', planet: 'Earth' }, firstName: 'Faye', gender: 'female', id: 1, lastName: 'Valentine', occupation: 'Bounty Hunter' })
     })
 
     it('should work with nested keys', async () => {
       const match = await searchApi.find({ 'favorite.vice': 'cigarettes' })
-      expect(match.length).toBe(2)
+      expect(match).toHaveLength(2)
     })
 
     it('should support multiple filters in a single search', async () => {
       const match = await searchApi.find({ gender: 'male', 'favorite.planet': 'Earth' })
-      expect(match).toEqual([ { 'favorite': { 'planet': 'Earth', 'vice': 'cigarettes' }, 'firstName': 'Spike', 'gender': 'male', 'id': 0, 'lastName': 'Spiegel', 'occupation': 'Bounty Hunter' } ])
+      expect(match).toEqual([ { favorite: { planet: 'Earth', vice: 'cigarettes' }, firstName: 'Spike', gender: 'male', id: 0, lastName: 'Spiegel', occupation: 'Bounty Hunter' } ])
     })
 
     it('should throw an error when trying to find a single item with no matches', async () => {
@@ -80,18 +80,18 @@ describe('search', () => {
 
     it('should find multiple items', async () => {
       const matches = await searchApi.find({ occupation: 'Bounty Hunter' })
-      expect(matches.length).toBe(3)
-      expect(matches).toEqual([ { 'favorite': { 'vice': 'cigarettes', 'planet': 'Earth' }, 'firstName': 'Spike', 'gender': 'male', 'id': 0, 'lastName': 'Spiegel', 'occupation': 'Bounty Hunter' }, { 'favorite': { 'weapon': 'Glock 30', 'planet': 'Earth' }, 'firstName': 'Faye', 'gender': 'female', 'id': 1, 'lastName': 'Valentine', 'occupation': 'Bounty Hunter' }, { 'favorite': { 'weapon': 'Walther P99', 'vice': 'cigarettes' }, 'firstName': 'Jet', 'gender': 'male', 'id': 2, 'lastName': 'Black', 'occupation': 'Bounty Hunter' } ])
+      expect(matches).toHaveLength(3)
+      expect(matches).toEqual([ { favorite: { vice: 'cigarettes', planet: 'Earth' }, firstName: 'Spike', gender: 'male', id: 0, lastName: 'Spiegel', occupation: 'Bounty Hunter' }, { favorite: { weapon: 'Glock 30', planet: 'Earth' }, firstName: 'Faye', gender: 'female', id: 1, lastName: 'Valentine', occupation: 'Bounty Hunter' }, { favorite: { weapon: 'Walther P99', vice: 'cigarettes' }, firstName: 'Jet', gender: 'male', id: 2, lastName: 'Black', occupation: 'Bounty Hunter' } ])
     })
 
     it('should find single matches', async () => {
       const match = await searchApi.findOne({ gender: 'female' })
-      expect(match).toEqual({ 'favorite': { 'weapon': 'Glock 30', 'planet': 'Earth' }, 'firstName': 'Faye', 'gender': 'female', 'id': 1, 'lastName': 'Valentine', 'occupation': 'Bounty Hunter' })
+      expect(match).toEqual({ favorite: { weapon: 'Glock 30', planet: 'Earth' }, firstName: 'Faye', gender: 'female', id: 1, lastName: 'Valentine', occupation: 'Bounty Hunter' })
     })
 
     it('should support multiple filters in a single search', async () => {
       const match = await searchApi.find({ gender: 'male', 'favorite.planet': 'Earth' })
-      expect(match).toEqual([ { 'favorite': { 'planet': 'Earth', 'vice': 'cigarettes' }, 'firstName': 'Spike', 'gender': 'male', 'id': 0, 'lastName': 'Spiegel', 'occupation': 'Bounty Hunter' } ])
+      expect(match).toEqual([ { favorite: { planet: 'Earth', vice: 'cigarettes' }, firstName: 'Spike', gender: 'male', id: 0, lastName: 'Spiegel', occupation: 'Bounty Hunter' } ])
     })
 
     it('should throw an error when trying to find a single item with no matches', async () => {
@@ -107,7 +107,7 @@ describe('search', () => {
 
     it('should work with nested keys', async () => {
       const match = await searchApi.find({ 'favorite.vice': 'cigarettes' })
-      expect(match.length).toBe(2)
+      expect(match).toHaveLength(2)
     })
   })
 })

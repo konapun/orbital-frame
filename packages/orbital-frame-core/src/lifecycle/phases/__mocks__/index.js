@@ -1,4 +1,4 @@
-export const phase1 = jest.fn((services, next, args) => {
+export const phase1 = jest.fn((services, next) => {
   next('phase1')
 })
 

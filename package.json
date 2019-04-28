@@ -18,6 +18,8 @@
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
     "clean": "lerna exec --parallel -- rm -rf dist",
     "lerna:publish": "lerna publish",
+    "lint": "eslint --ignore-path .eslintignore .",
+    "lint:fix": "eslint --fix --ignore-path .eslintignore .",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -34,7 +36,8 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "eslint": "^5.15.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.5.1",
     "jest": "^23.6.0",
     "jest-extended": "^0.11.1",
     "lerna": "^2.11.0"

@@ -28,8 +28,8 @@ describe('pipeline builder', () => {
   it('should support adding interpolations as arguments', () => {
     const builder = pipelineBuilder(context)
 
-    const chain = builder.addArgument('interpolation')
-
+    // const chain = builder.addArgument('interpolation')
+    // TODO:
   })
 
   describe('buildMetadata', () => {

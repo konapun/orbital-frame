@@ -108,7 +108,7 @@ describe('stream', () => {
       segment1Data = data
       return data + 1
     })
-    const segment1a = segment1.pipe(data => {
+    segment1.pipe(data => {
       segment1aData = data
       return data + 2
     })
@@ -122,7 +122,7 @@ describe('stream', () => {
       segment2Data = data
       return data + 1
     })
-    const segment2a = segment2.pipe(data => {
+    segment2.pipe(data => {
       segment2aData = data
       return data + 2
     })
@@ -136,7 +136,7 @@ describe('stream', () => {
       segment3Data = data
       return data + 1
     })
-    const segment3a = segment3.pipe(data => {
+    segment3.pipe(data => {
       segment3aData = data
       return data + 2
     })

@@ -11,7 +11,7 @@ beforeEach(() => {
   }
 
   listenerService = {
-    listen (prompt) {
+    listen () {
       return {
         pipe (fn) {
           listenCallback = fn
