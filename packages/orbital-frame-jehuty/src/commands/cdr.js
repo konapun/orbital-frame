@@ -1,11 +1,7 @@
-function cdr () {
-  return {
-    name: 'cdr',
-    description: 'TODO',
-    execute ([ car, ...rest ]) {
-      return rest
-    }
+export default () => ({
+  name: 'cdr',
+  description: 'TODO',
+  execute ([ , ...rest ]) {
+    return rest
   }
-}
-
-export default cdr
+})

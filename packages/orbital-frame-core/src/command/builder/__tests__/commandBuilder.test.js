@@ -1,7 +1,7 @@
 const context = {
   environment: { get: jest.fn(), set: jest.fn() },
   commandRegistry: {
-    test: jest.fn()
+    test: {}
   },
   pid: 9
 }
@@ -79,7 +79,6 @@ describe('command builder', () => {
       }
 
       expect(errorMessage).toBe('Command not found: unregistered')
-
     })
 
     it('should produce a function on build', async () => {
@@ -99,7 +98,7 @@ describe('command builder', () => {
       expect(buildOption).toHaveBeenCalledWith({ buildOpt: 'test' })
     })
 
-    it('should work with incoming arguments and options', async () => { // TODO: wrap these exec tests in a separate describe
+    it('should work with incoming arguments and options', async () => {
       const wrapFn = jest.fn()
       commandWrapper.mockReturnValue({ execute: wrapFn })
 
@@ -114,7 +113,7 @@ describe('command builder', () => {
 
     it('should work with interpolated args and opts', async () => {
       const wrapFn = jest.fn()
-      const argFn = jest.fn(() => 'argument')
+      const argFn = jest.fn(() => [ 'argument' ])
       const optFn = jest.fn(() => 'value')
       const buildOption = jest.fn(() => [ 'key', optFn ])
       commandWrapper.mockReturnValue({ execute: wrapFn })
@@ -129,6 +128,20 @@ describe('command builder', () => {
       await executable()
       expect(wrapFn).toHaveBeenCalledWith([ 'argument' ], { key: 'value' })
       expect(buildOption).toHaveBeenCalledWith({ buildOpt: 'test' })
+    })
+
+    it('should flatten arguments', async () => {
+      const wrapFn = jest.fn()
+      commandWrapper.mockReturnValue({ execute: wrapFn })
+
+      const argument = jest.fn(() => [ [ 'nested' ] ])
+
+      const builder = commandBuilder('test', context)
+      builder.addArgument(argument)
+
+      const executable = builder.build()
+      await executable()
+      expect(wrapFn).toHaveBeenCalledWith([ 'nested' ], {})
     })
   })
 })
