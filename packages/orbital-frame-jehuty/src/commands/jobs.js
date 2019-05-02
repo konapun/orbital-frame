@@ -2,6 +2,9 @@ function jobs ({ jobService }) {
   return {
     name: 'jobs',
     description: 'TODO',
+    format (output) {
+      return output.map(jobToString).join('\n\n')
+    },
     async execute (args) {
       if (args.length === 0) {
         return await jobService.list()
@@ -10,6 +13,20 @@ function jobs ({ jobService }) {
       return await jobService.find({ userId })
     }
   }
+}
+
+const jobToString = ({ id, userId, status, started, finished, output }) => {
+  const baseString = [
+    `ID: ${id}`,
+    `Invoker ID: ${userId}`,
+    `Status: ${status}`,
+    `Started: ${started}`
+  ]
+  return (finished ?
+    baseString.concat([
+      `Finished: ${finished}`
+    ]) : baseString
+  ).join('\n')
 }
 
 export default jobs
