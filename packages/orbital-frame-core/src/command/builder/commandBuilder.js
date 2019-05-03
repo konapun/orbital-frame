@@ -1,6 +1,6 @@
 import optionBuilder from './optionBuilder'
 import type from '../metadata/types'
-import commandWrapper from '../wrapper'
+import commandWrapper from '../runtimeWrapper'
 import { isFunction, flatten } from 'lodash'
 
 function commandBuilder (name, context) {

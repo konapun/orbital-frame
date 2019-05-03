@@ -9,9 +9,9 @@ const context = {
 let commandBuilder, optionBuilder, commandWrapper
 beforeEach(() => {
   jest.mock('../optionBuilder', () => jest.fn())
-  jest.mock('../../wrapper', () => jest.fn())
+  jest.mock('../../runtimeWrapper', () => jest.fn())
 
-  commandWrapper = require('../../wrapper')
+  commandWrapper = require('../../runtimeWrapper')
   optionBuilder = require('../optionBuilder')
   commandBuilder = require('../commandBuilder').default
 
