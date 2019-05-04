@@ -213,8 +213,8 @@ function peg$parse(input, options) {
       peg$c51 = "$",
       peg$c52 = peg$literalExpectation("$", false),
       peg$c53 = function(variable) { return { type: "Variable", body: [ variable ] } },
-      peg$c54 = /^[a-zA-Z0-9_%\-+*\^?!]/,
-      peg$c55 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"], "_", "%", "-", "+", "*", "^", "?", "!"], false, false),
+      peg$c54 = /^[a-zA-Z0-9_%+*\^?!]/,
+      peg$c55 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"], "_", "%", "+", "*", "^", "?", "!"], false, false),
       peg$c56 = function(word) { return word.join('')  },
       peg$c57 = /^[a-zA-Z]/,
       peg$c58 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false),
@@ -848,11 +848,11 @@ function peg$parse(input, options) {
       s2 = peg$parseWord();
       if (s2 !== peg$FAILED) {
         s3 = peg$parse_();
-        if (s3 === peg$FAILED) {
-          s3 = null;
-        }
         if (s3 !== peg$FAILED) {
           s4 = peg$parseArgument();
+          if (s4 === peg$FAILED) {
+            s4 = null;
+          }
           if (s4 !== peg$FAILED) {
             peg$savedPos = s0;
             s1 = peg$c18(s2, s4);
@@ -901,11 +901,11 @@ function peg$parse(input, options) {
       }
       if (s2 !== peg$FAILED) {
         s3 = peg$parse_();
-        if (s3 === peg$FAILED) {
-          s3 = null;
-        }
         if (s3 !== peg$FAILED) {
           s4 = peg$parseArgument();
+          if (s4 === peg$FAILED) {
+            s4 = null;
+          }
           if (s4 !== peg$FAILED) {
             peg$savedPos = s0;
             s1 = peg$c21(s2, s4);

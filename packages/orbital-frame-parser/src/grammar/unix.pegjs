@@ -35,10 +35,10 @@ Option
     / option:ShortOption _ options:Option* { return [ option, ...options ] }
 
 LongOption
-  = "--" name:Word _ ?arg:Argument { return { type: "Option", body: [ name, arg ] } }
+  = "--" name:Word _ arg:Argument? { return { type: "Option", body: [ name, arg ] } }
 
 ShortOption
-  = "-" options:Letter+ _ ?arg:Argument {
+  = "-" options:Letter+ _ arg:Argument? {
       const chainArgument = {
         type: "Argument",
         body: []
@@ -84,7 +84,7 @@ EscapeSequence
 Variable
   = "$" variable:Word { return { type: "Variable", body: [ variable ] } }
 
-Word = word:[a-zA-Z0-9_%\-\+\*\^\?\!]+ { return word.join('')  }
+Word = word:[a-zA-Z0-9_%\+\*\^\?\!]+ { return word.join('')  }
 
 Letter = [a-zA-Z]
 
