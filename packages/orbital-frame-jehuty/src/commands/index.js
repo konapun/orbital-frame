@@ -21,6 +21,9 @@ import noop from './noop'
 import noFormat from './no-format'
 import length from './length'
 import flatten from './flatten'
+import xargs from './xargs'
+import join from './join'
+import list from './list'
 
 export default [
   calc,
@@ -45,5 +48,8 @@ export default [
   noop,
   noFormat,
   length,
-  flatten
+  flatten,
+  xargs,
+  join,
+  list
 ]
