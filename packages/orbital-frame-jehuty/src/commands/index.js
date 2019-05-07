@@ -24,6 +24,10 @@ import flatten from './flatten'
 import xargs from './xargs'
 import join from './join'
 import list from './list'
+import head from './head'
+import quote from './quote'
+import range from './range'
+import repeat from './repeat'
 
 export default [
   calc,
@@ -51,5 +55,9 @@ export default [
   flatten,
   xargs,
   join,
-  list
+  list,
+  head,
+  quote,
+  range,
+  repeat
 ]

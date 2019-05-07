@@ -16,7 +16,12 @@ function help ({ commandService }) {
       }
     },
     format (output) {
-      // TODO: in-depth help
+      // TODO:
+      return `
+Available Commands
+------------------
+${output.join('\n')}
+`
     }
   }
 }
