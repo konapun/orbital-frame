@@ -168,7 +168,15 @@ function peg$parse(input, options) {
       peg$c15 = function(option, options) { return [ option, ...options ] },
       peg$c16 = "--",
       peg$c17 = peg$literalExpectation("--", false),
-      peg$c18 = function(name, arg) { return { type: "Option", body: [ name, arg ] } },
+      peg$c18 = function(name, arg) {
+          if (!arg) arg = {
+              type: "Argument",
+              body: [
+                true
+              ]
+          }
+          return { type: "Option", body: [ name, arg ] }
+        },
       peg$c19 = "-",
       peg$c20 = peg$literalExpectation("-", false),
       peg$c21 = function(options, arg) {
@@ -176,6 +184,13 @@ function peg$parse(input, options) {
               type: "Argument",
               body: []
             }
+            if (!arg) arg = {
+              type: "Argument",
+              body: [
+                true
+              ]
+            }
+
             return options
               .map((letter, index) => {
                 return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }
