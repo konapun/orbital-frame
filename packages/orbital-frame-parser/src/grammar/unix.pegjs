@@ -35,15 +35,7 @@ Option
     / option:ShortOption _ options:Option* { return [ option, ...options ] }
 
 LongOption
-  = "--" name:Word _ arg:Argument? {
-    if (!arg) arg = { // arg was boolean switch
-        type: "Argument",
-        body: [
-          true
-        ]
-    }
-    return { type: "Option", body: [ name, arg ] }
-  }
+  = "--" name:Word _ arg:Argument? { return { type: "Option", body: [ name, arg ] } }
 
 ShortOption
   = "-" options:Letter+ _ arg:Argument? {
@@ -51,13 +43,6 @@ ShortOption
         type: "Argument",
         body: []
       }
-      if (!arg) arg = { // arg was boolean switch
-        type: "Argument",
-        body: [
-          true
-        ]
-      }
-
       return options
         .map((letter, index) => {
           return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }

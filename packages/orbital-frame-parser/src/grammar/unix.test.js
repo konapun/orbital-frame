@@ -16,13 +16,13 @@ describe('parser', () => {
   it('should parse a program with options and no arguments', () => {
     const program = 'test --opt1 -o'
 
-    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test', [ { body: [ 'opt1', { type: 'Argument', body: [ true ] } ], type: 'Option' }, [ [ { body: [ 'o', { type: 'Argument', body: [ true ] } ], type: 'Option' } ] ] ] ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
+    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test', [ { body: [ 'opt1', null ], type: 'Option' }, [ [ { body: [ 'o', null ], type: 'Option' } ] ] ] ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
   })
 
   it('should parse a program with boolean options', () => {
     const program = 'test --bool --string yee'
 
-    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test', [ { body: [ 'bool', { type: 'Argument', body: [ true ] } ], type: 'Option' }, [ { body: [ 'string', { body: [ 'yee' ], type: 'Argument' } ], type: 'Option' } ] ] ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
+    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test', [ { body: [ 'bool', null ], type: 'Option' }, [ { body: [ 'string', { body: [ 'yee' ], type: 'Argument' } ], type: 'Option' } ] ] ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
   })
 
   it('should split chained single opts', () => {
