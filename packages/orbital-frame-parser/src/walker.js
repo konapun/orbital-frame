@@ -5,6 +5,7 @@ const treeControl = {
 export default {
   treeControl,
   walk (node, visitor) {
+    if (node === null) return // boolean options may have a null body
     if (!Array.isArray(node)) {
       const control = visitor(node)
       switch (control) {

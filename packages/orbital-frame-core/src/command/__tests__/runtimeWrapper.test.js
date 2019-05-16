@@ -77,4 +77,28 @@ describe('command runtime wrapper', () => {
       string: 'string'
     })
   })
+
+  it('should give a true/false value to boolean options depending on if they are provided', async () => {
+    const command = {
+      name: 'test',
+      options: {
+        b: {
+          alias: 'boolean',
+          type: 'boolean',
+          valid: () => true
+        }
+      },
+      execute: jest.fn()
+    }
+
+    const wrapper = commandWrapper(1, command)
+
+    console.log('---- NO BOOLEAN ----')
+    await wrapper.execute([], {})
+    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false })
+
+    console.log('---- YES BOOLEAN ----')
+    await wrapper.execute([], { boolean: undefined })
+    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
+  })
 })

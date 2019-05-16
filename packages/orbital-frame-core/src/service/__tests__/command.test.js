@@ -54,4 +54,20 @@ describe('command service', () => {
   it('should list loaded commands', () => {
     expect(Object.keys(commandLoader.registry)).toEqual([ 'test1', 'valid', 'test2', 'test3' ])
   })
+
+  it('should provide a process ID to commands invoked via the command service', () => {
+    let context
+    commandLoader.load(() => ({
+      name: 'pid-test',
+      description: 'test1',
+      execute () {
+        context = this
+      }
+    }))
+
+    const command = commandLoader.registry['pid-test']
+    command.execute()
+
+    expect(context.pid).toEqual(1) // FIXME:
+  })
 })
