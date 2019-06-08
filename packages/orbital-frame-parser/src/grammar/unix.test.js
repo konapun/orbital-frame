@@ -64,6 +64,6 @@ describe('parser', () => {
   it('should allow piping from an interpolation', () => {
     const program = 'test1 | $(test2) | test3'
 
-    // expect(parse(program)).toEqual() // TODO:
+    expect(parse(program)).toEqual() // TODO:
   })
 })
