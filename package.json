@@ -38,8 +38,9 @@
     "babel-register": "^6.26.0",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.5.1",
+    "husky": "^2.4.0",
     "jest": "^23.6.0",
     "jest-extended": "^0.11.1",
-    "lerna": "^2.11.0"
+    "lerna": "^3.14.1"
   }
 }
