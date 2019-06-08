@@ -28,6 +28,7 @@ import head from './head'
 import quote from './quote'
 import range from './range'
 import repeat from './repeat'
+import channel from './channel'
 
 export default [
   calc,
@@ -59,5 +60,6 @@ export default [
   head,
   quote,
   range,
-  repeat
+  repeat,
+  channel
 ]

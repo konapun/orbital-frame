@@ -93,11 +93,9 @@ describe('command runtime wrapper', () => {
 
     const wrapper = commandWrapper(1, command)
 
-    console.log('---- NO BOOLEAN ----')
     await wrapper.execute([], {})
     expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false })
 
-    console.log('---- YES BOOLEAN ----')
     await wrapper.execute([], { boolean: undefined })
     expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
   })
