@@ -46,7 +46,6 @@ describe('state', () => {
     expect(setInitial).toBeTrue()
     expect(setOverwrite).toBeFalse()
     expect(value).toBe('yaya')
-
   })
 
 

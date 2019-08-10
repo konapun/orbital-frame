@@ -11,9 +11,9 @@ function state () {
       return true
     },
     get (key) {
-      const val = store[key]
-      if (val) {
-        return val.value
+      const contained = store[key]
+      if (contained) {
+        return contained.value
       }
     }
   }
