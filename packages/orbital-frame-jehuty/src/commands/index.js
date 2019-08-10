@@ -1,3 +1,4 @@
+import { uptimeCommand } from '@orbital-frame/plugin-uptime'
 import calc from './calc'
 import echo from './echo'
 import exec from './exec'
@@ -31,6 +32,7 @@ import repeat from './repeat'
 import channel from './channel'
 
 export default [
+  uptimeCommand,
   calc,
   echo,
   exec,

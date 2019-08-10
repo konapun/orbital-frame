@@ -1,0 +1,18 @@
+{
+  "name": "@orbital-frame/plugin-uptime",
+  "version": "0.1.3",
+  "description": "Contributes an uptime command",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@orbital-frame/core": "^0.1.3",
+    "pretty-ms": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@orbital-frame/core": "^0.1.3"
+  },
+  "author": "konapun",
+  "license": "MIT"
+}

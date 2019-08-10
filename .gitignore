@@ -6,3 +6,5 @@ lerna-debug.log
 yarn-error.log
 packages/yarn-error.log
 .DS_Store*
+dist/
+packages/*/dist/

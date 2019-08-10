@@ -1,6 +1,6 @@
 {
   "name": "@orbital-frame/core",
-  "description": "A framework for hubot-based chatbots based on the unix command line",
+  "description": "A framework for chatbots based on the unix command line",
   "main": "dist/index.js",
   "files": [
     "dist"

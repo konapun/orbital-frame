@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@orbital-frame/core": "^0.1.3",
+    "@orbital-frame/plugin-uptime": "^0.1.3",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.2",
     "hubot-heroku-keepalive": "^1.0.3",

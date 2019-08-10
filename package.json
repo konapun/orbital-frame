@@ -16,7 +16,7 @@
     "dev": "lerna bootstrap && yarn build",
     "build": "NODE_ENV=production lerna exec --parallel -- babel src -d dist",
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
-    "clean": "lerna exec --parallel -- rm -rf dist",
+    "clean": "lerna clean && lerna exec --parallel -- rm -rf dist",
     "lerna:publish": "lerna publish",
     "lint": "eslint --ignore-path .eslintignore .",
     "lint:fix": "eslint --fix --ignore-path .eslintignore .",
