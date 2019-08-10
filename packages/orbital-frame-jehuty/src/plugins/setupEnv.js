@@ -12,7 +12,7 @@ function plugin ({ configService, environmentService }) {
           ADAPTER: 'slack'
         }
 
-        Object.entries(env).forEach(([ key, value ]) => environmentService.set(key, value))
+        Object.entries(env).forEach(([ key, value ]) => environmentService.set(key, value, true)) // set these as READONLY
       }
     }
   }

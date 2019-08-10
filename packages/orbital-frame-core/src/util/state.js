@@ -2,11 +2,19 @@ function state () {
   const store = {}
 
   return {
-    set (key, value) {
-      store[key] = value
+    set (key, value, readonly = false) {
+      const contained = store[key]
+      if (contained && contained.readonly) {
+        return false
+      }
+      store[key] = { value, readonly }
+      return true
     },
     get (key) {
-      return store[key]
+      const val = store[key]
+      if (val) {
+        return val.value
+      }
     }
   }
 }

@@ -1,5 +1,8 @@
 node_modules/
+packages/*/node_modules/
 coverage/
+packages/*/coverage/
 lerna-debug.log
 yarn-error.log
+packages/yarn-error.log
 .DS_Store*
