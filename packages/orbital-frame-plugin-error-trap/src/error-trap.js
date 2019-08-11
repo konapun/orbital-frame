@@ -1,7 +1,7 @@
 import { phase } from '@orbital-frame/core'
 
-function errorTrapPlugin ({ messengerService }) {
-  return Object.values(phase)
+export default ({ messengerService }) =>
+  Object.values(phase)
     .map(phaseKey => ({
       [phaseKey]: {
         error (e, { context }) {
@@ -16,6 +16,3 @@ function errorTrapPlugin ({ messengerService }) {
       }
     }))
     .reduce((acc, curr) => ({ ...acc, ...curr }), {})
-}
-
-export default errorTrapPlugin
