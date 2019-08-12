@@ -1,4 +1,4 @@
-import didYouMean from './did-you-mean'
+import didYouMean from './didYouMean'
 import { phase } from '@orbital-frame/core'
 
 const loadedCommands = [

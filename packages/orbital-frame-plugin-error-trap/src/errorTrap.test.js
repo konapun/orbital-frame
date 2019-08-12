@@ -1,5 +1,5 @@
 import { phase } from '@orbital-frame/core'
-import errorTrap from './error-trap'
+import errorTrap from './errorTrap'
 
 const messengerService = {
   respond: jest.fn()

@@ -1,5 +1,5 @@
 import { phase } from '@orbital-frame/core'
-import plugin from '../uptime-plugin'
+import plugin from '../uptimePlugin'
 
 const now = 12345
 Date.now = jest.spyOn(Date, 'now').mockImplementation(() => now)

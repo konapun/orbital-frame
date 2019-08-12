@@ -1,4 +1,4 @@
-import uptimePlugin from './uptime-plugin'
-import uptimeCommand from './uptime-command'
+import uptimePlugin from './uptimePlugin'
+import uptimeCommand from './uptimeCommand'
 
 export { uptimePlugin, uptimeCommand }
