@@ -61,6 +61,12 @@ describe('parser', () => {
     expect(parse(program)).toEqual({ body: [ { body: [ { body: [ { body: [ { body: [ 'test' ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Interpolation' } ], type: 'Pipeline' } ], type: 'Program' })
   })
 
+  it('should correctly parse an alias', () => {
+    const program = 'alias test-alias \'if $(not $(equal 1 1)) "not equal" "are equal"\''
+
+    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'alias', { body: [ 'test-alias' ], type: 'Argument' }, { body: [ 'if $(not $(equal 1 1)) "not equal" "are equal"' ], type: 'Argument' } ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
+  })
+
   it('should allow piping from an interpolation', () => {
     const program = 'test1 | $(test2) | test3'
 
