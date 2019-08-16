@@ -64,6 +64,9 @@ describe('command runtime wrapper', () => {
       s: 'string',
       string: 'string'
     })
+    // TODO: test calling order!
+    // test --boolean one two
+    // test one --boolean two
 
     await wrapper.execute([ 'test' ], {
       boolean: 'argument',
@@ -98,5 +101,32 @@ describe('command runtime wrapper', () => {
 
     await wrapper.execute([], { boolean: undefined })
     expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
+  })
+
+  it('should not promote boolean default values to args', async () => {
+    const command = {
+      name: 'test',
+      options: {
+        b: {
+          alias: 'boolean',
+          type: 'boolean',
+          default: false,
+          valid: () => true
+        }
+      },
+      execute: jest.fn()
+    }
+
+    const wrapper = commandWrapper(1, command)
+    await wrapper.execute([], {})
+    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false })
+
+    await wrapper.execute([], { boolean: undefined })
+    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
+  })
+
+  it('should ignore unknown options', () => {
+    // TODO: use the runtime validator instead
+    expect(true).toBeTrue()
   })
 })

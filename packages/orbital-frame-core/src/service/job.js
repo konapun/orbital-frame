@@ -42,6 +42,8 @@ const job = () => () => {
       return updated
     },
 
+    // TODO: add a way to cancel a job
+    // TODO: also store the command source that spawned the job
     status,
     find,
     findOne,

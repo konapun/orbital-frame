@@ -26,10 +26,13 @@ import xargs from './xargs'
 import join from './join'
 import list from './list'
 import head from './head'
+import tail from './tail'
 import quote from './quote'
 import range from './range'
 import repeat from './repeat'
 import channel from './channel'
+import lessThan from './lessThan'
+import greaterThan from './greaterThan'
 
 export default [
   uptimeCommand,
@@ -60,8 +63,11 @@ export default [
   join,
   list,
   head,
+  tail,
   quote,
   range,
   repeat,
-  channel
+  channel,
+  lessThan,
+  greaterThan
 ]

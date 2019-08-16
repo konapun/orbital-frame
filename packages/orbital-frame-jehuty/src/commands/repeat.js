@@ -8,7 +8,7 @@ export default () => ({
       alias: 'repeat',
       describe: 'Number of times to repeat',
       type: 'number',
-      default: 1
+      default: 2
     }
   },
   execute (args, { repeat }) {

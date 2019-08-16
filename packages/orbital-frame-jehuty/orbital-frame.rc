@@ -1,0 +1,2 @@
+TEST="yay it works"
+alias test-alias 'if $(not $(equal -s 1 1)) "they\'re not equal" "they are equal"'

@@ -1,5 +1,5 @@
 export default () => ({
   name: 'car',
   description: 'TODO',
-  execute: ([car]) => car
+  execute: ([ car ]) => car
 })
