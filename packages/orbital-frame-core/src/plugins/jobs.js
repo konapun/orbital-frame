@@ -10,7 +10,7 @@ const jobsPlugin = ({ jobService }) => {
   return {
     [phaseEnum.LISTEN]: {
       exit ({ context, state }) {
-        const { id } = context.message.user // TODO: make sure adapter follows this format
+        const { id } = context.message.user
         const job = jobService.create(id, { context })
         state.set(`${namespace}.job`, job)
       }
