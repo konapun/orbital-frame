@@ -7,7 +7,14 @@ function hubotAdapter (hubot) {
         const { user, text, room: channel } = message
 
         return callback({
-          message: { user, text, channel },
+          message: {
+            user: {
+              id: user.id,
+              name: user.name
+            },
+            text,
+            channel
+          },
           send (message) {
             response.send(message)
           },
