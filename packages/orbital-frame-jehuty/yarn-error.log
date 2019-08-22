@@ -1,52 +1,61 @@
 Arguments: 
-  /home/konapun/.nvm/versions/node/v10.15.1/bin/node /home/konapun/.nvm/versions/node/v10.15.1/bin/yarn install --mutex network:42424 --non-interactive
+  /home/konapun/.nvm/versions/node/v10.16.0/bin/node /usr/share/yarn/bin/yarn.js
 
 PATH: 
-  /mnt/e/breme/Documents/Projects/orbital-frame/packages/orbital-frame-jehuty/node_modules/.bin:/mnt/e/breme/Documents/Projects/orbital-frame/packages/node_modules/.bin:/mnt/e/breme/Documents/Projects/orbital-frame/node_modules/.bin:/mnt/e/breme/Documents/Projects/node_modules/.bin:/mnt/e/breme/Documents/node_modules/.bin:/mnt/e/breme/node_modules/.bin:/mnt/e/node_modules/.bin:/mnt/node_modules/.bin:/node_modules/.bin:/home/konapun/.nvm/versions/node/v10.15.1/bin:/home/konapun/bin:/home/konapun/.local/bin:/home/konapun/.nvm/versions/node/v10.15.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Program Files (x86)/PHP/php7:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Users/breme/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/breme/AppData/Roaming/npm:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Users/breme/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Users/breme/AppData/Local/Microsoft/WindowsApps:/snap/bin
+  /home/konapun/.vscode-server/bin/f06011ac164ae4dc8e753a3fe7f9549844d15e35/bin:/home/konapun/.nvm/versions/node/v10.16.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Users/Bremen/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Bremen/AppData/Local/Programs/Microsoft VS Code/bin:/home/konapun/.fzf/bin
 
 Yarn version: 
-  1.13.0
+  1.17.3
 
 Node version: 
-  10.15.1
+  10.16.0
 
 Platform: 
   linux x64
 
 Trace: 
   Error: https://registry.yarnpkg.com/@orbital-frame%2fcore: Not found
-      at Request.params.callback [as _callback] (/home/konapun/.nvm/versions/node/v10.15.1/lib/node_modules/yarn/lib/cli.js:66255:18)
-      at Request.self.callback (/home/konapun/.nvm/versions/node/v10.15.1/lib/node_modules/yarn/lib/cli.js:129397:22)
-      at Request.emit (events.js:189:13)
-      at Request.<anonymous> (/home/konapun/.nvm/versions/node/v10.15.1/lib/node_modules/yarn/lib/cli.js:130369:10)
-      at Request.emit (events.js:189:13)
-      at IncomingMessage.<anonymous> (/home/konapun/.nvm/versions/node/v10.15.1/lib/node_modules/yarn/lib/cli.js:130291:12)
-      at Object.onceWrapper (events.js:277:13)
-      at IncomingMessage.emit (events.js:194:15)
-      at endReadableNT (_stream_readable.js:1103:12)
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66830:18)
+      at Request.self.callback (/usr/share/yarn/lib/cli.js:140464:22)
+      at Request.emit (events.js:198:13)
+      at Request.<anonymous> (/usr/share/yarn/lib/cli.js:141436:10)
+      at Request.emit (events.js:198:13)
+      at IncomingMessage.<anonymous> (/usr/share/yarn/lib/cli.js:141358:12)
+      at Object.onceWrapper (events.js:286:20)
+      at IncomingMessage.emit (events.js:203:15)
+      at endReadableNT (_stream_readable.js:1129:12)
       at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
-  	"name": "@orbital-frame/jehuty",
-  	"private": true,
-  	"author": "Bremen Braun (konapun)",
-  	"description": "Command line as a chatbot",
-  	"dependencies": {
-  		"@orbital-frame/core": "^1.0.1",
-  		"hubot": "^2.19.0",
-  		"hubot-diagnostics": "0.0.2",
-  		"hubot-heroku-keepalive": "^1.0.3",
-  		"hubot-redis-brain": "0.0.4",
-  		"hubot-scripts": "^2.17.2",
-  		"hubot-shipit": "^0.2.1",
-  		"hubot-slack": "^4.5.2",
-  		"mathjs": "^5.2.0"
-  	},
-  	"engines": {
-  		"node": "0.10.x"
-  	},
-  	"version": "0.1.3"
+    "name": "@orbital-frame/jehuty",
+    "private": true,
+    "author": "Bremen Braun (konapun)",
+    "description": "Command line as a chatbot",
+    "scripts": {
+      "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+      "@orbital-frame/core": "^0.1.3",
+      "@orbital-frame/plugin-did-you-mean": "^0.1.3",
+      "@orbital-frame/plugin-error-trap": "^0.1.3",
+      "@orbital-frame/plugin-rc": "^0.1.3",
+      "@orbital-frame/plugin-restrict-commands": "^0.1.3",
+      "@orbital-frame/plugin-uptime": "^0.1.3",
+      "hubot": "^2.19.0",
+      "hubot-diagnostics": "0.0.2",
+      "hubot-heroku-keepalive": "^1.0.3",
+      "hubot-redis-brain": "0.0.4",
+      "hubot-scripts": "^2.17.2",
+      "hubot-shipit": "^0.2.1",
+      "hubot-slack": "^4.5.2",
+      "lodash": "^4.17.13",
+      "mathjs": "^5.2.0"
+    },
+    "engines": {
+      "node": "0.10.x"
+    },
+    "version": "0.1.3"
   }
 
 yarn manifest: 
@@ -720,7 +729,7 @@ Lockfile:
       json-schema "0.2.3"
       verror "1.10.0"
   
-  lodash@^4.13.1, lodash@^4.17.10:
+  lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11:
     version "4.17.11"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   
