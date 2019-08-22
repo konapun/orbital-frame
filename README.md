@@ -1,5 +1,6 @@
 # O R B I T A L  -  F R A M E
 **UNIX Command Line as a Chatbot**
+[![Build Status](https://travis-ci.org/konapun/orbital-frame.svg?branch=master)](https://travis-ci.org/konapun/orbital-frame)
 
 There are many bots that allow one to create custom commands. This bot
 framework, however, provides that ability along with the power and flexibility
