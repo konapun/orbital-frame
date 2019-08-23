@@ -55,7 +55,7 @@ describe('command service', () => {
     expect(Object.keys(commandLoader.registry)).toEqual([ 'test1', 'valid', 'test2', 'test3' ])
   })
 
-  it('should provide a process ID to commands invoked via the command service', () => {
+  xit('should provide a process ID to commands invoked via the command service', () => {
     let context
     commandLoader.load(() => ({
       name: 'pid-test',
