@@ -70,6 +70,6 @@ describe('parser', () => {
   it('should allow piping from an interpolation', () => {
     const program = 'test1 | $(test2) | test3'
 
-    expect(parse(program)).toEqual() // TODO:
+    expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test1' ], type: 'Command' }, { body: [ { body: [ { body: [ 'test2' ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Interpolation' }, { body: [ 'test3' ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
   })
 })

@@ -12,7 +12,7 @@ Assignment
   = variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value ] } }
 
 Pipeline
-  = _ command:Command _ rest:("|" _ Command)* {
+  = _ command:Command _ rest:("|" _ Command _)* {
       const commands = rest.map(part => part[2])
       return { type: "Pipeline", body: [ command, ...commands ] }
     }

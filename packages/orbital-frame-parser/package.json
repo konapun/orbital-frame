@@ -6,7 +6,7 @@
     "dist"
   ],
   "scripts": {
-    "build:parser": "./node_modules/.bin/pegjs src/grammar/unix.pegjs",
+    "build": "./node_modules/.bin/pegjs src/grammar/unix.pegjs",
     "test:coverage": "jest --coverage"
   },
   "author": "Bremen Braun (konapun)",
