@@ -13,10 +13,11 @@
   },
   "homepage": "https://github.com/konapun/orbital-frame#readme",
   "scripts": {
-    "dev": "lerna bootstrap && yarn build",
+    "bootstrap": "lerna bootstrap",
     "build": "NODE_ENV=production lerna exec --parallel -- babel src -d dist",
     "watch": "NODE_ENV=production lerna exec --parallel -- babel src -d dist --watch",
     "clean": "lerna clean && lerna exec --parallel -- rm -rf dist",
+    "dev": "yarn bootstrap && yarn build",
     "lerna:publish": "lerna publish",
     "lint": "eslint --ignore-path .eslintignore .",
     "lint:fix": "eslint --fix --ignore-path .eslintignore .",

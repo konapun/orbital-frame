@@ -1,4 +1,8 @@
 language: node_js
 install:
   - yarn install
-  - yarn dev
+  - yarn bootstrap
+script:
+  - yarn lint
+  - yarn build
+  - yarn test
