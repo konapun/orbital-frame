@@ -1,5 +1,6 @@
 import compilerService from '../compiler'
 
+/* eslint-disable no-unused-vars */
 let compiler, commandService, environmentService
 
 const testCommand1 = {
