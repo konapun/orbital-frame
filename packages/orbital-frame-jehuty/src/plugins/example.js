@@ -1,5 +1,6 @@
 import { phase } from '@orbital-frame/core'
 
+/* eslint-disable no-console */
 function plugin ({ configService }) {
   return {
     [phase.LOAD_PLUGINS]: { // phases before exiting LOAD_PLUGINS aren't available for extension via plugins since they're not yet loaded

@@ -2,7 +2,8 @@ function su () {
   return {
     name: 'su',
     description: 'Execute a command as another user',
-    execute (args, opts) {
+    execute () {
+      // TODO:
     }
   }
 }

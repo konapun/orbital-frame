@@ -5,7 +5,7 @@ export default ({ compilerService }) => ({
   format (output) {
     return output // TODO:
   },
-  execute (args, opts) {
+  execute (args) {
     const compiled = compilerService.compile(args.join(' '))
     return compiled()
   }

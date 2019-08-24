@@ -12,8 +12,7 @@ const interaction = () => ({ jobService, listenerService, messengerService }) =>
       async prompt (string) {
         return new Promise(resolve => {
           messengerService.respond(context, string)
-          let stream
-          stream = channelListener.pipe(({ message }) => {
+          const stream = channelListener.pipe(({ message }) => {
             const { user, text } = message
             if (user.id === userId) {
               stream.detach()

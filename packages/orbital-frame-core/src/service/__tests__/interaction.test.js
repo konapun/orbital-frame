@@ -45,8 +45,8 @@ describe('interaction service', () => {
   })
 
   it('should run interaction channels for separate PIDs separately', async () => {
-    const channel1 = await interaction.createInteractionChannel(2)
-    const channel2 = await interaction.createInteractionChannel(3)
+    // const channel1 = await interaction.createInteractionChannel(2)
+    // const channel2 = await interaction.createInteractionChannel(3)
 
     // TODO:
   })

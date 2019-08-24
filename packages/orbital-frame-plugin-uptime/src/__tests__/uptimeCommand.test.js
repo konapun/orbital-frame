@@ -1,4 +1,3 @@
-import { phase } from '@orbital-frame/core'
 import command from '../uptimeCommand'
 
 const now = 2000

@@ -3,7 +3,7 @@ import { phaseEnum } from '../lifecycle'
 /**
  * Populate variables such as $$, $0, $1, $#, etc.
  */
-const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
+const specialVariablesPlugin  = ({ environmentService }) => ({
   [phaseEnum.LOAD_PLUGINS]: {
     exit () {
       // TODO:
@@ -40,7 +40,7 @@ const specialVariablesPlugin  = ({ jobService, environmentService }) => ({
      * $*: all arguments on the command line
      *
      */
-    enter ({ command }) { // TODO: command needs its withMetadata compatriots. This should be done in lifecycle
+    enter () { // TODO: command needs its withMetadata compatriots. This should be done in lifecycle
       // TODO: probably need more command data, not just the compiled command
       // console.log('Executing command with id', command.pid)
     },

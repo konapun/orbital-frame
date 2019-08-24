@@ -1,9 +1,9 @@
-import { phase } from '@orbital-frame/core'
-import rcPlugin from './loadRc'
+// import { phase } from '@orbital-frame/core'
+// import rcPlugin from './loadRc'
 
-const compilerService = {
-  compile: jest.fn(() => jest.fn())
-}
+// const compilerService = {
+//   compile: jest.fn(() => jest.fn())
+// }
 
 describe('Load RC plugin', () => {
   it('should throw an error if unable to open a file', () => {

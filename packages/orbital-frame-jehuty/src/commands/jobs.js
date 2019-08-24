@@ -15,7 +15,7 @@ function jobs ({ jobService }) {
   }
 }
 
-const jobToString = ({ id, userId, status, started, finished, output }) => {
+const jobToString = ({ id, userId, status, started, finished }) => {
   const baseString = [
     `ID: ${id}`,
     `Invoker ID: ${userId}`,

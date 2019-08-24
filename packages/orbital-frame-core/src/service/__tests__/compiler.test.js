@@ -32,46 +32,47 @@ beforeEach(() => {
 
 describe('compiler service', () => {
   it('should work with single commands', async () => {
-    // const executable = compiler.compile('testCommand1')
-    // await executable()
+    const executable = compiler.compile('testCommand1')
+    await executable()
+    // TODO:
     // expect(testCommand1).toHaveBeenCalledWith()
     // test opts
     // test args
   })
 
   it('should work with pipes', () => {
-
+    // TODO:
   })
 
   it('should work with variables', () => {
-
+    // TODO:
   })
 
   it('should work with interpolated arguments', () => {
-
+    // TODO:
   })
 
   it('should work with interpolated option values', () => {
-
+    // TODO:
   })
 
   it('should work with asynchronous interpolated arguments', () => {
-
+    // TODO:
   })
 
-  it('should work with asynchronouse interpolated option values', () => {
-
+  it('should work with asynchronous interpolated option values', () => {
+    // TODO:
   })
 
   it('should work with nested interpolations', () => {
-
+    // TODO:
   })
 
   it('should work with condensed single options', () => {
-
+    // TODO:
   })
 
   it('should work with asynchronous interpolations with pipes', () => {
-
+    // TODO:
   })
 })

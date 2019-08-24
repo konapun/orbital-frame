@@ -1,4 +1,4 @@
-export default ({ channelService }) => ({
+export default () => ({
   name: 'channel',
   description: 'Get channel information',
   options: {
@@ -14,7 +14,7 @@ export default ({ channelService }) => ({
       default: 2
     }
   },
-  execute (args, opts) {
+  execute () {
     // TODO:
   }
 })

@@ -1,4 +1,4 @@
-function whoami ({ jobService, userService }) {
+function whoami ({ userService }) {
   return {
     name: 'whoami',
     description: 'TODO',
