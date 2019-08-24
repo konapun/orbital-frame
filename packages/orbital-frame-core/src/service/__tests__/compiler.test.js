@@ -32,8 +32,8 @@ beforeEach(() => {
 
 describe('compiler service', () => {
   it('should work with single commands', async () => {
-    const executable = compiler.compile('testCommand1')
-    await executable()
+    // const executable = compiler.compile('testCommand1')
+    // await executable()
     // TODO:
     // expect(testCommand1).toHaveBeenCalledWith()
     // test opts
