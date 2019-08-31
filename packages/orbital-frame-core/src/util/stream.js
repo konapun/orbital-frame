@@ -3,7 +3,7 @@ function stream () {
   let listeners = []
   let open = true
 
-  const detach = streamId => {
+  const end = streamId => {
     listeners = listeners.filter(({ id: listenerId }) => listenerId !== streamId)
   }
 
@@ -19,7 +19,7 @@ function stream () {
 
       const continuation = {
         pipe: segmentReader.pipe,
-        detach: detach.bind(null, ++id)
+        end: end.bind(null, ++id)
       }
 
       listeners.push({ id, call: onWrite })

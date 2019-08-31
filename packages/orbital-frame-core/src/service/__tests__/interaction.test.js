@@ -16,10 +16,10 @@ beforeEach(() => {
         pipe (fn) {
           listenCallback = fn
           return {
-            detach: jest.fn()
+            end: jest.fn()
           }
         },
-        detach: jest.fn()
+        end: jest.fn()
       }
     }
   }

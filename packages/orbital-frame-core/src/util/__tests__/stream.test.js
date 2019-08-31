@@ -177,7 +177,7 @@ describe('stream', () => {
     expect(segment3b1Data).toBe(6)
   })
 
-  it('should allow pipes to be detached', async () => {
+  it('should allow pipes to be ended', async () => {
     const { reader, writer } = stream()
 
     let pipeData
@@ -191,11 +191,11 @@ describe('stream', () => {
     await writer.send('data')
     expect(pipeData).toBe('Pipe2: data')
 
-    pipe2.detach()
+    pipe2.end()
     await writer.send('data2')
     expect(pipeData).toBe('Pipe1: data2')
 
-    pipe1.detach()
+    pipe1.end()
     await writer.send('data3')
     expect(pipeData).toBe('Pipe1: data2')
   })

@@ -15,7 +15,7 @@ const interaction = () => ({ jobService, listenerService, messengerService }) =>
           const stream = channelListener.pipe(({ message }) => {
             const { user, text } = message
             if (user.id === userId) {
-              stream.detach()
+              stream.end()
               resolve(text.substring(prompt.length))
             }
           })
