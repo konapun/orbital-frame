@@ -18,7 +18,10 @@ const jobsPlugin = ({ jobService }) => {
     [phaseEnum.EXECUTE]: {
       enter ({ command, state }) {
         const job = state.get(`${namespace}.job`)
-        jobService.update(job.id, { command }) // command can be linked back to job by command.id
+        jobService.update(job.id, {
+          command, // command can be linked back to job by command.id
+          status: jobService.status.RUNNING
+        })
       },
       exit ({ output, state }) {
         const job = state.get(`${namespace}.job`)
