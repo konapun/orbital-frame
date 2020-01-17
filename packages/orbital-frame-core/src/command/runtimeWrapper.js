@@ -37,9 +37,11 @@ function wrapper (pid, command) {
     pid
   }
 
+  const metadata = { pid }
+
   return {
     async execute (args, opts) {
-      return await execute.call(executionContext, ...redistributeArgsOpts(args, opts))
+      return await execute.call(executionContext, ...redistributeArgsOpts(args, opts), metadata)
     }
   }
 }

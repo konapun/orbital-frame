@@ -18,7 +18,10 @@ const jobsPlugin = ({ jobService }) => {
     [phaseEnum.EXECUTE]: {
       enter ({ command, state }) {
         const job = state.get(`${namespace}.job`)
-        jobService.update(job.id, { command }) // command can be linked back to job by command.id
+        jobService.update(job.id, {
+          command, // command can be linked back to job by command.id
+          status: jobService.status.RUNNING // TODO: enforce that this status accurately reflects the state of running commands; if a user copies the interaction service functionality without going through it the correct behavior with regards to fg/bg processes should remain intact
+        })
       },
       exit ({ output, state }) {
         const job = state.get(`${namespace}.job`)

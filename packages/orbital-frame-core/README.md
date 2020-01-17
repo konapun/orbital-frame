@@ -127,7 +127,8 @@ that prompt the user or start up an embedded shell to run its own commands.
 **MESSAGES INTERCEPTED BY `prompt` MUST START WITH A `>` IN ORDER TO DISTINGUISH
 SUBCOMMANDS FROM NON-ORBITAL FRAME INPUT**
   * **createInteractionChannel** `Number pid` Create a channel for interacting with a user by command PID
-    * **prompt** `String message -> Promise<Any>` Prompt the user for input
+    * **prompt** `String message -> Promise<Message>` Prompt the user for input
+    * **observe** `Object config -> Stream` Create an interaction listener stream
     * **send** `String message` Send text to the user
 
 #### Example
@@ -140,11 +141,11 @@ const interactiveCommand = ({ interactionService }) => ({
     return `Name: ${name}, Age: ${age}`
   },
   async execute () {
-    const pid = this.pid // every command is assigned a unique pid on execute
+    const pid = this.pid // every command is assigned a unique pid on execute. The pid is also passed inside the metadata object as the third argument to `execute`
     const interaction = await interactionService.createInteractionChannel(pid)
 
-    const name = await interaction.prompt('What is your name?')
-    const age = await interaction.prompt('What is your age?')
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: age } = await interaction.prompt('What is your age?')
 
     return { name, age }
   }
@@ -310,14 +311,15 @@ a plugin function) and returns an object with the following structure:
     * **required** whether or not the option is required
     * **default** a default value for the option if the option isn't explicitly set
     * **valid** `Object<String, Any>, Array<Any> -> Boolean` validator for the option value
-  * **execute** `Array<Any>, Object<String, Any> -> Any` a function which takes an array of arguments and a map of option keys to values from the command line and returns a value
+  * **execute** `Array<Any> arguments, Object<String, Any> options, Object<String, Any> metadata -> Any` a function which takes an array of arguments, a map of option keys to values from the command line, and execution metadata and returns a value
   * **format** `Any -> String` a function which takes as input the output from `execute` and returns a formatted string for display
 
 Commands are assigned a unique ID on execute which can be accessed within
-execute as `this.pid`. For this reason it's encouraged that you don't use arrow
-functions to define execute as `this` won't have the required context needed to
-retrieve the command's PID (a practical usage of PID is shown in the example for
-"Interactive Commands").
+execute as `this.pid` or in the execute function's third argument which is its
+`metadata`. In order to get the pid from `this` context you **MUST** use
+function notation instead of arrow notation. Either style of function can
+retrieve the PID from execute's third argument. A practical usage of PID is
+shown in the example for "Interactive Commands".
 
 ### Example Command
 ```js
@@ -358,13 +360,35 @@ const interactiveCommand = ({ interactionService }) => ({
     const pid = this.pid // every command is assigned a unique pid on execute
     const interaction = await interactionService.createInteractionChannel(pid)
 
-    const name = await interaction.prompt('What is your name?')
-    const color = await interaction.prompt('What is your favorite color scheme?')
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: color } = await interaction.prompt('What is your favorite color scheme?')
 
     return { name, color }
   }
 })
 ```
+
+Alternatively, the previous command can be defined using arrow notation for
+execute:
+
+```js
+const interactiveCommand = ({ interactionService }) => ({
+  name: 'test-interactive',
+  description: 'Test interactive commands',
+  format ({ name, age }) {
+    return `Name: ${name}, Color: ${color}`
+  },
+  execute: async (args, opts, { pid }) => {
+    const interaction = await interactionService.createInteractionChannel(pid)
+
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: color } = await interaction.prompt('What is your favorite color scheme?')
+
+    return { name, color }
+  }
+})
+```
+
 #### Example usage
 ```sh
 @jehuty test-interactive

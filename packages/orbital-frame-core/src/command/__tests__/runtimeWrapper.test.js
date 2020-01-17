@@ -30,6 +30,8 @@ describe('command runtime wrapper', () => {
       option1: 'value1',
       b: 'value2',
       option2: 'value2'
+    }, {
+      pid: 1
     })
   })
 
@@ -63,6 +65,8 @@ describe('command runtime wrapper', () => {
       boolean: true,
       s: 'string',
       string: 'string'
+    }, {
+      pid: 1
     })
     // TODO: test calling order!
     // test --boolean one two
@@ -78,6 +82,8 @@ describe('command runtime wrapper', () => {
       boolean: true,
       s: 'string',
       string: 'string'
+    }, {
+      pid: 1
     })
   })
 
@@ -97,10 +103,10 @@ describe('command runtime wrapper', () => {
     const wrapper = commandWrapper(1, command)
 
     await wrapper.execute([], {})
-    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false })
+    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false }, { pid: 1 })
 
     await wrapper.execute([], { boolean: undefined })
-    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
+    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true }, { pid: 1 })
   })
 
   it('should not promote boolean default values to args', async () => {
@@ -119,14 +125,31 @@ describe('command runtime wrapper', () => {
 
     const wrapper = commandWrapper(1, command)
     await wrapper.execute([], {})
-    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false })
+    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false }, { pid: 1 })
 
     await wrapper.execute([], { boolean: undefined })
-    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true })
+    expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true }, { pid: 1 })
   })
 
   it('should ignore unknown options', () => {
     // TODO: use the runtime validator instead
     expect(true).toBeTrue()
+  })
+
+  it('should provide pid as a property on the execute function', async () => {
+    let innerPid
+    const command = {
+      name: 'test',
+      options: {},
+      execute: jest.fn(function () {
+        innerPid = this.pid
+      })
+    }
+
+    const wrapper = commandWrapper(1, command)
+    await wrapper.execute([], {})
+
+    expect(command.execute).toHaveBeenCalledWith([], {}, { pid: 1 })
+    expect(innerPid).toBe(1)
   })
 })

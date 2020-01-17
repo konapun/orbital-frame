@@ -6,6 +6,8 @@ const jobs = {}
 
 const status = {
   PENDING: 'pending',
+  RUNNING: 'running',
+  PAUSED: 'paused', // if a command is backgrounded
   FULFILLED: 'fulfilled',
   REJECTED: 'rejected'
 }
@@ -42,8 +44,7 @@ const job = () => () => {
       return updated
     },
 
-    // TODO: add a way to cancel a job
-    // TODO: also store the command source that spawned the job
+    // TODO: also store the command source that spawned the job (or is this already done?)
     status,
     find,
     findOne,

@@ -31,3 +31,10 @@ which is ready right out of the box.
 @jehuty alias test-alias 'if $(not $(equal 1 1)) "they're not equal" "they are equal"'
 @jehuty test-alias
 ```
+
+## Developing
+This project uses [yarn](https://github.com/yarnpkg/yarn). See yarn's [installation guide](https://yarnpkg.com/en/docs/install) for installation instructions.
+You can bootstrap the monorepo by running
+```
+yarn dev
+```
