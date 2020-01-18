@@ -32,7 +32,7 @@ function wrapper (pid, command) {
     return [ [ ...additionalArgs, ...args ], { ...defaults, ...redistributedOpts } ]
   }
 
-  const executionContext = {
+  const executionContext = { // properties that will be available via `this`
     ...command,
     pid
   }

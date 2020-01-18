@@ -13,10 +13,10 @@ describe('command wrapper', () => {
     const command = wrapper(definition)
 
     command.execute('scalar')
-    expect(execute).toHaveBeenCalledWith([ 'scalar' ], {})
+    expect(execute).toHaveBeenCalledWith([ 'scalar' ], {}, {})
 
     command.execute([ 'array' ], { option: 'option' })
-    expect(execute).toHaveBeenCalledWith([ 'array' ], { option: 'option' })
+    expect(execute).toHaveBeenCalledWith([ 'array' ], { option: 'option' }, {})
   })
 
   it('should preserve the calling context to the wrapped command', () => {
