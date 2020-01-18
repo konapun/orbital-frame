@@ -217,4 +217,20 @@ describe('stream', () => {
 
     expect(message).toBe('Attempting to write to a closed stream')
   })
+
+  it('should stop downstream pipes if data is null or undefined', async () => {
+    const { reader, writer } = stream()
+
+    let pipe1
+    const pipe2fn = jest.fn()
+    reader.pipe(data => {
+      pipe1 = data
+      return null
+    }).pipe(pipe2fn)
+
+    writer.send(10)
+
+    expect(pipe1).toBe(10)
+    expect(pipe2fn).not.toHaveBeenCalled()
+  })
 })

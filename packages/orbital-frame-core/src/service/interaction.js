@@ -1,5 +1,3 @@
-import stream from '../util/stream'
-
 const prompt = '>'
 
 /**
@@ -8,7 +6,7 @@ const prompt = '>'
 const interaction = () => ({ jobService, listenerService, messengerService }) => ({
   async createInteractionChannel (commandId, userIds = []) {
     const { context, userId } = await jobService.findOne({ 'command.pid': commandId })
-    const participants = [ userId, ...userIds ]
+    const members = [ userId, ...userIds ]
     const channelListener = listenerService.listen(`^${prompt}`)
       .pipe(({ message }) => ({ // format stream contents before downstream consumers
         ...message,
@@ -16,12 +14,12 @@ const interaction = () => ({ jobService, listenerService, messengerService }) =>
       }))
 
     return {
-      async prompt (string, respondentUserIds = participants) { // get result from first user who answers
+      async prompt (string, participantIds = members) { // get result from first user who answers
         return new Promise(resolve => {
           messengerService.respond(context, string)
           const stream = channelListener.pipe(message => {
             const { user } = message
-            if (respondentUserIds.includes(user.id)) {
+            if (participantIds.includes(user.id)) {
               stream.end()
               resolve(message)
             }
@@ -29,17 +27,11 @@ const interaction = () => ({ jobService, listenerService, messengerService }) =>
         })
       },
 
-      observe ({ participants = participants, closeStream = tautology }) {
-        const observerStream = stream()
-        const channelStream = channelListener.pipe(message => {
+      observe (participantIds = members) {
+        const observerStream = channelListener.pipe(message => {
           const { user } = message
-          if (participants.includes(user.id)) {
-            if (closeStream()) {
-              channelStream.end()
-              observerStream.end()
-            }
-
-            observerStream.pipe(message)
+          if (participantIds.includes(user.id)) {
+            return message
           }
         })
 
@@ -52,7 +44,5 @@ const interaction = () => ({ jobService, listenerService, messengerService }) =>
     }
   }
 })
-
-const tautology = () => true
 
 export default interaction
