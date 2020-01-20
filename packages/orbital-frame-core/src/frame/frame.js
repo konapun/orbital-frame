@@ -2,7 +2,8 @@ import adapter from './adapter'
 
 const defaults = {
   name: 'orbital-frame',
-  ps2: '>',
+  ps1: '@', // symbol used to hail a user
+  ps2: '>', // symbol used to engage an interaction
   commands: [],
   plugins: [],
   adapter: adapter.HUBOT
@@ -15,9 +16,10 @@ const defaults = {
 function frame (sensors, options) {
   const { name, ps2, commands, plugins, adapter } = { ...defaults, ...options }
 
-  const { hear, send, getUsers, getChannels } = adapter(sensors)
+  const { ps1, hear, send, getUsers, getChannels } = adapter(sensors)
   return {
     name,
+    ps1,
     ps2,
     commands,
     plugins,
