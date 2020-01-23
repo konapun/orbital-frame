@@ -4,10 +4,10 @@
  */
 const process = ({ compilerService }) => next => args => {
   const { context } = args
-  const message = context.message.text.split(/\s+/).splice(1).join(' ')
-  const { command, metadata } = compilerService.compileWithMetadata(message)
+  const source = context.message.text.split(/\s+/).splice(1).join(' ')
+  const { command, metadata } = compilerService.compileWithMetadata(source)
 
-  next({ ...args, command, metadata })
+  next({ ...args, source, command, metadata })
 }
 
 export default process

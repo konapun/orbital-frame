@@ -15,12 +15,13 @@ function jobs ({ jobService }) {
   }
 }
 
-const jobToString = ({ id, userId, status, started, finished }) => {
+const jobToString = ({ id, userId, status, started, finished, source }) => {
   const baseString = [
     `ID: ${id}`,
     `Invoker ID: ${userId}`,
     `Status: ${status}`,
-    `Started: ${started}`
+    `Started: ${started}`,
+    `Source: ${source}`
   ]
   return (finished ?
     baseString.concat([

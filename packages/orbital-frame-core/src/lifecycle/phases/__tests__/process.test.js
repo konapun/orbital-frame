@@ -17,6 +17,6 @@ describe('process phase', () => {
     process({ compilerService })(next)(args)
 
     expect(compilerService.compileWithMetadata).toHaveBeenCalledWith('mount vulcan-gun')
-    expect(next).toHaveBeenCalledWith({ ...args, command: 'command', metadata: 'metadata' })
+    expect(next).toHaveBeenCalledWith({ ...args, source: 'mount vulcan-gun', command: 'command', metadata: 'metadata' })
   })
 })

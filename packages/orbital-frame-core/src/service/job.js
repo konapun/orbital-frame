@@ -29,6 +29,7 @@ const job = () => () => {
         userId,
         context: null,
         command: null,
+        source: null,
         status: status.PENDING,
         started: Date.now(),
         finished: null,

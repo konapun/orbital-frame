@@ -17,6 +17,14 @@ const jobsPlugin = ({ jobService }) => {
         state.set(`${namespace}.job`, job)
       }
     },
+    [phaseEnum.PROCESS]: {
+      exit ({ source, state }) {
+        const job = state.get(`${namespace}.job`)
+        jobService.update(job.id, {
+          source
+        })
+      }
+    },
     [phaseEnum.EXECUTE]: {
       enter ({ command, state }) {
         const job = state.get(`${namespace}.job`)
