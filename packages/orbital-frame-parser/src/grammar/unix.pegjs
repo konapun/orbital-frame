@@ -38,14 +38,14 @@ LongOption
   = "--" name:Word _ arg:Argument? { return { type: "Option", body: [ name, arg ] } }
 
 ShortOption
-  = "-" options:Letter+ _ arg:Argument? {
+  = "-" options:LetterOrDigit+ _ arg:Argument? {
       const chainArgument = {
         type: "Argument",
         body: []
       }
       return options
-        .map((letter, index) => {
-          return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }
+        .map((letterOrDigit, index) => {
+          return { type: "Option", body: [ letterOrDigit, index === options.length -1 ? arg : chainArgument ] }
         })
     }
 
@@ -86,6 +86,6 @@ Variable
 
 Word = word:([a-zA-Z0-9_%\+\*\^\?\!][a-zA-Z0-9_%\+\*\^\?\!\-]*) { const [ start, rest ] = word; return [ start, ...rest ].join('')  }
 
-Letter = [a-zA-Z]
+LetterOrDigit = [a-zA-Z0-9]
 
 _  = [ \t\r\n]*

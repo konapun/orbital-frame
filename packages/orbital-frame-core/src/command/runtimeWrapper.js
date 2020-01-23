@@ -32,14 +32,16 @@ function wrapper (pid, command) {
     return [ [ ...additionalArgs, ...args ], { ...defaults, ...redistributedOpts } ]
   }
 
-  const executionContext = {
+  const executionContext = { // properties that will be available via `this`
     ...command,
     pid
   }
 
+  const metadata = { pid }
+
   return {
     async execute (args, opts) {
-      return await execute.call(executionContext, ...redistributeArgsOpts(args, opts))
+      return await execute.call(executionContext, ...redistributeArgsOpts(args, opts), metadata)
     }
   }
 }

@@ -33,6 +33,8 @@ import repeat from './repeat'
 import channel from './channel'
 import lessThan from './lessThan'
 import greaterThan from './greaterThan'
+import observer from './observer'
+import kill from './kill'
 
 export default [
   uptimeCommand,
@@ -69,5 +71,7 @@ export default [
   repeat,
   channel,
   lessThan,
-  greaterThan
+  greaterThan,
+  observer,
+  kill
 ]

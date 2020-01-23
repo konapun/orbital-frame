@@ -40,4 +40,12 @@ describe('jobs plugin', () => {
 
     // expect(jobService.update).toHaveBeenCalledWith()
   })
+
+  it('should clean up fulfilled jobs', () => {
+
+  })
+
+  it('should clean up rejected jobs', () => {
+
+  })
 })

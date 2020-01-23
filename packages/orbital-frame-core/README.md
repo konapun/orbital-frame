@@ -127,7 +127,8 @@ that prompt the user or start up an embedded shell to run its own commands.
 **MESSAGES INTERCEPTED BY `prompt` MUST START WITH A `>` IN ORDER TO DISTINGUISH
 SUBCOMMANDS FROM NON-ORBITAL FRAME INPUT**
   * **createInteractionChannel** `Number pid` Create a channel for interacting with a user by command PID
-    * **prompt** `String message -> Promise<Any>` Prompt the user for input
+    * **prompt** `String message -> Promise<Message>` Prompt the user for input
+    * **observe** `Object config -> Stream` Create an interaction listener stream
     * **send** `String message` Send text to the user
 
 #### Example
@@ -140,11 +141,11 @@ const interactiveCommand = ({ interactionService }) => ({
     return `Name: ${name}, Age: ${age}`
   },
   async execute () {
-    const pid = this.pid // every command is assigned a unique pid on execute
+    const pid = this.pid // every command is assigned a unique pid on execute. The pid is also passed inside the metadata object as the third argument to `execute`
     const interaction = await interactionService.createInteractionChannel(pid)
 
-    const name = await interaction.prompt('What is your name?')
-    const age = await interaction.prompt('What is your age?')
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: age } = await interaction.prompt('What is your age?')
 
     return { name, age }
   }
@@ -211,6 +212,85 @@ import myPlugin from './my-plugin'
 const example = ({ pluginService }) => {
   pluginService.load(myPlugin)
 }
+```
+
+### signalService
+The signal service allows commands to specify signal handlers and allows other
+commands to send signals to running jobs. Unlike real UNIX, orbital-frame does
+not have access to allocated resources like file handles or anything else that
+may need to be destroyed upon SIGKILL so signals can only be sent to "friendly"
+jobs that manually specify their own signal handlers. Attempts to send a signal
+to a job that doesn't handle that signal will result in a catchable error being
+thrown.
+
+#### Available Signals
+  * **SIGINT** (signal number 1) - analogous to SIGINT in UNIX; a command implementing a handler for this signal should cleanup and halt immediately if possible
+  * **SIGSTP** (signal number 2) - analogous to SIGSTP in UNIX; a command implementing a handler for this signal should pause and allow itself to be resumed by SIGRES
+  * **SIGRES** (signal number 3) - (no UNIX analog); a command implementing a handler for this signal should resume if paused by SIGSTP
+
+#### Example
+##### Handler
+```js
+const example = ({ interactionService, signalService }) => ({
+  name: 'observer',
+  description: 'Testing observable interactions',
+  async execute () {
+    const pid = this.pid
+
+    const interaction = await interactionService.createInteractionChannel(pid)
+    const signalHandler = await signalService.createSignalHandler(pid)
+    const stream = interaction.observe()
+
+    return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGINT, () => {
+        stream.end()
+        resolve('Caught signal SIGINT; exiting')
+      })
+
+      stream.pipe(({ user, text }) => {
+        if (text === 'exit') {
+          resolve('Exiting')
+          stream.end()
+        } else {
+          interaction.send(`User ${user.name} sent message: ${text}`)
+        }
+      })
+    })
+  }
+})
+
+```
+
+##### Sender
+```js
+export default ({ signalService, jobService }) => ({
+  name: 'kill',
+  description: 'Send a signal to a job',
+  options: {
+    1: {
+      alias: 'SIGINT',
+      type: 'boolean',
+      describe: 'Request a job to interrupt'
+    },
+    2: {
+      alias: 'SIGSTP',
+      type: 'boolean',
+      describe: 'Request a job to stop'
+    },
+    3: {
+      alias: 'SIGRES',
+      type: 'boolean',
+      describe: 'Request a job to resume'
+    }
+  },
+  async execute ([ jobId ], { SIGSTP, SIGRES }) {
+    const signal = SIGRES ? 3 : SIGSTP ? 2 : 1
+
+    const { command } = await jobService.findOne({ id: jobId })
+    signalService.send(command.pid, signal)
+  }
+})
+
 ```
 
 ### userService
@@ -310,14 +390,15 @@ a plugin function) and returns an object with the following structure:
     * **required** whether or not the option is required
     * **default** a default value for the option if the option isn't explicitly set
     * **valid** `Object<String, Any>, Array<Any> -> Boolean` validator for the option value
-  * **execute** `Array<Any>, Object<String, Any> -> Any` a function which takes an array of arguments and a map of option keys to values from the command line and returns a value
+  * **execute** `Array<Any> arguments, Object<String, Any> options, Object<String, Any> metadata -> Any` a function which takes an array of arguments, a map of option keys to values from the command line, and execution metadata and returns a value
   * **format** `Any -> String` a function which takes as input the output from `execute` and returns a formatted string for display
 
 Commands are assigned a unique ID on execute which can be accessed within
-execute as `this.pid`. For this reason it's encouraged that you don't use arrow
-functions to define execute as `this` won't have the required context needed to
-retrieve the command's PID (a practical usage of PID is shown in the example for
-"Interactive Commands").
+execute as `this.pid` or in the execute function's third argument which is its
+`metadata`. In order to get the pid from `this` context you **MUST** use
+function notation instead of arrow notation. Either style of function can
+retrieve the PID from execute's third argument. A practical usage of PID is
+shown in the example for "Interactive Commands".
 
 ### Example Command
 ```js
@@ -358,13 +439,68 @@ const interactiveCommand = ({ interactionService }) => ({
     const pid = this.pid // every command is assigned a unique pid on execute
     const interaction = await interactionService.createInteractionChannel(pid)
 
-    const name = await interaction.prompt('What is your name?')
-    const color = await interaction.prompt('What is your favorite color scheme?')
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: color } = await interaction.prompt('What is your favorite color scheme?')
 
     return { name, color }
   }
 })
 ```
+
+Alternatively, the previous command can be defined using arrow notation for
+execute:
+
+```js
+const interactiveCommand = ({ interactionService }) => ({
+  name: 'test-interactive',
+  description: 'Test interactive commands',
+  format ({ name, age }) {
+    return `Name: ${name}, Color: ${color}`
+  },
+  execute: async (args, opts, { pid }) => {
+    const interaction = await interactionService.createInteractionChannel(pid)
+
+    const { text: name } = await interaction.prompt('What is your name?')
+    const { text: color } = await interaction.prompt('What is your favorite color scheme?')
+
+    return { name, color }
+  }
+})
+```
+
+Commands can implement their own subshell by using `observe`:
+```js
+export default ({ interactionService, signalService }) => ({
+  name: 'observer',
+  description: 'Testing observable interactions',
+  async execute () {
+    const pid = this.pid
+
+    const interaction = await interactionService.createInteractionChannel(pid)
+    const signalHandler = await signalService.createSignalHandler(pid)
+    const stream = interaction.observe()
+
+    return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGINT, () => {
+        stream.end()
+        resolve('Caught signal SIGINT; exiting')
+      })
+
+      stream.pipe(({ user, text }) => {
+        if (text === 'exit') {
+          resolve('Exiting')
+          stream.end()
+        } else {
+          // Your own unique text parsing can go here. Subshell commands will still be input with a > character
+          interaction.send(`User ${user.name} sent message: ${text}`)
+        }
+      })
+    })
+  }
+})
+
+```
+
 #### Example usage
 ```sh
 @jehuty test-interactive

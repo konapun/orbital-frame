@@ -1,10 +1,12 @@
 import adapter from './adapter'
 
 const defaults = {
-  adapter: adapter.HUBOT,
   name: 'orbital-frame',
+  ps1: '@', // symbol used to hail a user
+  ps2: '>', // symbol used to engage an interaction
+  commands: [],
   plugins: [],
-  commands: []
+  adapter: adapter.HUBOT
 }
 
 /**
@@ -12,13 +14,15 @@ const defaults = {
  * the service host and provides a uniform API between bot types
  */
 function frame (sensors, options) {
-  const { name, plugins, commands, adapter } = { ...defaults, ...options }
+  const { name, ps2, commands, plugins, adapter } = { ...defaults, ...options }
 
-  const { hear, send, getUsers, getChannels } = adapter(sensors)
+  const { ps1, hear, send, getUsers, getChannels } = adapter(sensors)
   return {
     name,
-    plugins,
+    ps1,
+    ps2,
     commands,
+    plugins,
     hear,
     send,
     getUsers,
