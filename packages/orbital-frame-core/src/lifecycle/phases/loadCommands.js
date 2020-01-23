@@ -1,7 +1,5 @@
-import coreCommands from '../../commands'
-
 const loadCommands = ({ configService, commandService }) => next => args => {
-  const commands = [ ...coreCommands, ...configService.commands ]
+  const commands = [ ...configService.commands ]
   commandService.load(commands)
   next(args)
 }

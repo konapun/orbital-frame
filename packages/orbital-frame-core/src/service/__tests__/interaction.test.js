@@ -59,26 +59,8 @@ describe('interaction service', () => {
     // TODO:
   })
 
-  /*
-   * Scenarios (some of these should be handled in interaction clients rather than the service directly probably):
-   *   1) buzz-in: only want response from first user in channel who answered prompt
-   *    - can the prompt define additional criteria for match so the stream stays open?
-   *     - "incorrect answer, try again"
-   *     - to do this, stream control will probably have to be passed to the user which makes prompt less friendly since rather than awaiting the input it now has to immediately get the stream
-   *       - unless the "end" criteria can be passed as a function to the prompt function?
-   *         const output = await channel.prompt('Enter a number', val => {
-   *           if (!val.match([0-9])) {
-   *             channel.send('that is not a number')
-   *           } else {
-   *             return true // it's ok to end the stream
-   *           }
-   *         })
-   *   2) consensus: don't end prompt until all users in channel have responded to prompt
-   *   3) rotation: user being prompted cycles from channel participants
-   *    - this is easily done in client code but common enough that the interaction service should automatically handle it
-   *      - pluggable interaction strategies?
-   *      const output = await
-   */
+  // TODO: tests for observe
+
   describe('multiuser channels', () => {
     it('should only listen to the user who created the interaction channel if no other user IDs are passed in', async () => {
       // TODO:

@@ -30,6 +30,10 @@ describe('job service', () => {
     })).toThrow()
   })
 
+  it('should notify subscribers when a job is updated', () => {
+    // TODO:
+  })
+
   it('should support finding jobs', () => {
     expect(job.find).toBeDefined()
   })

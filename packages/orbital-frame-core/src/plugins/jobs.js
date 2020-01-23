@@ -1,5 +1,7 @@
 import { phaseEnum } from '../lifecycle'
 
+const MAX_RETENTION = 5
+
 /**
  * Use lifecycle phase triggers to keep track of running commands and associate
  * them with users
@@ -20,7 +22,7 @@ const jobsPlugin = ({ jobService }) => {
         const job = state.get(`${namespace}.job`)
         jobService.update(job.id, {
           command, // command can be linked back to job by command.id
-          status: jobService.status.RUNNING // TODO: enforce that this status accurately reflects the state of running commands; if a user copies the interaction service functionality without going through it the correct behavior with regards to fg/bg processes should remain intact
+          status: jobService.status.RUNNING
         })
       },
       exit ({ output, state }) {
@@ -30,12 +32,26 @@ const jobsPlugin = ({ jobService }) => {
           output,
           finished: Date.now()
         })
+
+        // cleanup
+        jobService.find({ status: jobService.status.FULFILLED }).then(fulfilledJobs => {
+          if (fulfilledJobs.length > MAX_RETENTION) {
+            fulfilledJobs.forEach(({ id }, index) => index < fulfilledJobs.length - MAX_RETENTION && jobService.destroy(id))
+          }
+        })
       },
       error (err, { state }) {
         const job = state.get(`${namespace}.job`)
         jobService.update(job.id, {
           status: jobService.status.REJECTED,
           finished: Date.now()
+        })
+
+        // cleanup
+        jobService.find({ status: jobService.status.REJECTED }).then(rejectedJobs => {
+          if (rejectedJobs.length > MAX_RETENTION) {
+            rejectedJobs.forEach(({ id }, index) => index < rejectedJobs.length - MAX_RETENTION && jobService.destroy(id))
+          }
         })
       }
     }

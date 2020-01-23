@@ -177,8 +177,8 @@ function peg$parse(input, options) {
               body: []
             }
             return options
-              .map((letter, index) => {
-                return { type: "Option", body: [ letter, index === options.length -1 ? arg : chainArgument ] }
+              .map((letterOrDigit, index) => {
+                return { type: "Option", body: [ letterOrDigit, index === options.length -1 ? arg : chainArgument ] }
               })
           },
       peg$c22 = function(text) { return { type: "Argument", body: [ text ] } },
@@ -218,8 +218,8 @@ function peg$parse(input, options) {
       peg$c56 = /^[a-zA-Z0-9_%+*\^?!\-]/,
       peg$c57 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"], "_", "%", "+", "*", "^", "?", "!", "-"], false, false),
       peg$c58 = function(word) { const [ start, rest ] = word; return [ start, ...rest ].join('')  },
-      peg$c59 = /^[a-zA-Z]/,
-      peg$c60 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false),
+      peg$c59 = /^[a-zA-Z0-9]/,
+      peg$c60 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false),
       peg$c61 = /^[ \t\r\n]/,
       peg$c62 = peg$classExpectation([" ", "\t", "\r", "\n"], false, false),
 
@@ -904,11 +904,11 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       s2 = [];
-      s3 = peg$parseLetter();
+      s3 = peg$parseLetterOrDigit();
       if (s3 !== peg$FAILED) {
         while (s3 !== peg$FAILED) {
           s2.push(s3);
-          s3 = peg$parseLetter();
+          s3 = peg$parseLetterOrDigit();
         }
       } else {
         s2 = peg$FAILED;
@@ -1418,7 +1418,7 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parseLetter() {
+  function peg$parseLetterOrDigit() {
     var s0;
 
     if (peg$c59.test(input.charAt(peg$currPos))) {

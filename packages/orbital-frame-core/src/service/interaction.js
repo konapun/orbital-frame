@@ -5,8 +5,8 @@ const interaction = () => ({ configService, jobService, listenerService, messeng
   const prompt = configService.ps2
 
   return {
-    async createInteractionChannel (commandId, userIds = []) {
-      const { context, userId } = await jobService.findOne({ 'command.pid': commandId })
+    async createInteractionChannel (pid, userIds = []) {
+      const { context, userId } = await jobService.findOne({ 'command.pid': pid })
       const members = [ userId, ...userIds ]
       const channelListener = listenerService.listen(`^${prompt}`)
         .pipe(({ message }) => ({ // format stream contents before downstream consumers

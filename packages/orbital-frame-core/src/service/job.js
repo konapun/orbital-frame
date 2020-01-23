@@ -3,11 +3,11 @@ import cyclicIncrementor from '../util/cyclicIncrementor'
 
 const idGenerator = cyclicIncrementor(1)
 const jobs = {}
+const subscriptions = {}
 
 const status = {
   PENDING: 'pending',
   RUNNING: 'running',
-  PAUSED: 'paused', // if a command is backgrounded
   FULFILLED: 'fulfilled',
   REJECTED: 'rejected'
 }
@@ -17,6 +17,11 @@ const job = () => () => {
   const { find, findOne } = search(list)
 
   return {
+    subscribe (id, handler) {
+      if (!subscriptions[id]) subscriptions[id] = []
+      subscriptions[id].push(handler)
+    },
+
     create (userId, overrides) {
       const jobId = idGenerator.next()
       const newJob = { // TODO: use joi for schema validation
@@ -40,8 +45,18 @@ const job = () => () => {
         throw new Error(`No such job with id ${id}`)
       }
       const updated = { ...jobs[id], ...updates }
+      if (subscriptions[id]) {
+        console.log('Triggering subscriptions for id', id)
+        subscriptions[id].forEach(fn => fn(updated, job[id]))
+      }
+
       jobs[id] = updated
       return updated
+    },
+
+    destroy (id) {
+      delete jobs[id]
+      delete subscriptions[id]
     },
 
     // TODO: also store the command source that spawned the job (or is this already done?)
