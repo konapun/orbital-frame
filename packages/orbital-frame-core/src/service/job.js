@@ -46,7 +46,6 @@ const job = () => () => {
       }
       const updated = { ...jobs[id], ...updates }
       if (subscriptions[id]) {
-        console.log('Triggering subscriptions for id', id)
         subscriptions[id].forEach(fn => fn(updated, job[id]))
       }
 
