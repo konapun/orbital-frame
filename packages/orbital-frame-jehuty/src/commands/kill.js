@@ -7,12 +7,12 @@ export default ({ signalService, jobService }) => ({
       type: 'boolean',
       describe: 'Request a job to interrupt'
     },
-    2: { // SIGSTP
+    2: {
       alias: 'SIGSTP',
       type: 'boolean',
       describe: 'Request a job to stop'
     },
-    3: { // SIGRES
+    3: {
       alias: 'SIGRES',
       type: 'boolean',
       describe: 'Request a job to resume'
@@ -22,7 +22,6 @@ export default ({ signalService, jobService }) => ({
     const signal = SIGRES ? 3 :
       SIGSTP ? 2 : 1
 
-    console.log('SENDING SIGNAL', signal)
     const { command } = await jobService.findOne({ id: jobId })
     signalService.send(command.pid, signal)
   }

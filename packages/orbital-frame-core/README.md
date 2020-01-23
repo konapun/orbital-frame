@@ -214,6 +214,85 @@ const example = ({ pluginService }) => {
 }
 ```
 
+### signalService
+The signal service allows commands to specify signal handlers and allows other
+commands to send signals to running jobs. Unlike real UNIX, orbital-frame does
+not have access to allocated resources like file handles or anything else that
+may need to be destroyed upon SIGKILL so signals can only be sent to "friendly"
+jobs that manually specify their own signal handlers. Attempts to send a signal
+to a job that doesn't handle that signal will result in a catchable error being
+thrown.
+
+#### Available Signals
+  * **SIGINT** (signal number 1) - analogous to SIGINT in UNIX; a command implementing a handler for this signal should cleanup and halt immediately if possible
+  * **SIGSTP** (signal number 2) - analogous to SIGSTP in UNIX; a command implementing a handler for this signal should pause and allow itself to be resumed by SIGRES
+  * **SIGRES** (signal number 3) - (no UNIX analog); a command implementing a handler for this signal should resume if paused by SIGSTP
+
+#### Example
+##### Handler
+```js
+const example = ({ interactionService, signalService }) => ({
+  name: 'observer',
+  description: 'Testing observable interactions',
+  async execute () {
+    const pid = this.pid
+
+    const interaction = await interactionService.createInteractionChannel(pid)
+    const signalHandler = await signalService.createSignalHandler(pid)
+    const stream = interaction.observe()
+
+    return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGINT, () => {
+        stream.end()
+        resolve('Caught signal SIGINT; exiting')
+      })
+
+      stream.pipe(({ user, text }) => {
+        if (text === 'exit') {
+          resolve('Exiting')
+          stream.end()
+        } else {
+          interaction.send(`User ${user.name} sent message: ${text}`)
+        }
+      })
+    })
+  }
+})
+
+```
+
+##### Sender
+```js
+export default ({ signalService, jobService }) => ({
+  name: 'kill',
+  description: 'Send a signal to a job',
+  options: {
+    1: {
+      alias: 'SIGINT',
+      type: 'boolean',
+      describe: 'Request a job to interrupt'
+    },
+    2: {
+      alias: 'SIGSTP',
+      type: 'boolean',
+      describe: 'Request a job to stop'
+    },
+    3: {
+      alias: 'SIGRES',
+      type: 'boolean',
+      describe: 'Request a job to resume'
+    }
+  },
+  async execute ([ jobId ], { SIGSTP, SIGRES }) {
+    const signal = SIGRES ? 3 : SIGSTP ? 2 : 1
+
+    const { command } = await jobService.findOne({ id: jobId })
+    signalService.send(command.pid, signal)
+  }
+})
+
+```
+
 ### userService
 The user service retrieves users running on the bot adapter.
   * **`async userService.list`** `-> Array<User>` get all users
@@ -387,6 +466,39 @@ const interactiveCommand = ({ interactionService }) => ({
     return { name, color }
   }
 })
+```
+
+Commands can implement their own subshell by using `observe`:
+```js
+export default ({ interactionService, signalService }) => ({
+  name: 'observer',
+  description: 'Testing observable interactions',
+  async execute () {
+    const pid = this.pid
+
+    const interaction = await interactionService.createInteractionChannel(pid)
+    const signalHandler = await signalService.createSignalHandler(pid)
+    const stream = interaction.observe()
+
+    return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGINT, () => {
+        stream.end()
+        resolve('Caught signal SIGINT; exiting')
+      })
+
+      stream.pipe(({ user, text }) => {
+        if (text === 'exit') {
+          resolve('Exiting')
+          stream.end()
+        } else {
+          // Your own unique text parsing can go here. Subshell commands will still be input with a > character
+          interaction.send(`User ${user.name} sent message: ${text}`)
+        }
+      })
+    })
+  }
+})
+
 ```
 
 #### Example usage
