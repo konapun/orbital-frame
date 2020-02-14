@@ -6,26 +6,27 @@ reference implementation is provided in `@orbital-frame/jehuty`.
 ## Creating a bot
 ```js
 import orbitalFrame, { adapter } from '@orbital-frame/core'
+import hubotAdapter from '@orbital-frame/adapter-hubot' // you must include an adapter for your chat platform. See documentation below for creating your own adapters
 import commands from './commands' // these are commands that you define
 import plugins from './plugins' // these are plugins that you define
+import hubotConfig from './config' // your adapter configuration
 
-const jehuty = hubot => orbitalFrame(hubot, {
+const jehuty = hubot => orbitalFrame(hubotAdapter(hubot, hubotConfig), {
   name: 'jehuty', // name that the bot will respond to. For instance `@jehuty echo "hi"`
   commands,
-  plugins,
-  adapter: adapter.HUBOT
+  plugins
 })
 
-jehuty(hubotInstance).run()
+export default hubot => jehuty(hubot).run() // where your framework instance comes from will vary depending on your chat platform but hubot passes this in as `robot` to every script in the `scripts` directory
 ```
 
 ## Adapters
 Orbital Frame uses adapters to gain functionality for interacting with various
-chat services. Currently, only the Hubot adapter is available and this is what
-`@orbital-frame/jehuty` ships with.
+chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapter is available and this is what
+`@orbital-frame/jehuty` runs on.
 
 ### Creating adapters
-TODO The adapters API is still in flux
+`TODO` The adapters API is still in flux
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
@@ -73,8 +74,8 @@ const example = ({ commandService }) => {
 
 ### compilerService
 The compiler service takes a source string and produces an executable command.
-  * **`compilerService.compile`** `String -> Fn`
-  * **`compilerService.compileWithMetadata`** `String -> { metadata: Object, command: Fn }` Build an executable command and metadata describing the command from a source string
+  * **`compilerService.compile`** `String source -> Fn`
+  * **`compilerService.compileWithMetadata`** `String source -> { metadata: Object, command: Fn }` Build an executable command and metadata describing the command from a source string
 
 #### Example
 ```js
@@ -89,8 +90,10 @@ const example = ({ compilerService }) => {
 ```
 
 ### configService
-The config service holds configuration information for the bot:
+The config service holds configuration information for the bot:**
   * **`configService.name`** `-> String` The name of the bot
+  * **`configService.ps1`** `-> String` The leading character that must be placed before the bot's name to trigger a response (for slack this is `@`)
+  * **`configService.ps2`** `-> String` The leading character that must be input before a subshell command to trigger a response. This is used for interactive commands using the interaction service
   * **`configService.commands`** `-> Array<Command>` A list of commands registered with the bot
   * **`configService.plugins`** `-> Array<Plugin>` A list of plugins registered with the bot
   * **`configService.adapter`** `-> Adapter` The adapter the bot is running on. Note that using the adapter
@@ -124,8 +127,9 @@ const example = ({ environmentService, compilerService }) => {
 ### interactionService
 The interaction service is used to make interactive commands, such as commands
 that prompt the user or start up an embedded shell to run its own commands.
-**MESSAGES INTERCEPTED BY `prompt` MUST START WITH A `>` IN ORDER TO DISTINGUISH
-SUBCOMMANDS FROM NON-ORBITAL FRAME INPUT**
+**MESSAGES INTERCEPTED BY `prompt` MUST START WITH WHATEVER YOUR `ps2` IS SET TO
+IN YOUR CONFIGURATION (`>` by default) IN ORDER TO DISTINGUISH SUBCOMMANDS FROM
+NON-ORBITAL FRAME INPUT**
   * **createInteractionChannel** `Number pid` Create a channel for interacting with a user by command PID
     * **prompt** `String message -> Promise<Message>` Prompt the user for input
     * **observe** `Object config -> Stream` Create an interaction listener stream
@@ -155,17 +159,22 @@ const interactiveCommand = ({ interactionService }) => ({
 ### jobService
 The job service associates commands with users and provides operations for
 retrieving information for jobs.
+  * **`subscribe`** `Number jobId, Fn callback -> Nil` attach an update listener to a job. Whenever the job with ID jobId is updated, your callback will be invoked with the updated job
   * **`async jobService.list`** `-> Array<Job>` Get all jobs
   * **`async jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
   * **`async jobService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
 
 #### Example
 ```js
-const example = ({ jobService, userService }) => {
-  const user = userService.find({ name: 'konapun' })
-  const runningJobs = jobService.find({ user, status: 'running' })
-  const finishedJobs = jobService.find({ user, status: 'finished' })
-  const returnValues = finishedJobs.map(job => job.returnValue)
+const example = async ({ jobService, userService }) => {
+  const user = await userService.find({ name: 'konapun' })
+  const runningJobs = await jobService.find({ user, status: 'running' })
+  const finishedJobs = await jobService.find({ user, status: 'finished' })
+  const returnValues = await finishedJobs.map(job => job.returnValue)
+
+  jobService.subscribe(runningJobs[0].id, updated => {
+    console.log('Job was updated:', updated)
+  })
 }
 ```
 
@@ -241,7 +250,14 @@ const example = ({ interactionService, signalService }) => ({
     const signalHandler = await signalService.createSignalHandler(pid)
     const stream = interaction.observe()
 
+  let paused = false
     return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGSTP, () => {
+        paused = true
+      })
+      signalHandler.onSignal(signalService.signal.SIGRES, () => {
+        paused = false
+      })
       signalHandler.onSignal(signalService.signal.SIGINT, () => {
         stream.end()
         resolve('Caught signal SIGINT; exiting')
@@ -251,7 +267,7 @@ const example = ({ interactionService, signalService }) => ({
         if (text === 'exit') {
           resolve('Exiting')
           stream.end()
-        } else {
+        } else if (!paused) {
           interaction.send(`User ${user.name} sent message: ${text}`)
         }
       })
@@ -308,11 +324,12 @@ const example = ({ userService }) => {
 ```
 
 ## Plugins
-Each phase in the Orbital Frame lifecycle is pluggable on both enter and exit
-and receives as arguments either arguments being sent to the current phase from
-the previous phase (`enter`) or arguments being sent to the next phase (`exit`).
-By default, each plugged phase returns its arguments unchanged but may intercept
-these arguments as needed which will propogate downstream in the lifecycle.
+Each phase in the Orbital Frame lifecycle is pluggable on enter, exit, and error
+and receives arguments being sent to the current phase from the previous phase
+on `enter`), arguments being sent to the next phase on `exit`, or the error
+object and exit args on `error`. By default, each plugged phase returns its
+arguments unchanged but may intercept these arguments as needed which will
+propogate downstream in the lifecycle.
 
 ### Example Plugin
 ```js
@@ -324,6 +341,9 @@ function plugin () {
       exit () {
         console.log('Loaded plugins')
         console.log('----------')
+      },
+      error (e) {
+        console.error('Error loading plugins:', e)
       }
     },
     [phase.LOAD_COMMANDS]: {
@@ -333,6 +353,9 @@ function plugin () {
       exit () {
         console.log('Loaded commands')
         console.log('----------')
+      },
+      error (e) {
+        console.error('Error loading commands:', e)
       }
     },
     [phase.LISTEN]: {
@@ -351,6 +374,9 @@ function plugin () {
       exit () {
         console.log('Processed')
         console.log('----------')
+      },
+      error (e, args) {
+        console.log('Error processing input:', e, args)
       }
     },
     [phase.EXECUTE]: {
@@ -360,6 +386,9 @@ function plugin () {
       exit () {
         console.log('Executed')
         console.log('----------')
+      },
+      error (e, args) {
+        console.log('Error executing command:', e, args)
       }
     },
     [phase.RESPOND]: {
@@ -480,7 +509,14 @@ export default ({ interactionService, signalService }) => ({
     const signalHandler = await signalService.createSignalHandler(pid)
     const stream = interaction.observe()
 
+    let paused = false
     return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGSTP, () => {
+        paused = true
+      })
+      signalHandler.onSignal(signalService.signal.SIGRES, () => {
+        paused = false
+      })
       signalHandler.onSignal(signalService.signal.SIGINT, () => {
         stream.end()
         resolve('Caught signal SIGINT; exiting')
@@ -490,8 +526,8 @@ export default ({ interactionService, signalService }) => ({
         if (text === 'exit') {
           resolve('Exiting')
           stream.end()
-        } else {
-          // Your own unique text parsing can go here. Subshell commands will still be input with a > character
+        } else if (!paused) {
+          // Your own unique text parsing can go here. Subshell commands will still be input with a > character by default (unless you've overridden `ps2` in your config)
           interaction.send(`User ${user.name} sent message: ${text}`)
         }
       })

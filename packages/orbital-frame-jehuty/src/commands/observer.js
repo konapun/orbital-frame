@@ -8,7 +8,14 @@ export default ({ interactionService, signalService }) => ({
     const signalHandler = await signalService.createSignalHandler(pid)
     const stream = interaction.observe()
 
+    let paused = false
     return new Promise(resolve => {
+      signalHandler.onSignal(signalService.signal.SIGSTP, () => {
+        paused = true
+      })
+      signalHandler.onSignal(signalService.signal.SIGRES, () => {
+        paused = false
+      })
       signalHandler.onSignal(signalService.signal.SIGINT, () => {
         stream.end()
         resolve('Caught signal SIGINT; exiting')
@@ -18,7 +25,7 @@ export default ({ interactionService, signalService }) => ({
         if (text === 'exit') {
           resolve('Exiting')
           stream.end()
-        } else {
+        } else if (!paused) {
           interaction.send(`User ${user.name} sent message: ${text}`)
         }
       })
