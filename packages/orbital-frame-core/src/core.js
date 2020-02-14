@@ -7,8 +7,8 @@ const container = createContainer({
   injectionMode: InjectionMode.PROXY
 })
 
-export default (robot, options) => {
-  const sensors = frame(robot, options)
+export default (adapter, options) => {
+  const sensors = frame(adapter, options)
   serviceRegistry(container).initialize(sensors)
 
   return {

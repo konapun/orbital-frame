@@ -1,6 +1,6 @@
 import listen from '../listen'
 
-const configService = { name: 'name' }
+const configService = { ps1: '@', name: 'name' }
 const listenerService = {
   listen: jest.fn(() => ({
     pipe: fn => fn('context')
