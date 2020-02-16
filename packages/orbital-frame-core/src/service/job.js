@@ -20,6 +20,11 @@ const job = () => () => {
     subscribe (id, handler) {
       if (!subscriptions[id]) subscriptions[id] = []
       subscriptions[id].push(handler)
+      return {
+        unsubscribe: () => {
+          subscriptions[id] = subscriptions[id].filter(fn => fn !== handler)
+        }
+      }
     },
 
     create (userId, overrides) {
@@ -59,7 +64,6 @@ const job = () => () => {
       delete subscriptions[id]
     },
 
-    // TODO: also store the command source that spawned the job (or is this already done?)
     status,
     find,
     findOne,

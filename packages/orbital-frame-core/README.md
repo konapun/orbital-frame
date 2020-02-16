@@ -5,7 +5,7 @@ reference implementation is provided in `@orbital-frame/jehuty`.
 
 ## Creating a bot
 ```js
-import orbitalFrame, { adapter } from '@orbital-frame/core'
+import orbitalFrame from '@orbital-frame/core'
 import hubotAdapter from '@orbital-frame/adapter-hubot' // you must include an adapter for your chat platform. See documentation below for creating your own adapters
 import commands from './commands' // these are commands that you define
 import plugins from './plugins' // these are plugins that you define
@@ -159,7 +159,7 @@ const interactiveCommand = ({ interactionService }) => ({
 ### jobService
 The job service associates commands with users and provides operations for
 retrieving information for jobs.
-  * **`subscribe`** `Number jobId, Fn callback -> Nil` attach an update listener to a job. Whenever the job with ID jobId is updated, your callback will be invoked with the updated job
+  * **`subscribe`** `Number jobId, Fn callback -> Subscription` attach an update listener to a job. Whenever the job with ID jobId is updated, your callback will be invoked with the updated job. Returns an object with an `unsubscribe` function for removing your callback
   * **`async jobService.list`** `-> Array<Job>` Get all jobs
   * **`async jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
   * **`async jobService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
@@ -172,9 +172,11 @@ const example = async ({ jobService, userService }) => {
   const finishedJobs = await jobService.find({ user, status: 'finished' })
   const returnValues = await finishedJobs.map(job => job.returnValue)
 
-  jobService.subscribe(runningJobs[0].id, updated => {
+  const subscription = jobService.subscribe(runningJobs[0].id, updated => {
     console.log('Job was updated:', updated)
   })
+
+  subscription.unsubscribe()
 }
 ```
 

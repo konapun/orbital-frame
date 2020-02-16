@@ -31,7 +31,36 @@ describe('job service', () => {
   })
 
   it('should notify subscribers when a job is updated', () => {
-    // TODO:
+    const subscriptionFn = jest.fn()
+    job.subscribe(1, subscriptionFn)
+
+    job.update(1, {
+      source: 'hi'
+    })
+
+    expect(subscriptionFn).toHaveBeenCalledWith(expect.objectContaining({
+      id: 1,
+      source: 'hi'
+    }), undefined)
+  })
+
+  it('should allow subscriptions to unsubscribe', () => {
+    const subscription1Fn = jest.fn()
+    const subscription2Fn = jest.fn()
+    const subscription1 = job.subscribe(1, subscription1Fn)
+    job.subscribe(1, subscription2Fn)
+
+    subscription1.unsubscribe()
+
+    job.update(1, {
+      source: 'hi'
+    })
+
+    expect(subscription1Fn).not.toHaveBeenCalled()
+    expect(subscription2Fn).toHaveBeenCalledWith(expect.objectContaining({
+      id: 1,
+      source: 'hi'
+    }), undefined)
   })
 
   it('should support finding jobs', () => {
