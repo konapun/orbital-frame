@@ -35,6 +35,7 @@ import lessThan from './lessThan'
 import greaterThan from './greaterThan'
 import observer from './observer'
 import kill from './kill'
+import fg from './fg'
 
 export default [
   uptimeCommand,
@@ -73,5 +74,6 @@ export default [
   lessThan,
   greaterThan,
   observer,
-  kill
+  kill,
+  fg
 ]

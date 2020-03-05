@@ -4,12 +4,21 @@ import cyclicIncrementor from '../util/cyclicIncrementor'
 const idGenerator = cyclicIncrementor(1)
 const jobs = {}
 const subscriptions = {}
+const userIdGenerators = {}
 
 const status = {
   PENDING: 'pending',
   RUNNING: 'running',
   FULFILLED: 'fulfilled',
   REJECTED: 'rejected'
+}
+
+const localIdGenerator = userId => {
+  if (!userIdGenerators[userId]) {
+    userIdGenerators[userId] = cyclicIncrementor(1)
+  }
+
+  return userIdGenerators[userId]
 }
 
 const job = () => () => {
@@ -29,8 +38,11 @@ const job = () => () => {
 
     create (userId, overrides) {
       const jobId = idGenerator.next()
+      const localId = localIdGenerator(userId).next() // TODO: reset the generator if there are no jobs for the user
+
       const newJob = { // TODO: use joi for schema validation
         id: jobId,
+        localId,
         userId,
         context: null,
         command: null,

@@ -13,7 +13,10 @@ function stream () {
 
       const onWrite = async data => {
         const output = await fn(data)
-        await segmentWriter.send(output) // activate downstream pipes
+        if (typeof output !== 'undefined' && output !== null) {
+          await segmentWriter.send(output) // activate downstream pipes
+        }
+
         return output
       }
 

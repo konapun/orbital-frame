@@ -8,7 +8,7 @@ describe('stream', () => {
     expect(writer).toBeDefined()
   })
 
-  it('should notify reader when writer is written to', () => {
+  it('should notify reader when writer is written to', async () => {
     const { reader, writer } = stream()
 
     let pipedData
@@ -16,17 +16,17 @@ describe('stream', () => {
       pipedData = data
     })
 
-    writer.send('data1')
+    await writer.send('data1')
     expect(pipedData).toEqual('data1')
 
-    writer.send('data2')
+    await writer.send('data2')
     expect(pipedData).toEqual('data2')
   })
 
-  it('should ignore stream data that doesn\'t have a pipe attached', () => {
+  it('should ignore stream data that doesn\'t have a pipe attached', async () => {
     const { reader, writer } = stream()
 
-    writer.send('data1')
+    await writer.send('data1')
 
     let pipedData = 'default'
     reader.pipe(data => {
@@ -228,7 +228,7 @@ describe('stream', () => {
       return null
     }).pipe(pipe2fn)
 
-    writer.send(10)
+    await writer.send(10)
 
     expect(pipe1).toBe(10)
     expect(pipe2fn).not.toHaveBeenCalled()
