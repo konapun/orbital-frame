@@ -1,6 +1,6 @@
 import interactionService from '../interaction'
 
-let configService, jobService, listenerService, messengerService, interaction, listenCallback
+let configService, jobService, listenerService, listenerApi, messengerService, interaction, listenCallback
 
 beforeEach(() => {
   configService = {
@@ -14,19 +14,27 @@ beforeEach(() => {
     }))
   }
 
-  listenerService = {
-    listen () {
+  listenerApi = {
+    pipe: jest.fn(fn => {
+      listenCallback = fn
       return {
-        pipe (fn) {
-          listenCallback = fn
+        pipe: jest.fn(() => {
           return {
-            pipe: jest.fn(),
+            pipe: jest.fn(() => {
+              return {
+                end: jest.fn()
+              }
+            }),
             end: jest.fn()
           }
-        },
+        }),
         end: jest.fn()
       }
-    }
+    }),
+    end: jest.fn()
+  }
+  listenerService = {
+    listen: jest.fn(() => listenerApi)
   }
 
   messengerService = {
@@ -37,6 +45,10 @@ beforeEach(() => {
 })
 
 describe('interaction service', () => {
+  it('should not allow multiple interactions for the same PID', () => {
+
+  })
+
   it('should run interaction channels for separate PIDs separately', async () => {
     // const channel1 = await interaction.createInteractionChannel(2)
     // const channel2 = await interaction.createInteractionChannel(3)
@@ -51,12 +63,26 @@ describe('interaction service', () => {
     expect(messengerService.respond).toHaveBeenCalledWith(expect.any(Function), 'What is your age?')
   })
 
-  it('should require a ">" for interaction responses', () => {
-    // TODO:
+  it('should require a ">" for interaction responses', async () => {
+    await interaction.createInteractionChannel(1)
+    expect(listenerService.listen).toHaveBeenCalledWith('^>')
   })
 
-  it('shouldn\'t invoke the interaction channel on ">" messages for which there are no unfulfilled prompts', () => {
-    // TODO:
+  it('shouldn\'t invoke the interaction channel on ">" messages for which there are no unfulfilled prompts', async () => {
+    // const listener = listenerApi.pipe({ user: { id: 4 }, message: { text: 'konapun' } })
+    // listener.pipe = jest.fn(() => {
+    //   console.log('CALLED PIPE!')
+    // })
+    // const interactionChannel = await interaction .createInteractionChannel(1)
+    // const message = await interactionChannel.prompt('What is your name?')
+
+    // console.log('Before pipe')
+    // listenerApi.pipe()
+    // console.log('After pipe')
+  })
+
+  it('should clean up interactions when a job is no longer running', () => {
+
   })
 
   // TODO: tests for observe
@@ -69,9 +95,9 @@ describe('interaction service', () => {
     it('should listen to input from all users in the interaction channel', async () => {
       // TODO:
     })
+  })
 
-    it('should listen to all users passed into prompt', async () => {
-      // TODO:
-    })
+  it('should allow changing the foregrounded job per-user', async () => {
+
   })
 })
