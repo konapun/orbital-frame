@@ -132,8 +132,9 @@ IN YOUR CONFIGURATION (`>` by default) IN ORDER TO DISTINGUISH SUBCOMMANDS FROM
 NON-ORBITAL FRAME INPUT**
   * **createInteractionChannel** `Number pid` Create a channel for interacting with a user by command PID
     * **prompt** `String message -> Promise<Message>` Prompt the user for input
-    * **observe** `Object config -> Stream` Create an interaction listener stream
+    * **observe** `Nil -> Stream` Create an interaction listener stream
     * **send** `String message` Send text to the user
+  * **foreground** `Number userId, Number jobId -> Nil` Foreground a backgrounded interaction
 
 #### Example
 ```js
