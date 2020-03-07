@@ -1,6 +1,6 @@
 import signalService from '../signal'
 
-let jobService, subscribeCallback
+let jobService, environmentService, subscribeCallback
 
 beforeEach(() => {
   jobService = {
@@ -18,15 +18,19 @@ beforeEach(() => {
       subscribeCallback = handler
     }
   }
+
+  environmentService = {
+    get: jest.fn(() => 1)
+  }
 })
 
 describe('signal service', () => {
   it('should trigger a registered handler on signal sent', async () => {
-    const signaler = signalService()({ jobService })
+    const signaler = signalService()({ jobService, environmentService })
 
     const handleFn = jest.fn()
 
-    const handler = await signaler.createSignalHandler(1)
+    const handler = await signaler.createSignalHandler()
     handler.onSignal(signaler.signal.SIGINT, handleFn)
 
     await signaler.send(2, signaler.signal.SIGINT)
@@ -34,12 +38,12 @@ describe('signal service', () => {
   })
 
   it('should throw an error on attempt to send an unknown signal', async () => {
-    const signaler = signalService()({ jobService })
+    const signaler = signalService()({ jobService, environmentService })
     const badSignal = 99
 
     const handleFn = jest.fn()
 
-    const handler = await signaler.createSignalHandler(1)
+    const handler = await signaler.createSignalHandler()
     handler.onSignal(signaler.signal.SIGINT, handleFn)
 
     let error
@@ -54,10 +58,10 @@ describe('signal service', () => {
   })
 
   it('should throw an error on attempt to register a handler for an unknown signal', async () => {
-    const signaler = signalService()({ jobService })
+    const signaler = signalService()({ jobService, environmentService })
     const badSignal = 99
 
-    const handler = await signaler.createSignalHandler(1)
+    const handler = await signaler.createSignalHandler()
 
     let error
     try {
@@ -82,11 +86,11 @@ describe('signal service', () => {
   })
 
   it('should unregister handlers when a job finishes', async () => {
-    const signaler = signalService()({ jobService })
+    const signaler = signalService()({ jobService, environmentService })
 
     const handleFn = jest.fn()
 
-    const handler = await signaler.createSignalHandler(1)
+    const handler = await signaler.createSignalHandler()
     handler.onSignal(signaler.signal.SIGINT, handleFn)
 
     subscribeCallback({ // notify that job has finished

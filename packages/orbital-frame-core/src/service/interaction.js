@@ -4,11 +4,12 @@ const interactions = {}
 /**
  * Service for backgrounding for interactive commands
  */
-const interaction = () => ({ configService, jobService, listenerService, messengerService }) => {
+const interaction = () => ({ configService, environmentService, jobService, listenerService, messengerService }) => {
   const prompt = configService.ps2
 
   return {
-    async createInteractionChannel (pid, userIds = []) {
+    async createInteractionChannel (userIds = []) {
+      const pid = environmentService.get('!')
       if (interactions[pid]) {
         throw new Error(`Interaction already running for pid ${pid}`)
       }

@@ -2,10 +2,8 @@ export default ({ interactionService, signalService }) => ({
   name: 'observer',
   description: 'Testing observable interactions',
   async execute () {
-    const pid = this.pid
-
-    const interaction = await interactionService.createInteractionChannel(pid)
-    const signalHandler = await signalService.createSignalHandler(pid)
+    const interaction = await interactionService.createInteractionChannel()
+    const signalHandler = await signalService.createSignalHandler()
     const stream = interaction.observe()
 
     let paused = false

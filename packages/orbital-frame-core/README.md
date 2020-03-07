@@ -130,7 +130,7 @@ that prompt the user or start up an embedded shell to run its own commands.
 **MESSAGES INTERCEPTED BY `prompt` MUST START WITH WHATEVER YOUR `ps2` IS SET TO
 IN YOUR CONFIGURATION (`>` by default) IN ORDER TO DISTINGUISH SUBCOMMANDS FROM
 NON-ORBITAL FRAME INPUT**
-  * **createInteractionChannel** `Number pid` Create a channel for interacting with a user by command PID
+  * **createInteractionChannel** `Array<Users> = []` Create a channel for interacting with a group of users (the user which created the channel belongs to the group)
     * **prompt** `String message -> Promise<Message>` Prompt the user for input
     * **observe** `Nil -> Stream` Create an interaction listener stream
     * **send** `String message` Send text to the user
@@ -146,8 +146,7 @@ const interactiveCommand = ({ interactionService }) => ({
     return `Name: ${name}, Age: ${age}`
   },
   async execute () {
-    const pid = this.pid // every command is assigned a unique pid on execute. The pid is also passed inside the metadata object as the third argument to `execute`
-    const interaction = await interactionService.createInteractionChannel(pid)
+    const interaction = await interactionService.createInteractionChannel()
 
     const { text: name } = await interaction.prompt('What is your name?')
     const { text: age } = await interaction.prompt('What is your age?')
@@ -234,7 +233,7 @@ may need to be destroyed upon SIGKILL so signals can only be sent to "friendly"
 jobs that manually specify their own signal handlers. Attempts to send a signal
 to a job that doesn't handle that signal will result in a catchable error being
 thrown.
-  * **createSignalHandler** `Number pid` Create a signal handler for a process which will respond to signals by command PID.
+  * **createSignalHandler** `Nil` Create a signal handler for a process which will respond to signals sent by other commands.
     * **onSignal** `Signal signal, Fn handler` Set up a function to be invoked upon signal.
   * **send** `Number jobId, Signal signal` Send a signal to a job which has a signal handler installed. Throws an error if job cannot receive signal.
 
@@ -250,10 +249,8 @@ const example = ({ interactionService, signalService }) => ({
   name: 'observer',
   description: 'Testing observable interactions',
   async execute () {
-    const pid = this.pid
-
-    const interaction = await interactionService.createInteractionChannel(pid)
-    const signalHandler = await signalService.createSignalHandler(pid)
+    const interaction = await interactionService.createInteractionChannel()
+    const signalHandler = await signalService.createSignalHandler()
     const stream = interaction.observe()
 
   let paused = false
@@ -431,8 +428,8 @@ Commands are assigned a unique ID on execute which can be accessed within
 execute as `this.pid` or in the execute function's third argument which is its
 `metadata`. In order to get the pid from `this` context you **MUST** use
 function notation instead of arrow notation. Either style of function can
-retrieve the PID from execute's third argument. A practical usage of PID is
-shown in the example for "Interactive Commands".
+retrieve the pid from execute's third argument. The pid can be used as a unique
+key for later retrieval.
 
 ### Example Command
 ```js
@@ -470,29 +467,7 @@ const interactiveCommand = ({ interactionService }) => ({
     return `Name: ${name}, Color: ${color}`
   },
   async execute () {
-    const pid = this.pid // every command is assigned a unique pid on execute
-    const interaction = await interactionService.createInteractionChannel(pid)
-
-    const { text: name } = await interaction.prompt('What is your name?')
-    const { text: color } = await interaction.prompt('What is your favorite color scheme?')
-
-    return { name, color }
-  }
-})
-```
-
-Alternatively, the previous command can be defined using arrow notation for
-execute:
-
-```js
-const interactiveCommand = ({ interactionService }) => ({
-  name: 'test-interactive',
-  description: 'Test interactive commands',
-  format ({ name, age }) {
-    return `Name: ${name}, Color: ${color}`
-  },
-  execute: async (args, opts, { pid }) => {
-    const interaction = await interactionService.createInteractionChannel(pid)
+    const interaction = await interactionService.createInteractionChannel()
 
     const { text: name } = await interaction.prompt('What is your name?')
     const { text: color } = await interaction.prompt('What is your favorite color scheme?')
@@ -508,10 +483,8 @@ export default ({ interactionService, signalService }) => ({
   name: 'observer',
   description: 'Testing observable interactions',
   async execute () {
-    const pid = this.pid
-
-    const interaction = await interactionService.createInteractionChannel(pid)
-    const signalHandler = await signalService.createSignalHandler(pid)
+    const interaction = await interactionService.createInteractionChannel()
+    const signalHandler = await signalService.createSignalHandler()
     const stream = interaction.observe()
 
     let paused = false

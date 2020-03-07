@@ -1,6 +1,6 @@
 import interactionService from '../interaction'
 
-let configService, jobService, listenerService, listenerApi, messengerService, interaction, listenCallback
+let configService, environmentService, jobService, listenerService, listenerApi, messengerService, interaction, listenCallback
 
 beforeEach(() => {
   configService = {
@@ -11,7 +11,12 @@ beforeEach(() => {
     findOne: jest.fn(() => ({
       context: jest.fn(),
       userId: 1
-    }))
+    })),
+    subscribe: jest.fn()
+  }
+
+  environmentService = {
+    get: jest.fn(() => 1)
   }
 
   listenerApi = {
@@ -41,7 +46,7 @@ beforeEach(() => {
     respond: jest.fn()
   }
 
-  interaction = interactionService()({ configService, jobService, listenerService, messengerService })
+  interaction = interactionService()({ configService, environmentService, jobService, listenerService, messengerService })
 })
 
 describe('interaction service', () => {
@@ -50,21 +55,21 @@ describe('interaction service', () => {
   })
 
   it('should run interaction channels for separate PIDs separately', async () => {
-    // const channel1 = await interaction.createInteractionChannel(2)
-    // const channel2 = await interaction.createInteractionChannel(3)
+    // const channel1 = await interaction.createInteractionChannel()
+    // const channel2 = await interaction.createInteractionChannel()
 
     // TODO:
   })
 
   it('should allow prompting for user input', async () => {
-    const interactionChannel = await interaction.createInteractionChannel(1)
+    const interactionChannel = await interaction.createInteractionChannel()
     interactionChannel.prompt('What is your age?')
 
     expect(messengerService.respond).toHaveBeenCalledWith(expect.any(Function), 'What is your age?')
   })
 
   it('should require a ">" for interaction responses', async () => {
-    await interaction.createInteractionChannel(1)
+    await interaction.createInteractionChannel()
     expect(listenerService.listen).toHaveBeenCalledWith('^>')
   })
 
@@ -73,7 +78,7 @@ describe('interaction service', () => {
     // listener.pipe = jest.fn(() => {
     //   console.log('CALLED PIPE!')
     // })
-    // const interactionChannel = await interaction .createInteractionChannel(1)
+    // const interactionChannel = await interaction .createInteractionChannel()
     // const message = await interactionChannel.prompt('What is your name?')
 
     // console.log('Before pipe')

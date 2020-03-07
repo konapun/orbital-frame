@@ -6,8 +6,7 @@ function interactive ({ interactionService }) {
       return `Name: ${name}, Age: ${age}, Favorite Color: ${color}`
     },
     async execute () {
-      const pid = this.pid
-      const interaction = await interactionService.createInteractionChannel(pid)
+      const interaction = await interactionService.createInteractionChannel()
 
       const { text: name } = await interaction.prompt('What is your name?')
       const { text: age } = await interaction.prompt('What is your age?')
