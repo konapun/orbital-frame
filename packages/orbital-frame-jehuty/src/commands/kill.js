@@ -1,4 +1,4 @@
-export default ({ signalService, jobService }) => ({
+export default ({ signalService }) => ({
   name: 'kill',
   description: 'Send a signal to a job',
   options: {
@@ -22,7 +22,6 @@ export default ({ signalService, jobService }) => ({
     const signal = SIGRES ? 3 :
       SIGSTP ? 2 : 1
 
-    const { command } = await jobService.findOne({ id: jobId })
-    signalService.send(command.pid, signal)
+    signalService.send(jobId, signal)
   }
 })

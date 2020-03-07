@@ -234,6 +234,9 @@ may need to be destroyed upon SIGKILL so signals can only be sent to "friendly"
 jobs that manually specify their own signal handlers. Attempts to send a signal
 to a job that doesn't handle that signal will result in a catchable error being
 thrown.
+  * **createSignalHandler** `Number pid` Create a signal handler for a process which will respond to signals by command PID.
+    * **onSignal** `Signal signal, Fn handler` Set up a function to be invoked upon signal.
+  * **send** `Number jobId, Signal signal` Send a signal to a job which has a signal handler installed. Throws an error if job cannot receive signal.
 
 #### Available Signals
   * **SIGINT** (signal number 1) - analogous to SIGINT in UNIX; a command implementing a handler for this signal should cleanup and halt immediately if possible
@@ -282,7 +285,7 @@ const example = ({ interactionService, signalService }) => ({
 
 ##### Sender
 ```js
-export default ({ signalService, jobService }) => ({
+export default ({ signalService }) => ({
   name: 'kill',
   description: 'Send a signal to a job',
   options: {
@@ -305,8 +308,7 @@ export default ({ signalService, jobService }) => ({
   async execute ([ jobId ], { SIGSTP, SIGRES }) {
     const signal = SIGRES ? 3 : SIGSTP ? 2 : 1
 
-    const { command } = await jobService.findOne({ id: jobId })
-    signalService.send(command.pid, signal)
+    signalService.send(jobId, signal)
   }
 })
 

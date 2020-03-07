@@ -8,8 +8,11 @@ beforeEach(() => {
       FULFILLED: 0,
       REJECTED: 1
     },
-    findOne: jest.fn(() => ({
-      id: 2
+    findOne: jest.fn(async () => Promise.resolve({
+      id: 2,
+      command: {
+        pid: 1
+      }
     })),
     subscribe (pid, handler) {
       subscribeCallback = handler
@@ -26,7 +29,7 @@ describe('signal service', () => {
     const handler = await signaler.createSignalHandler(1)
     handler.onSignal(signaler.signal.SIGINT, handleFn)
 
-    signaler.send(1, signaler.signal.SIGINT)
+    await signaler.send(2, signaler.signal.SIGINT)
     expect(handleFn).toHaveBeenCalled()
   })
 
@@ -41,12 +44,12 @@ describe('signal service', () => {
 
     let error
     try {
-      signaler.send(1, badSignal)
+      await signaler.send(1, badSignal)
     } catch ({ message }) {
       error = message
     }
 
-    expect(error).toBe('Error sending signal 99 to pid 1: Unknown signal')
+    expect(error).toBe('Error sending signal 99 to job ID 1: Unknown signal')
     expect(handleFn).not.toHaveBeenCalled()
   })
 
@@ -66,12 +69,12 @@ describe('signal service', () => {
     expect(error).toBe('Error installing handler for signal 99: Unknown signal')
   })
 
-  it('should throw an error on attempting to send a signal to a process that does not register a handler for that signal', () => {
+  it('should throw an error on attempting to send a signal to a process that does not register a handler for that signal', async () => {
     const signaler = signalService()({ jobService })
 
     let error
     try {
-      signaler.send(1, signaler.signal.SIGINT)
+      await signaler.send(9, signaler.signal.SIGINT)
     } catch ({ message }) {
       error = message
     }
@@ -92,7 +95,7 @@ describe('signal service', () => {
 
     let error
     try {
-      signaler.send(1, signaler.signal.SIGINT)
+      await signaler.send(1, signaler.signal.SIGINT)
     } catch ({ message }) {
       error = message
     }

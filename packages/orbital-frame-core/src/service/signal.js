@@ -9,11 +9,12 @@ const registry = {}
 const signal = () => ({ jobService }) => ({
   signal: signals,
 
-  send (pid, signal) {
+  async send (jobId, signal) {
     if (!Object.values(signals).includes(signal)) {
-      throw new Error(`Error sending signal ${signal} to pid ${pid}: Unknown signal`)
+      throw new Error(`Error sending signal ${signal} to job ID ${jobId}: Unknown signal`)
     }
-
+    const { command } = await jobService.findOne({ id: jobId })
+    const pid = command.pid
     if (registry[pid] && registry[pid][signal]) {
       registry[pid][signal]()
     } else {
