@@ -46,9 +46,9 @@ subsystems for use within the lifecycle and user-defined commands and plugins.
 ### channelService
 The channel service retrieves channels from the chat service the bot is running
 on.
-  * **`async channelService.list`** `-> Array<Channel>` Get all channels
-  * **`async channelService.find`** `Object searchCriteria -> Array<channel>` Find channels matching the given criteria
-  * **`async channelService.findOne`** `Object searchCriteria -> channel [throws Error on no channel found]` Returns the first channel matching the given criteria
+  * **`async list`** `-> Array<Channel>` Get all channels
+  * **`async find`** `Object searchCriteria -> Array<channel>` Find channels matching the given criteria
+  * **`async findOne`** `Object searchCriteria -> channel [throws Error on no channel found]` Returns the first channel matching the given criteria
 
 #### Example
 ```js
@@ -60,8 +60,8 @@ const example = async ({ channelService }) => {
 
 ### commandService
 The command service enables the loading of commands into the bot.
-  * **`get commandService.registry`** `-> Array<Command>` Get all loaded commands
-  * **`commandService.load`** `Array<Commands> | Command -> Nil` load a command
+  * **`get registry`** `-> Array<Command>` Get all loaded commands
+  * **`load`** `Array<Commands> | Command -> Nil` load a command
 
 #### Example
 ```js
@@ -74,8 +74,8 @@ const example = ({ commandService }) => {
 
 ### compilerService
 The compiler service takes a source string and produces an executable command.
-  * **`compilerService.compile`** `String source -> Fn`
-  * **`compilerService.compileWithMetadata`** `String source -> { metadata: Object, command: Fn }` Build an executable command and metadata describing the command from a source string
+  * **`compile`** `String source -> Fn`
+  * **`compileWithMetadata`** `String source -> { metadata: Object, command: Fn }` Build an executable command and metadata describing the command from a source string
 
 #### Example
 ```js
@@ -91,12 +91,12 @@ const example = ({ compilerService }) => {
 
 ### configService
 The config service holds configuration information for the bot:**
-  * **`configService.name`** `-> String` The name of the bot
-  * **`configService.ps1`** `-> String` The leading character that must be placed before the bot's name to trigger a response (for slack this is `@`)
-  * **`configService.ps2`** `-> String` The leading character that must be input before a subshell command to trigger a response. This is used for interactive commands using the interaction service
-  * **`configService.commands`** `-> Array<Command>` A list of commands registered with the bot
-  * **`configService.plugins`** `-> Array<Plugin>` A list of plugins registered with the bot
-  * **`configService.adapter`** `-> Adapter` The adapter the bot is running on. Note that using the adapter
+  * **`name`** `-> String` The name of the bot
+  * **`ps1`** `-> String` The leading character that must be placed before the bot's name to trigger a response (for slack this is `@`)
+  * **`ps2`** `-> String` The leading character that must be input before a subshell command to trigger a response. This is used for interactive commands using the interaction service
+  * **`commands`** `-> Array<Command>` A list of commands registered with the bot
+  * **`plugins`** `-> Array<Plugin>` A list of plugins registered with the bot
+  * **`adapter`** `-> Adapter` The adapter the bot is running on. Note that using the adapter
     directly will couple your command/plugin to the adapter itself so all
     dependencies on the adapter itself pass through an abstraction layer in the
     core itself.
@@ -110,8 +110,8 @@ const example = ({ configService }) => {
 
 ### environmentService
 The environment service is used to store and retrieve variables.
-  * **`environmentService.set`** `String, Any -> Nil` Assign a value to a variable in the environment
-  * **`environmentService.get`** `String -> Any` Retrieve a value for a variable in the environment
+  * **`set`** `String, Any -> Nil` Assign a value to a variable in the environment
+  * **`get`** `String -> Any` Retrieve a value for a variable in the environment
 
 #### Example
 ```js
@@ -130,11 +130,11 @@ that prompt the user or start up an embedded shell to run its own commands.
 **MESSAGES INTERCEPTED BY `prompt` MUST START WITH WHATEVER YOUR `ps2` IS SET TO
 IN YOUR CONFIGURATION (`>` by default) IN ORDER TO DISTINGUISH SUBCOMMANDS FROM
 NON-ORBITAL FRAME INPUT**
-  * **createInteractionChannel** `Array<Users> = []` Create a channel for interacting with a group of users (the user which created the channel belongs to the group)
-    * **prompt** `String message -> Promise<Message>` Prompt the user for input
-    * **observe** `Nil -> Stream` Create an interaction listener stream
-    * **send** `String message` Send text to the user
-  * **foreground** `Number userId, Number jobId -> Nil` Foreground a backgrounded interaction
+  * **`createInteractionChannel`** `Array<Users> = []` Create a channel for interacting with a group of users (the user which created the channel belongs to the group)
+    * **`prompt`** `String message -> Promise<Message>` Prompt the user for input
+    * **`observe`** `Nil -> Stream` Create an interaction listener stream
+    * **`send`** `String message` Send text to the user
+  * **`foreground`** `Number userId, Number jobId -> Nil` Foreground a backgrounded interaction
 
 #### Example
 ```js
@@ -160,9 +160,9 @@ const interactiveCommand = ({ interactionService }) => ({
 The job service associates commands with users and provides operations for
 retrieving information for jobs.
   * **`subscribe`** `Number jobId, Fn callback -> Subscription` attach an update listener to a job. Whenever the job with ID jobId is updated, your callback will be invoked with the updated job. Returns an object with an `unsubscribe` function for removing your callback
-  * **`async jobService.list`** `-> Array<Job>` Get all jobs
-  * **`async jobService.find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
-  * **`async jobService.findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
+  * **`async list`** `-> Array<Job>` Get all jobs
+  * **`async find`** `Object searchCriteria -> Array<Job>` Find jobs matching the given criteria
+  * **`async findOne`** `Object searchCriteria -> Job [throws Error on no job found]` Returns the first job matching the given criteria
 
 #### Example
 ```js
@@ -182,7 +182,7 @@ const example = async ({ jobService, userService }) => {
 
 ### listenerService
 The listener service sets up a matcher with an action.
-  * **`listenerService.listen`** `String -> StreamReader` Set up a listener and receive a stream reader to get responses written to the stream
+  * **`listen`** `String -> StreamReader` Set up a listener and receive a stream reader to get responses written to the stream
 
 #### Example
 ```js
@@ -195,9 +195,9 @@ const example = ({ listenerService }) => {
 ```
 ### messengerService
 The messenger service sends output to the adapter the bot is running on.
-  * **`messengerService.respond`** `Context, String -> Nil` Send a message in response to the sending context
-  * **`messengerService.send`** `Channel, String -> Nil` Send a message to a channel
-  * **`messengerService.reply`** `Context, String` Reply to a sending context
+  * **`respond`** `Context, String -> Nil` Send a message in response to the sending context
+  * **`send`** `Channel, String -> Nil` Send a message to a channel
+  * **`reply`** `Context, String` Reply to a sending context
 
 #### Example
 ```js
@@ -212,10 +212,38 @@ const examplePlugin = ({ messengerService }) => {
 }
 ```
 
+### permissionService
+The permission service allows promoting/demoting users to/from superuser and
+guarding blocks of code which require superuser permission.
+  * **`async promote`** `Number userId -> Bool` Promote a user to a superuser. Only a superuser can promote a user.
+  * **`async demote`** `Number userId -> Bool` Demote a user to a normal user. Only a superuser can demote a uer.
+  * **`isSuperuser`** `Number userId -> Bool` Returns whether or not a user is a superuser.
+  * **`async guard`** `Fn block -> Any` Only run `block` if the user associated with the currently executing job is a superuser.
+
+#### Example
+```js
+export const example = ({ permissionService }) => ({
+  name: 'example',
+  async execute () {
+    permissionService.guard(() => {
+      return 'this output is only available to superusers'
+    })
+  }
+})
+```
+```js
+export const promote = ({ permissionService }) => ({
+  name: 'promote',
+  async execute ([ userId ]) {
+    permissionService.promote(userId)
+  }
+})
+```
+
 ### pluginService
 The plugin service is responsible for registering plugins.
 (See below for documentation on creating your own plugins)
-  * **`pluginService.load`** `Plugin | Array<Plugin> -> Nil` Load one or more plugins
+  * **`load`** `Plugin | Array<Plugin> -> Nil` Load one or more plugins
 
 #### Example
 ```js
@@ -233,9 +261,9 @@ may need to be destroyed upon SIGKILL so signals can only be sent to "friendly"
 jobs that manually specify their own signal handlers. Attempts to send a signal
 to a job that doesn't handle that signal will result in a catchable error being
 thrown.
-  * **createSignalHandler** `Nil` Create a signal handler for a process which will respond to signals sent by other commands.
-    * **onSignal** `Signal signal, Fn handler` Set up a function to be invoked upon signal.
-  * **send** `Number jobId, Signal signal` Send a signal to a job which has a signal handler installed. Throws an error if job cannot receive signal.
+  * **`createSignalHandler`** `Nil` Create a signal handler for a process which will respond to signals sent by other commands.
+    * **`onSignal`** `Signal signal, Fn handler` Set up a function to be invoked upon signal.
+  * **`send`** `Number jobId, Signal signal` Send a signal to a job which has a signal handler installed. Throws an error if job cannot receive signal.
 
 #### Available Signals
   * **SIGINT** (signal number 1) - analogous to SIGINT in UNIX; a command implementing a handler for this signal should cleanup and halt immediately if possible
@@ -313,9 +341,9 @@ export default ({ signalService }) => ({
 
 ### userService
 The user service retrieves users running on the bot adapter.
-  * **`async userService.list`** `-> Array<User>` get all users
-  * **`async userService.find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
-  * **`async userService.findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
+  * **`async list`** `-> Array<User>` get all users
+  * **`async find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
+  * **`async findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
 
 #### Example
 ```js
