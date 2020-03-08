@@ -1,7 +1,7 @@
 import optionBuilder from './optionBuilder'
 import type from '../metadata/types'
 import commandWrapper from '../runtimeWrapper'
-import { isFunction, flatten } from 'lodash'
+import { isFunction, isArray, flatten } from 'lodash'
 
 function commandBuilder (name, context) {
   const { environment, commandRegistry, pid } = context
@@ -32,7 +32,7 @@ function commandBuilder (name, context) {
         [type.COMMAND]: {
           name,
           options: options.map(option => option.getMetadata()).reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-          arguments: args.map(arg => arg.getMetadata ? arg.getMetadata() : arg)
+          arguments: args.map(arg => arg.getMetadata ? arg.getMetadata() : (isFunction(arg) ? arg() : arg ))
         }
       }
     },
@@ -46,7 +46,13 @@ function commandBuilder (name, context) {
       const wrapper = commandWrapper(pid, command)
       return async (incoming, opts = {}) => {
         const execArgs = incoming ? [ ...args, incoming ] : args
-        const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => isFunction(arg) ? flatten(await arg()) : arg)))
+        const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => {
+          if (isFunction(arg)) {
+            const value = await arg()
+            return isArray(value) ? flatten(value) : value
+          }
+          return arg
+        })))
         const execOptionsP = await Promise.all(
           options
             .map(opt => opt.build(buildOpts))

@@ -66,6 +66,17 @@ describe('command builder', () => {
 
       expect(metadata).toEqual({ command: { name: 'test', arguments: [ 'complex' ], options: { o: 'option' } } })
     })
+
+    it('should build metadata with function arguments', () => {
+      context.environment.get.mockReturnValueOnce(1)
+
+      const builder = commandBuilder('test', context)
+      builder.addVariable('!')
+
+      const metadata = builder.getMetadata()
+
+      expect(metadata).toEqual({ command: { arguments: [ 1 ], name: 'test', options: {} } })
+    })
   })
 
   describe('build', () => {
@@ -142,6 +153,19 @@ describe('command builder', () => {
       const executable = builder.build()
       await executable()
       expect(wrapFn).toHaveBeenCalledWith([ 'nested' ], {})
+    })
+
+    it('should not flatten a single argument', async () => {
+      const wrapFn = jest.fn()
+      commandWrapper.mockReturnValue({ execute: wrapFn })
+      context.environment.get.mockReturnValueOnce(1)
+
+      const builder = commandBuilder('test', context)
+      builder.addVariable('!')
+
+      const executable = builder.build()
+      await executable()
+      expect(wrapFn).toHaveBeenCalledWith([ 1 ], {})
     })
   })
 })
