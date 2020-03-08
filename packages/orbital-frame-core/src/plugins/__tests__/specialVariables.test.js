@@ -32,9 +32,12 @@ describe('special variables plugin', () => {
     expect(environmentService.set).toHaveBeenCalledWith('?', 1)
   })
 
-  it('should set exit PID variable', () => {
-    plugin[phaseEnum.EXECUTE].exit({ command: { pid: 10 } })
+  it('should set enter PID variable', () => {
+    plugin[phaseEnum.EXECUTE].enter({ command: { pid: 10 } })
     expect(environmentService.set).toHaveBeenCalledWith('!', 10)
+  })
 
+  it('should not allow special variables to be overwritten', () => {
+    // TODO:
   })
 })

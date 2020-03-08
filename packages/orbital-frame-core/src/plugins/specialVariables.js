@@ -40,17 +40,16 @@ const specialVariablesPlugin  = ({ environmentService }) => ({
      * $*: all arguments on the command line
      *
      */
-    enter () { // TODO: command needs its withMetadata compatriots. This should be done in lifecycle
-      // TODO: probably need more command data, not just the compiled command
-      // console.log('Executing command with id', command.pid)
+    enter ({ command }) {
+      environmentService.set('!', command.pid) // TODO: should environment state be refreshed every read loop so values can be set readonly?
+      // TODO: set positional
     },
     /**
      * $?: exit value of last command
      * $!: pid of last command
      */
-    exit ({ command }) {
+    exit () {
       environmentService.set('?', 0)
-      environmentService.set('!', command.pid)
     },
     error () {
       environmentService.set('?', 1)

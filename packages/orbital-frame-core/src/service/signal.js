@@ -6,7 +6,7 @@ const signals = {
 
 const registry = {}
 
-const signal = () => ({ jobService }) => ({
+const signal = () => ({ environmentService, jobService }) => ({
   signal: signals,
 
   async send (jobId, signal) {
@@ -22,7 +22,8 @@ const signal = () => ({ jobService }) => ({
     }
   },
 
-  async createSignalHandler (pid) {
+  async createSignalHandler () {
+    const pid = environmentService.get('!')
     registry[pid] = {}
 
     const job = await jobService.findOne({ 'command.pid': pid })

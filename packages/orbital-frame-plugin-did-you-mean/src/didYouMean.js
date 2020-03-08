@@ -7,7 +7,7 @@ const defaults = {
 
 const didYouMean = options => ({ commandService, messengerService }) => ({
   [phase.EXECUTE]: {
-    error (e, { context }) {
+    error (e, { context }) { // TODO: check error instance for CommandNotFound
       const { sensitivity } = { ...defaults, ...options }
       const command = context.message.text.split(/\s+/).splice(1).join(' ')
 
