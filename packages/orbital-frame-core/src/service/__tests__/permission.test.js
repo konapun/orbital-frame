@@ -58,7 +58,7 @@ describe('permission service', () => {
       } catch ({ message }) {
         error = message
       }
-      expect(error).toBe('Permission Error')
+      expect(error).toBe('Permission Error: User with ID 9 is not a superuser')
     })
 
     it('should not allow demoting a superuser', async () => {
@@ -68,7 +68,7 @@ describe('permission service', () => {
       } catch ({ message }) {
         error = message
       }
-      expect(error).toBe('Permission Error')
+      expect(error).toBe('Permission Error: User with ID 9 is not a superuser')
     })
 
     it('should not run a guarded block', async () => {
@@ -81,7 +81,7 @@ describe('permission service', () => {
         error = message
       }
 
-      expect(error).toBe('Permission Error')
+      expect(error).toBe('Permission Error: User with ID 9 is not a superuser')
       expect(guardedFn).not.toHaveBeenCalled()
     })
   })

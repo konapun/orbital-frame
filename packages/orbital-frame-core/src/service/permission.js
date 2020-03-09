@@ -1,6 +1,15 @@
 const superusers = new Set([ 0 ]) // since only other superusers can add more superusers, make ID 0 the only default superuser
 
+class PermissionError extends Error {
+  constructor (message) {
+    super(`Permission Error: ${message}`)
+    this.name = 'PermissionError'
+  }
+}
+
 const permission = () => ({ jobService, environmentService }) => ({
+  PermissionError,
+
   async promote (userId) {
     return this.guard(() => {
       superusers.add(userId)
@@ -24,7 +33,7 @@ const permission = () => ({ jobService, environmentService }) => ({
     if (this.isSuperuser(userId)) {
       return block()
     } else {
-      throw new Error('Permission Error')
+      throw new PermissionError(`User with ID ${userId} is not a superuser`)
     }
   }
 })

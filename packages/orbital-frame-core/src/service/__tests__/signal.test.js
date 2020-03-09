@@ -1,6 +1,6 @@
 import signalService from '../signal'
 
-let jobService, environmentService, subscribeCallback
+let jobService, environmentService, permissionService, subscribeCallback
 
 beforeEach(() => {
   jobService = {
@@ -10,6 +10,7 @@ beforeEach(() => {
     },
     findOne: jest.fn(async () => Promise.resolve({
       id: 2,
+      userId: 3,
       command: {
         pid: 1
       }
@@ -22,11 +23,16 @@ beforeEach(() => {
   environmentService = {
     get: jest.fn(() => 1)
   }
+
+  permissionService = {
+    PermissionError: Error,
+    isSuperuser: jest.fn(() => true)
+  }
 })
 
 describe('signal service', () => {
   it('should trigger a registered handler on signal sent', async () => {
-    const signaler = signalService()({ jobService, environmentService })
+    const signaler = signalService()({ jobService, environmentService, permissionService })
 
     const handleFn = jest.fn()
 
@@ -38,7 +44,7 @@ describe('signal service', () => {
   })
 
   it('should throw an error on attempt to send an unknown signal', async () => {
-    const signaler = signalService()({ jobService, environmentService })
+    const signaler = signalService()({ jobService, environmentService, permissionService })
     const badSignal = 99
 
     const handleFn = jest.fn()
@@ -58,7 +64,7 @@ describe('signal service', () => {
   })
 
   it('should throw an error on attempt to register a handler for an unknown signal', async () => {
-    const signaler = signalService()({ jobService, environmentService })
+    const signaler = signalService()({ jobService, environmentService, permissionService })
     const badSignal = 99
 
     const handler = await signaler.createSignalHandler()
@@ -74,7 +80,7 @@ describe('signal service', () => {
   })
 
   it('should throw an error on attempting to send a signal to a process that does not register a handler for that signal', async () => {
-    const signaler = signalService()({ jobService })
+    const signaler = signalService()({ jobService, environmentService, permissionService })
 
     let error
     try {
@@ -85,8 +91,30 @@ describe('signal service', () => {
     expect(error).toBe('Job with ID 1 does not exist, is not running, or does not specify a signal handler for signal 1')
   })
 
+  it('should throw an error if the user sending the signal does not own the recipient process and is not a superuser', async () => {
+    const signaler = signalService()({ jobService, environmentService, permissionService })
+
+    jobService.findOne.mockResolvedValueOnce({
+      id: 2,
+      userId: 4,
+      command: {
+        pid: 1
+      }
+    })
+
+    permissionService.isSuperuser.mockReturnValueOnce(false)
+
+    let error
+    try {
+      await signaler.send(9, signaler.signal.SIGINT)
+    } catch ({ message }) {
+      error = message
+    }
+    expect(error).toBe('Cannot send signal to job owned by another user')
+  })
+
   it('should unregister handlers when a job finishes', async () => {
-    const signaler = signalService()({ jobService, environmentService })
+    const signaler = signalService()({ jobService, environmentService, permissionService })
 
     const handleFn = jest.fn()
 
