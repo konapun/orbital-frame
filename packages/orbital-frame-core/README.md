@@ -555,8 +555,7 @@ Name: konapun, Color: monokai # Command output
 
 ## Pending Features/TODOs
   * [ ] Persistence service
-  * [ ] User roles, feature permissions, permission service
+  * [ ] Root user 0 for permission service
   * [ ] Error codes for better error handling in plugins
-  * [ ] Backgrounding jobs
   * [ ] Lazy evaluations
   * [ ] [Parameter Expresions](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
