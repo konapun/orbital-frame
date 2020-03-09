@@ -6,14 +6,21 @@ const signals = {
 
 const registry = {}
 
-const signal = () => ({ environmentService, jobService }) => ({
+const signal = () => ({ environmentService, jobService, permissionService }) => ({
   signal: signals,
 
   async send (jobId, signal) {
     if (!Object.values(signals).includes(signal)) {
       throw new Error(`Error sending signal ${signal} to job ID ${jobId}: Unknown signal`)
     }
-    const { command } = await jobService.findOne({ id: jobId })
+
+    const invokingPid = environmentService.get('!')
+    const { userId: senderId } = await jobService.findOne({ 'command.pid': invokingPid })
+    const { command, userId: consumerId } = await jobService.findOne({ id: jobId })
+    if (senderId !== consumerId && !permissionService.isSuperuser(senderId)) {
+      throw new permissionService.PermissionError('Cannot send signal to job owned by another user')
+    }
+
     const pid = command.pid
     if (registry[pid] && registry[pid][signal]) {
       registry[pid][signal]()
