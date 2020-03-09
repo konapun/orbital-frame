@@ -1,4 +1,4 @@
-const superusers = new Set([ 0 ]) // since only other superusers can add more superusers, make ID 0 the only default superuser
+const superusers = new Set([ 0 ]) // since only other superusers can add more superusers, make ID 0 the only default superuser // TODO: Get this from Persistence once persistenceService is ready
 
 class PermissionError extends Error {
   constructor (message) {
