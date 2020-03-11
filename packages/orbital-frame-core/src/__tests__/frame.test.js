@@ -23,7 +23,8 @@ describe('frame', () => {
       send: 'sendFn',
       getUsers: 'getUsersFn',
       getChannels: 'getChannelsFn',
-      adapter: { ps1: '@', hear: 'hearFn', send: 'sendFn', getUsers: 'getUsersFn', getChannels: 'getChannelsFn', adapterOnlyFn: 'adapterOnlyFn' }
+      adapter: { ps1: '@', hear: 'hearFn', send: 'sendFn', getUsers: 'getUsersFn', getChannels: 'getChannelsFn', adapterOnlyFn: 'adapterOnlyFn' },
+      storageEngine: expect.objectContaining({ set: expect.any(Function), get: expect.any(Function) })
     })
   })
 })
