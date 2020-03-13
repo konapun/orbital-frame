@@ -7,7 +7,7 @@ framework, however, provides that ability along with the power and flexibility
 of the UNIX command line by employing commands, options, variables, pipes,
 asynchronous chaining, inline logical operators (via commands), inline scripting
 for creating new commands at runtime (via aliases), and a custom language based
-on the venerable bash.
+on the venerable bash. For full details, visit the [core README](./packages/orbital-frame-core/README.md).
 
 This project is organized as a monorepo consisting of the following:
   - [@orbital-frame/core](./packages/orbital-frame-core/README.md) The core framework.

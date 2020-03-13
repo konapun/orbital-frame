@@ -2,11 +2,11 @@ function memoryEngine () {
   const memory = {}
 
   return {
-    get (key) {
+    async get (key) {
       return memory[key]
     },
 
-    set (key, value)  {
+    async set (key, value)  {
       memory[key] = value
     }
   }

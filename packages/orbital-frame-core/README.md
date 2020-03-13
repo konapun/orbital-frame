@@ -30,6 +30,7 @@ chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapte
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
+  - **initialize** awaits service registration
   - **loadPlugins** loads plugins into the Orbital Frame lifecycle
   - **loadCommands** loads commands into the Orbital Frame lifecycle
   - **listen** sets up a responder for every time this bot is mentioned.
@@ -236,6 +237,37 @@ export const promote = ({ permissionService }) => ({
   name: 'promote',
   async execute ([ userId ]) {
     permissionService.promote(userId)
+  }
+})
+```
+
+### persistenceService
+The persistence service retains data between restarts. Some services, like the
+permissionService, utilize the persistenceService to persist superuser status.
+  * **async get** `String key -> Any` Get data stored at `key`.
+  * **async set** `String key, Any value -> Nil` Set value for key `key` to `value`.
+  * **curry** `String key -> CurryApi` Set a key to be used with all subsequent get/set calls from the CurryApi below:
+    * **async get** `Nil -> Any` Set data stored at the key used as the argument to `curry`.
+    * **async set** `Any value -> Nil` Set the value for `key` used as the argument to `curry` to `value`.
+  * **namespace** `String namespace -> NamespaceApi` Set a namespace to automatically use for each key in the following API:
+    * **async get** `String key -> Any` Get data stored at namespaced `key`. This is equivalent to doing a `get` from the main API with your key `${namespace}.${key}`.
+    * **async set** `String key, Any value -> Nil` Set value for namespaced key `key` to value `value`. This is equivalent to doing a `set` from the main API with your key `${namespace}.${key}`.
+    * **curry** `String key -> CurryApi` Like `curry` from the main API but the key is updated to use the namespace value. This is equivalent to doing a `curry` from the main API with your key `${namespace}.${key}`
+      * **async get** `Nil -> Any` Set data stored at the key used as the argument to `curry` where the key is the namespaced key.
+      * **async set** `Any value -> Nil` Set the value for `key` used as the argument to `curry` to `value` where the key is the namespaced key.
+#### Example
+```js
+export const example = ({ persistenceService }) => ({
+  name: 'persistence-example',
+  async execute (key, value) {
+    const ns = 'orbital-frame.command.persistence-example'
+    const db = persistenceService.namespace(ns).curry(key)
+
+    if (value) {
+      db.set(value)
+    } else {
+      db.get()
+    }
   }
 })
 ```
@@ -554,7 +586,6 @@ Name: konapun, Color: monokai # Command output
 ```
 
 ## Pending Features/TODOs
-  * [ ] Persistence service
   * [ ] Root user 0 for permission service
   * [ ] Error codes for better error handling in plugins
   * [ ] Lazy evaluations

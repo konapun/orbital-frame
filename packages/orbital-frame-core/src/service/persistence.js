@@ -1,7 +1,4 @@
-// TODO: clean this up
-const persistence = frame => () => {
-  const { storageEngine } = frame
-
+const persistence = ({ storageEngine }) => () => {
   return {
     async get (key) {
       return storageEngine.get(key)
@@ -26,7 +23,19 @@ const persistence = frame => () => {
     namespace (ns) {
       const namespaceKey = key => `${ns}.${key}`
 
+      const namespace = {
+        async get (key) {
+          return storageEngine.get(namespaceKey(key))
+        },
+
+        async set (key, value) {
+          return storageEngine.set(namespaceKey(key), value)
+        }
+      }
+
       return {
+        ...namespace,
+
         async get (key) {
           return storageEngine.get(namespaceKey(key))
         },

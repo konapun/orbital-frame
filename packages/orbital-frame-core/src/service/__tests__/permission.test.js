@@ -1,6 +1,6 @@
 import permissionService from '../permission'
 
-const setup = (userId = 0, overrides = {}) => {
+const setup = async (userId = 0, overrides = {}) => {
   const settings = {
     get: [],
     ...overrides
@@ -31,13 +31,13 @@ const setup = (userId = 0, overrides = {}) => {
     })
   }
 
-  const permission = permissionService()({ jobService, environmentService, persistenceService })
+  const permission = await permissionService()({ jobService, environmentService, persistenceService })
   return { permission, jobService, persistenceSet, persistenceGet }
 }
 
 describe('permission service', () => {
   it('should initialize from persistence', async () => {
-    const { permission, persistenceGet } = setup(0, { get: [ 1, 2, 3 ]})
+    const { permission, persistenceGet } = await setup(0, { get: [ 1, 2, 3 ]})
 
     expect(persistenceGet).toHaveBeenCalled()
     expect(permission.isSuperuser(1)).toBe(true)
@@ -45,8 +45,8 @@ describe('permission service', () => {
     expect(permission.isSuperuser(3)).toBe(true)
   })
 
-  describe('as superuser', () => {
-    const { permission, persistenceSet, persistenceGet } = setup(0)
+  describe('as superuser', async () => {
+    const { permission, persistenceSet, persistenceGet } = await setup(0)
     expect(persistenceGet).toHaveBeenCalled()
 
     it('should allow promoting a user to superuser', async () => {
@@ -91,8 +91,8 @@ describe('permission service', () => {
     })
   })
 
-  describe('as normal user', () => {
-    const { permission, persistenceSet, persistenceGet } = setup(9)
+  describe('as normal user', async () => {
+    const { permission, persistenceSet, persistenceGet } = await setup(9)
     expect(persistenceGet).toHaveBeenCalled()
 
     it('should not allow promoting a user to superuser', async () => {

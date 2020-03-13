@@ -5,11 +5,9 @@ class PermissionError extends Error {
   }
 }
 
-// TODO: allow inner fn to be async
-const permission = () => ({ jobService, environmentService, persistenceService }) => {
+const permission = () => async ({ jobService, environmentService, persistenceService }) => {
   const storage = persistenceService.namespace('permission').curry('superusers')
-  const superusers = new Set([ 0, ...storage.get() ]) // // since only other superusers can add more superusers, make ID 0 the only default superuser // TODO: get superuser from userService when ready
-  // TODO: await above!
+  const superusers = new Set([ 0, ...(await storage.get() || []) ]) // since only other superusers can add more superusers, make ID 0 the only default superuser // TODO: get superuser from userService when ready
 
   return {
     PermissionError,

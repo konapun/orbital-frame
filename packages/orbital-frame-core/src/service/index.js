@@ -9,6 +9,7 @@ import jobService from './job'
 import listenerService from './listener'
 import messengerService from './messenger'
 import permissionService from './permission'
+import persistenceService from './persistence'
 import pluginService from './plugin'
 import signalService from './signal'
 import userService from './user'
@@ -24,6 +25,7 @@ const services = {
   listenerService,
   messengerService,
   permissionService,
+  persistenceService,
   pluginService,
   signalService,
   userService
