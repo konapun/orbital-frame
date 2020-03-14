@@ -3,21 +3,14 @@ import permissionService from '../permission'
 const setup = (userId = 0, overrides = {}) => {
   const settings = {
     get: [],
+    root: [ 0 ],
+    userId,
     ...overrides
   }
 
-  const jobService = {
-    findOne: jest.fn(async () => Promise.resolve({
-      id: 1,
-      userId: userId,
-      command: {
-        pid: 2
-      }
-    }))
-  }
-
-  const environmentService = {
-    get: jest.fn(() => userId)
+  const userService = {
+    find: jest.fn(() => Promise.resolve([ { id: 0 } ])),
+    getCurrentUser: jest.fn(() => ({ id: userId }))
   }
 
   const persistenceSet = jest.fn(() => Promise.resolve())
@@ -31,37 +24,39 @@ const setup = (userId = 0, overrides = {}) => {
     })
   }
 
-  const permission = permissionService()({ jobService, environmentService, persistenceService })
-  return { permission, jobService, persistenceSet, persistenceGet }
+  const permission = permissionService()({ userService, persistenceService })
+  return { permission, userService, persistenceSet, persistenceGet }
 }
 
 describe('permission service', () => {
   it('should initialize from persistence', async () => {
-    const { permission, persistenceGet } = setup(0, { get: [ 1, 2, 3 ] })
+    const { permission, persistenceGet } = setup(4, { get: [ 1, 2, 3 ], root: [ 0 ] })
 
     expect(persistenceGet).toHaveBeenCalled()
+    expect(await permission.isSuperuser(0)).toBe(true)
     expect(await permission.isSuperuser(1)).toBe(true)
     expect(await permission.isSuperuser(2)).toBe(true)
     expect(await permission.isSuperuser(3)).toBe(true)
+    expect(await permission.isSuperuser(4)).toBe(false)
   })
 
   describe('as superuser', async () => {
-    const { permission, persistenceSet, persistenceGet } = setup(0)
+    const { permission, persistenceSet, persistenceGet } = setup(1, { get: [ 1 ] })
     expect(persistenceGet).toHaveBeenCalled()
 
     it('should allow promoting a user to superuser', async () => {
       await permission.promote(13)
 
       expect(await permission.isSuperuser(13)).toBe(true)
-      expect(persistenceSet).toHaveBeenCalledWith([ 0, 13 ])
+      expect(persistenceSet).toHaveBeenCalledWith([ 0, 1, 13 ])
     })
 
     it('should allow demoting a superuser', async () => {
       const demoted = await permission.demote(13)
 
-      expect(await permission.isSuperuser(1)).toBe(false)
+      expect(await permission.isSuperuser(13)).toBe(false)
       expect(demoted).toBeTrue()
-      expect(persistenceSet).toHaveBeenCalledWith([ 0 ])
+      expect(persistenceSet).toHaveBeenCalledWith([ 0, 1 ])
     })
 
     it('should not allow the root user to be demoted', async () => {

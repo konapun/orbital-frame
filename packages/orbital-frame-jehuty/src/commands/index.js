@@ -36,6 +36,7 @@ import greaterThan from './greaterThan'
 import observer from './observer'
 import kill from './kill'
 import fg from './fg'
+import promote from './promote'
 
 export default [
   uptimeCommand,
@@ -75,5 +76,6 @@ export default [
   greaterThan,
   observer,
   kill,
-  fg
+  fg,
+  promote
 ]
