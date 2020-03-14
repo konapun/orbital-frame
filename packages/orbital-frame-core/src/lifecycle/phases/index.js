@@ -1,4 +1,5 @@
 import phase from '../phase'
+import initializePhase from './initialize'
 import loadPluginsPhase from './loadPlugins'
 import loadCommandsPhase from './loadCommands'
 import listenPhase from './listen'
@@ -7,6 +8,7 @@ import executePhase from './execute'
 import respondPhase from './respond'
 
 export const phaseEnum = {
+  INITIALIZE: 'initialize',
   LOAD_PLUGINS: 'loadPlugins',
   LOAD_COMMANDS: 'loadCommands',
   LISTEN: 'listen',
@@ -16,6 +18,7 @@ export const phaseEnum = {
 }
 
 export default {
+  [phaseEnum.INITIALIZE]: phase(initializePhase),
   [phaseEnum.LOAD_PLUGINS]: phase(loadPluginsPhase),
   [phaseEnum.LOAD_COMMANDS]: phase(loadCommandsPhase),
   [phaseEnum.LISTEN]: phase(listenPhase),
