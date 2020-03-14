@@ -30,7 +30,6 @@ chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapte
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
-  - **initialize** awaits service registration
   - **loadPlugins** loads plugins into the Orbital Frame lifecycle
   - **loadCommands** loads commands into the Orbital Frame lifecycle
   - **listen** sets up a responder for every time this bot is mentioned.
