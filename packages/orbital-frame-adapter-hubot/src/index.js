@@ -29,7 +29,7 @@ function hubotAdapter (hubot, config) { // TODO: config
       return hubot.messageRoom(channel, message)
     },
     async getUsers () {
-      return await Object.values(hubot.brain.data.users).map(({ id, name }) => ({ id, name }))
+      return Object.values(hubot.brain.data.users)
     },
     async getChannels () {
       return [] // TODO: find out how to do this

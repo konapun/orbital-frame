@@ -5,9 +5,12 @@ class PermissionError extends Error {
   }
 }
 
-const permission = () => ({ jobService, environmentService, persistenceService }) => {
+const permission = () => ({ userService, persistenceService }) => {
   const storage = persistenceService.namespace('permission').curry('superusers')
-  const superusersP = storage.get().then((storedSuperusers = []) => new Set([ 0, ...storedSuperusers ])) // since only other superusers can add more superusers, make ID 0 the only default superuser // TODO: get superuser from userService when ready
+
+  const rootUsersP = userService.find({ root: true }).then(users => users.map(({ id }) => id))
+  const storedSuperusersP = storage.get()
+  const superusersP = Promise.all([ rootUsersP, storedSuperusersP ]).then(([ rootUsers = [], storedSuperusers = [] ]) => new Set([ ...rootUsers, ...storedSuperusers ]))
 
   return {
     PermissionError,
@@ -24,7 +27,9 @@ const permission = () => ({ jobService, environmentService, persistenceService }
     async demote (userId) {
       return this.guard(async () => {
         const superusers = await superusersP
-        if (userId === 0) {
+        const rootUsers = await rootUsersP
+
+        if (rootUsers.includes(userId)) {
           throw new Error('Root user cannot be demoted')
         }
 
@@ -41,8 +46,7 @@ const permission = () => ({ jobService, environmentService, persistenceService }
     },
 
     async guard (block) {
-      const pid = environmentService.get('!')
-      const { userId } = await jobService.findOne({ 'command.pid': pid })
+      const { id: userId } = await userService.getCurrentUser()
 
       if (await this.isSuperuser(userId)) {
         return await block()

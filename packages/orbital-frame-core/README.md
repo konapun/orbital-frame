@@ -372,14 +372,16 @@ export default ({ signalService }) => ({
 
 ### userService
 The user service retrieves users running on the bot adapter.
-  * **`async list`** `-> Array<User>` get all users
+  * **`async getCurrentUser`** `Bool fullProjection -> User` get the user from the currently running process. If `fullProjection` is true, the entire user object will be included. If false (default), only the id will be returned in the user object.
+  * **`async list`** `Nil -> Array<User>` get all users
   * **`async find`** `Object searchCriteria -> Array<User>` Find users matching the given criteria
   * **`async findOne`** `Object searchCriteria -> User [throws Error on no user found]` Returns the first user matching the given criteria
 
 #### Example
 ```js
-const example = ({ userService }) => {
-  const found = userService.findOne({ id: 123 })
+const example = async ({ userService }) => {
+  const currentUser = await userService.getCurrentUser()
+  const found = await userService.findOne({ id: 123 })
   console.log(found.name) // -> "konapun"
 }
 ```

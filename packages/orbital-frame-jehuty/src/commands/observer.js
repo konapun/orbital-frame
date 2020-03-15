@@ -20,7 +20,7 @@ export default ({ interactionService, signalService }) => ({
       })
 
       stream.pipe(({ user, text }) => {
-        if (text === 'exit') {
+        if (text.trim() === 'exit') {
           resolve('Exiting')
           stream.end()
         } else if (!paused) {
