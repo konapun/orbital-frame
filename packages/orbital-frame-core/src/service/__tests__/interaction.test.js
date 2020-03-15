@@ -1,6 +1,6 @@
 import interactionService from '../interaction'
 
-let configService, environmentService, jobService, listenerService, listenerApi, messengerService, interaction, listenCallback
+let configService, environmentService, jobService, listenerService, listenerApi, messengerService, interaction
 
 beforeEach(() => {
   configService = {
@@ -20,8 +20,7 @@ beforeEach(() => {
   }
 
   listenerApi = {
-    pipe: jest.fn(fn => {
-      listenCallback = fn
+    pipe: jest.fn(() => {
       return {
         pipe: jest.fn(() => {
           return {
@@ -68,7 +67,20 @@ describe('interaction service', () => {
     expect(messengerService.respond).toHaveBeenCalledWith(expect.any(Function), 'What is your age?')
   })
 
+  it('should only allow a single interaction per PID', async () => {
+    let error
+    try {
+      await interaction.createInteractionChannel()
+    } catch ({ message }) {
+      error = message
+    }
+
+    expect(error).toBe('Interaction already running for pid 1')
+  })
+
   it('should require a ">" for interaction responses', async () => {
+    environmentService.get.mockReturnValueOnce(2)
+
     await interaction.createInteractionChannel()
     expect(listenerService.listen).toHaveBeenCalledWith('^>')
   })

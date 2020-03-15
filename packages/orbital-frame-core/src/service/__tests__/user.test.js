@@ -1,11 +1,25 @@
 import userService from '../user'
 
 const frame = {
-  getUsers: jest.fn()
+  getUsers: jest.fn(() => Promise.resolve([ { id: 0, name: 'jehuty' }, { id: 1, name: 'anubis' } ]))
+}
+const configService = {
+  name: 'jehuty'
+}
+const jobService = {
+  findOne: jest.fn(() => ({ userId: 1, command: { pid: 1 } }))
+}
+const environmentService = {
+  get: jest.fn(() => 1)
 }
 
 describe('user service', () => {
-  const user = userService(frame)()
+  const user = userService(frame)({ configService, jobService, environmentService })
+
+  it('should map the root property', async () => {
+    const users = await user.list()
+    expect(users).toEqual([ { id: 0, name: 'jehuty', root: true }, { id: 1, name: 'anubis', root: false } ])
+  })
 
   it('should list users', async () => {
     await user.list()
@@ -19,4 +33,27 @@ describe('user service', () => {
   it('should support finding a single user', () => {
     expect(user.findOne).toBeDefined()
   })
+
+  describe('getCurrentUser', () => {
+    user.findOne = jest.fn(user.findOne)
+
+    it('should get the light projection by default', async () => {
+      const currentUser = await user.getCurrentUser()
+
+      expect(environmentService.get).toHaveBeenCalledWith('!')
+      expect(jobService.findOne).toHaveBeenCalledWith({ 'command.pid': 1 })
+      expect(user.findOne).not.toHaveBeenCalled()
+      expect(currentUser).toEqual({ id: 1 })
+    })
+
+    it('should get the full projection if requested', async () => {
+      const currentUser = await user.getCurrentUser(true)
+
+      expect(environmentService.get).toHaveBeenCalledWith('!')
+      expect(jobService.findOne).toHaveBeenCalledWith({ 'command.pid': 1 })
+      expect(user.findOne).toHaveBeenCalledWith({ id: 1 })
+      expect(currentUser).toEqual({ id: 1, name: 'anubis', root: false })
+    })
+  })
+
 })
