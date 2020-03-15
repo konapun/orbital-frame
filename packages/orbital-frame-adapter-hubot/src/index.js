@@ -1,5 +1,4 @@
-// TODO: slack (used to?) use ” and “ for double quotes and ‘ and ’ for single quotes for do a replace on `hear`
-function hubotAdapter (hubot, config) { // TODO: config
+function hubotAdapter (hubot) { // TODO: config
   return {
     ps1: '@', // this symbol is used to hail a user/bot
     hear (matcher, callback) {
