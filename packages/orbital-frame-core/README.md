@@ -597,7 +597,6 @@ Name: konapun, Color: monokai # Command output
 ```
 
 ## Pending Features/TODOs
-  * [ ] Root user 0 for permission service
   * [ ] Error codes for better error handling in plugins
   * [ ] Lazy evaluations
   * [ ] [Parameter Expresions](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
