@@ -20,6 +20,14 @@ const jehuty = hubot => orbitalFrame(hubotAdapter(hubot, hubotConfig), {
 export default hubot => jehuty(hubot).run() // where your framework instance comes from will vary depending on your chat platform but hubot passes this in as `robot` to every script in the `scripts` directory
 ```
 
+### Options
+  * **name** `String [default: "orbital-frame"]` The name of the bot. This is used to match user input to trigger the bot's listener.
+  * **ps2** `String [default: ">"]` This is the string or character that the bot uses to send input to interactive commands.
+  * **commands** `Array<Command> [default: []]` Commands that are available to run (see COMMANDS below for documentation on creating your own commands).
+  * **plugins** `Array<Plugin> [default: []]` Loaded plugins (see PLUGINS below for documentation on creating your own plugins).
+  * **rootUsers** `Array<Number> [default: []]` User IDs for users who are root. Root users have de facto, unrevokable superuser powers and may promote other users to superuser as well.
+  * **storageEngine** `StorageEngine [default: MemoryEngine]` Key/value storage used by the `persistenceService`. By default, the MemoryEngine is used which does not persist data between restarts. For an example of creating your own storage engine, look at the [source for the Memory Engine](./src/memoryEngine.js).
+
 ## Adapters
 Orbital Frame uses adapters to gain functionality for interacting with various
 chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapter is available and this is what
@@ -27,6 +35,8 @@ chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapte
 
 ### Creating adapters
 `TODO` The adapters API is still in flux
+
+See the [hubot adapter](../orbital-frame-adapter-hubot/src/index.js) as an example.
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:

@@ -17,6 +17,7 @@ describe('frame', () => {
       name: 'orbital-frame',
       plugins: [],
       commands: [],
+      rootUsers: [],
       ps1: '@',
       ps2: '>',
       hear: 'hearFn',

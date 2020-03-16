@@ -6,6 +6,7 @@ const defaults = {
   ps2: '>', // symbol used to engage an interaction
   commands: [],
   plugins: [],
+  rootUsers: [],
   storageEngine: memoryEngine()
 }
 
@@ -14,7 +15,7 @@ const defaults = {
  * the service host and provides a uniform API between bot types
  */
 function frame (adapter, options) {
-  const { name, ps2, commands, plugins, storageEngine } = { ...defaults, ...options }
+  const { name, ps2, commands, plugins, rootUsers, storageEngine } = { ...defaults, ...options }
 
   const { ps1, hear, send, getUsers, getChannels } = adapter
   return {
@@ -23,6 +24,7 @@ function frame (adapter, options) {
     ps2,
     commands,
     plugins,
+    rootUsers,
     hear,
     send,
     getUsers,

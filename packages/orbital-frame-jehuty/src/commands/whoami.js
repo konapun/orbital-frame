@@ -2,13 +2,11 @@ function whoami ({ userService }) {
   return {
     name: 'whoami',
     description: 'TODO',
-    options: {},
+    format (user) {
+      return user.name
+    },
     async execute () {
-      // const commandId = this.id // TODO:
-      // const job = await jobService.find({ 'command.id': commandId})
-      // const user = await userService.find({ id: job.userId })
-      const user = await userService.findOne({ id: 1 })
-      return user
+      return userService.getCurrentUser()
     }
   }
 }

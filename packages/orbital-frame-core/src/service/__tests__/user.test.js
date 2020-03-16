@@ -1,7 +1,8 @@
 import userService from '../user'
 
 const frame = {
-  getUsers: jest.fn(() => Promise.resolve([ { id: 0, name: 'jehuty' }, { id: 1, name: 'anubis' } ]))
+  rootUsers: [ 3 ],
+  getUsers: jest.fn(() => Promise.resolve([ { id: 0, name: 'jehuty' }, { id: 1, name: 'anubis' }, { id: 3, name: 'configRoot' } ]))
 }
 const configService = {
   name: 'jehuty'
@@ -18,7 +19,7 @@ describe('user service', () => {
 
   it('should map the root property', async () => {
     const users = await user.list()
-    expect(users).toEqual([ { id: 0, name: 'jehuty', root: true }, { id: 1, name: 'anubis', root: false } ])
+    expect(users).toEqual([ { id: 0, name: 'jehuty', root: true }, { id: 1, name: 'anubis', root: false }, { id: 3, name: 'configRoot', root: true } ])
   })
 
   it('should list users', async () => {
@@ -55,5 +56,4 @@ describe('user service', () => {
       expect(currentUser).toEqual({ id: 1, name: 'anubis', root: false })
     })
   })
-
 })

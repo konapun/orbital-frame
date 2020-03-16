@@ -1,7 +1,7 @@
 import search from '../util/search'
 
 const user = frame => ({ configService, jobService, environmentService }) => {
-  const list = async () => (await frame.getUsers()).map(user => ({ ...user, root: user.name === configService.name }))
+  const list = async () => (await frame.getUsers()).map(user => ({ ...user, root: user.name === configService.name || frame.rootUsers.includes(user.id) }))
   const { find, findOne } = search(list)
 
   return {
