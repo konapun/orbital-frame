@@ -1,6 +1,7 @@
 import optionBuilder from './optionBuilder'
 import type from '../metadata/types'
 import commandWrapper from '../runtimeWrapper'
+import { CommandNotFoundError } from '../../error'
 import { isFunction, isArray, flatten } from 'lodash'
 
 function commandBuilder (name, context) {
@@ -40,7 +41,7 @@ function commandBuilder (name, context) {
     build (buildOpts = {}) {
       const command = commandRegistry[name]
       if (!command) {
-        throw new Error(`Command not found: ${name}`)
+        throw new CommandNotFoundError(`Command not found: ${name}`)
       }
 
       const wrapper = commandWrapper(pid, command)

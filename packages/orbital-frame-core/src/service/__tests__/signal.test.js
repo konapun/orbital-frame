@@ -25,7 +25,6 @@ beforeEach(() => {
   }
 
   permissionService = {
-    PermissionError: Error,
     isSuperuser: jest.fn(() => true)
   }
 
@@ -116,7 +115,7 @@ describe('signal service', () => {
     } catch ({ message }) {
       error = message
     }
-    expect(error).toBe('Cannot send signal to job owned by another user')
+    expect(error).toBe('Permission Error: Cannot send signal to job owned by another user')
   })
 
   it('should unregister handlers when a job finishes', async () => {

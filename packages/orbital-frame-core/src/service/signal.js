@@ -1,3 +1,5 @@
+import { PermissionError } from '../error'
+
 const signals = {
   SIGINT: 1, // polite interrupt
   SIGSTP: 2, // pause
@@ -17,7 +19,7 @@ const signal = () => ({ environmentService, jobService, userService, permissionS
     const { id: senderId } = await userService.getCurrentUser()
     const { command, userId: consumerId } = await jobService.findOne({ id: jobId })
     if (senderId !== consumerId && !permissionService.isSuperuser(senderId)) {
-      throw new permissionService.PermissionError('Cannot send signal to job owned by another user')
+      throw new PermissionError('Cannot send signal to job owned by another user')
     }
 
     const pid = command.pid

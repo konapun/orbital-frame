@@ -1,4 +1,4 @@
-import { phase } from '@orbital-frame/core'
+import { phase, error } from '@orbital-frame/core'
 import damerauLevenshtein from 'talisman/metrics/distance/damerau-levenshtein'
 
 const defaults = {
@@ -7,7 +7,8 @@ const defaults = {
 
 const didYouMean = options => ({ commandService, messengerService }) => ({
   [phase.EXECUTE]: {
-    error (e, { context }) { // TODO: check error instance for CommandNotFound
+    error (e, { context }) {
+      if (!(e instanceof error.CommandNotFoundError)) return
       const { sensitivity } = { ...defaults, ...options }
       const command = context.message.text.split(/\s+/).splice(1).join(' ')
 
