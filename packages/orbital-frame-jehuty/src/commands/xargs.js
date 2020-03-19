@@ -1,9 +1,9 @@
-export default ({ commandService }) => ({
+export default ({ compilerService }) => ({
   name: 'xargs',
   description: 'Distribute list items to a command',
-  execute ([ commandName, ...list ]) {
-    const command = commandService.registry[commandName]
+  execute ([ source, ...list ]) {
+    const command = compilerService.compile(source)
 
-    return Promise.all(list.map(arg => command.execute(arg, {})))
+    return Promise.all(list.map(async arg => command(arg, {})))
   }
 })

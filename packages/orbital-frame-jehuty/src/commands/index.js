@@ -24,6 +24,7 @@ import length from './length'
 import flatten from './flatten'
 import xargs from './xargs'
 import join from './join'
+import split from './split'
 import list from './list'
 import head from './head'
 import tail from './tail'
@@ -65,6 +66,7 @@ export default [
   flatten,
   xargs,
   join,
+  split,
   list,
   head,
   tail,
