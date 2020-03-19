@@ -1,9 +1,4 @@
-class PermissionError extends Error {
-  constructor (message) {
-    super(`Permission Error: ${message}`)
-    this.name = 'PermissionError'
-  }
-}
+import { PermissionError } from '../error'
 
 const permission = () => ({ userService, persistenceService }) => {
   const storage = persistenceService.namespace('permission').curry('superusers')
@@ -13,8 +8,6 @@ const permission = () => ({ userService, persistenceService }) => {
   const superusersP = Promise.all([ rootUsersP, storedSuperusersP ]).then(([ rootUsers = [], storedSuperusers = [] ]) => new Set([ ...rootUsers, ...storedSuperusers ]))
 
   return {
-    PermissionError,
-
     async promote (userId) {
       return this.guard(async () => {
         const superusers = await superusersP

@@ -404,6 +404,44 @@ object and exit args on `error`. By default, each plugged phase returns its
 arguments unchanged but may intercept these arguments as needed which will
 propogate downstream in the lifecycle.
 
+### Handling Specific Errors
+The following are specific errors that may be checked for using `instanceof` if
+you wish to only handle a certain class of error in your error phase:
+  * **PermissionError** thrown when a user attempts to run permission-gated code
+  * **CommandNotFoundError** thrown when the user requests to run a command which has not been registered under any name
+
+#### Example
+```js
+import { phase, error } from '@orbital-frame/core'
+import damerauLevenshtein from 'talisman/metrics/distance/damerau-levenshtein'
+
+const defaults = {
+  sensitivity: 2
+}
+
+const didYouMean = options => ({ commandService, messengerService }) => ({
+  [phase.EXECUTE]: {
+    error (e, { context }) {
+      if (!(e instanceof error.CommandNotFoundError)) return
+      const { sensitivity } = { ...defaults, ...options }
+      const command = context.message.text.split(/\s+/).splice(1).join(' ')
+
+      const matches = Object.keys(commandService.registry).map(name => {
+        const distance = damerauLevenshtein(command, name)
+        return { name, distance }
+      }).filter(({ distance }) => distance <= sensitivity)
+
+      if (matches.length > 0) {
+        messengerService.respond(context, `Did you mean:\n${matches.map(({ name }) => `    ${name}`).join('\n')}`)
+      }
+    }
+  }
+})
+
+export { didYouMean }
+export default didYouMean()
+```
+
 ### Example Plugin
 ```js
 import {phase} from '@orbital-frame/core'
@@ -597,6 +635,5 @@ Name: konapun, Color: monokai # Command output
 ```
 
 ## Pending Features/TODOs
-  * [ ] Error codes for better error handling in plugins
   * [ ] Lazy evaluations
   * [ ] [Parameter Expresions](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)

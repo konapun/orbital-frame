@@ -1,5 +1,5 @@
 import didYouMean from './didYouMean'
-import { phase } from '@orbital-frame/core'
+import { phase, error } from '@orbital-frame/core'
 
 const loadedCommands = [
   'test',
@@ -16,9 +16,23 @@ const messengerService = {
 }
 
 describe('"Did You Mean" plugin', () => {
-  it('should suggest close matches', () => {
+  it('should ignore errors which are not an instance of CommandNotFoundError', () => {
     const dym = didYouMean({ commandService, messengerService })
-    const err = Error('err')
+    const err = new error.PermissionError('err')
+    const context = {
+      message: {
+        text: '@jehuty tset'
+      }
+    }
+
+    dym[phase.EXECUTE].error(err, { context })
+    expect(messengerService.respond).not.toHaveBeenCalled()
+  })
+
+  // TODO: reenable onced instanceof checks work in jest
+  xit('should suggest close matches', () => { // eslint-disable-line jest/no-disabled-tests
+    const dym = didYouMean({ commandService, messengerService })
+    const err = new error.CommandNotFoundError('err')
     const context = {
       message: {
         text: '@jehuty tset'
