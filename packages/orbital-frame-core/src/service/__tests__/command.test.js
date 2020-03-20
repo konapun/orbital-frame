@@ -9,6 +9,10 @@ describe('command service', () => {
     expect(() => commandLoader.load(() => ({ name: 'invalid' }))).toThrow()
   })
 
+  it('should restrict overwrites to root users', () => {
+    // TODO:
+  })
+
   it('should load a single command', () => {
     commandLoader.load(() => ({
       name: 'test1',
