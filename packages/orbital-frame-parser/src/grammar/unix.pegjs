@@ -1,15 +1,39 @@
 Program
-  = _ statement:Statement _ rest:(";" _ Statement)* ";"* {
-  	  const statements = rest.map(part => part[2])
+  = _ statement:Statement _ rest:(";" _ Statement)* _ ";"* {
+      const statements = rest.map(part => part[2])
       return { type: "Program", body: [ statement, ...statements ] }
     }
 
 Statement
   = Assignment
+  / Function
   / Pipeline
 
 Assignment
-  = variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value ] } }
+  = scope:ScopeModifier* _ variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value, scope ] } }
+
+ScopeModifier
+  = "local" { return { type: "ScopeModifier", body: [ "local", true ] } }
+
+Function
+  = ExplicitFunction
+  / ImplicitFunction
+
+ExplicitFunction
+  = "function" _ name:Word _ "{" _ body:FunctionBody? _ "}" { return { type: "Function", body: [ name, body ] } }
+
+ImplicitFunction
+  = name:Word _ "()" _ "{" _ body:FunctionBody? _ "}" { return { type: "Function", body: [ name, body ] } }
+
+FunctionBody
+  = _ statement:FunctionBodyStatement _ rest:(";" _ FunctionBodyStatement)* _ ";"* {
+    const statements = rest.map(part => part[2])
+    return [ statement, ...statements ]
+  }
+
+FunctionBodyStatement
+  = Assignment
+  / Pipeline
 
 Pipeline
   = _ command:Command _ rest:("|" _ Command _)* {
