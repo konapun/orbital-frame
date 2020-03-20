@@ -34,7 +34,13 @@ describe('parser', () => {
   it('should allow variables', () => {
     const program = 'ARG=test; ARG2="test space"'
 
-    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', { body: [ 'test' ], type: 'Argument' } ], type: 'Assignment' }, { body: [ 'ARG2', { body: [ 'test space' ], type: 'Argument' } ], type: 'Assignment' } ], type: 'Program' })
+    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', { body: [ 'test' ], type: 'Argument' }, null ], type: 'Assignment' }, { body: [ 'ARG2', { body: [ 'test space' ], type: 'Argument' }, null ], type: 'Assignment' } ], type: 'Program' })
+  })
+
+  it('should allow scoped variables', () => {
+    const program = 'local ARG=test'
+
+    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', { body: [ 'test' ], type: 'Argument' }, { body: [ 'local', true ], type: 'ScopeModifier' } ], type: 'Assignment' } ], type: 'Program' })
   })
 
   it('should parse post-argument options', () => {
@@ -71,5 +77,11 @@ describe('parser', () => {
     const program = 'test1 | $(test2) | test3'
 
     expect(parse(program)).toEqual({ body: [ { body: [ { body: [ 'test1' ], type: 'Command' }, { body: [ { body: [ { body: [ 'test2' ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Interpolation' }, { body: [ 'test3' ], type: 'Command' } ], type: 'Pipeline' } ], type: 'Program' })
+  })
+
+  it('should allow functions', () => {
+    const program = 'function test { echo $1 }'
+
+    expect(parse(program)).toEqual({ type:'Program',body:[ { type:'Function',body:[ 'test',[ { type:'Pipeline',body:[ { type:'Command',body:[ 'echo',{ type:'Variable',body:[ '1' ] } ] } ] } ] ] } ] })
   })
 })

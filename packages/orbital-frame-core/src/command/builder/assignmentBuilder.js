@@ -1,5 +1,6 @@
 import type from '../metadata/types'
 
+// TODO: scoping
 function assignmentBuilder (variable) {
   let value
 

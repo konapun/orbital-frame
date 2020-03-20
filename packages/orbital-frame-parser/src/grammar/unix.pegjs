@@ -10,7 +10,7 @@ Statement
   / Pipeline
 
 Assignment
-  = scope:ScopeModifier* _ variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value, scope ] } }
+  = scope:ScopeModifier? _ variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value, scope ] } }
 
 ScopeModifier
   = "local" { return { type: "ScopeModifier", body: [ "local", true ] } }

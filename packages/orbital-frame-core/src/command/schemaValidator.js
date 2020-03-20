@@ -9,7 +9,7 @@ export const optionType = {
 
 export const schema = Joi.object().keys({
   name: Joi.string().required(),
-  description: Joi.string().required(),
+  description: Joi.string().default(''),
   usage: Joi.string().default(''),
   options: Joi.object().pattern(/^[a-zA-Z0-9]$/, Joi.object().keys({
     alias: Joi.string().required(),

@@ -6,7 +6,7 @@ describe('command service', () => {
   const commandLoader = commandService()(services)
 
   it('should throw an error when trying to load an invalid command', () => {
-    expect(() => commandLoader.load(() => ({ name: 'invalid' }))).toThrow()
+    expect(() => commandLoader.load(() => ({ description: 'invalid' }))).toThrow()
   })
 
   it('should restrict overwrites to root users', () => {
@@ -31,7 +31,7 @@ describe('command service', () => {
         execute: () => {}
       }),
       () => ({
-        name: 'invalid'
+        description: 'invalid'
       })
     ])).toThrow()
   })
