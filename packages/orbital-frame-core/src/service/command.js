@@ -1,11 +1,13 @@
 import { schemaValidator, wrapper } from '../command'
+import { ValidationError } from '../error'
+
 const commandRegistry = {}
 
 const loadOne = (command, services) => {
   const commandDefinition = wrapper(command(services))
   const { value, error } = schemaValidator.validate(commandDefinition)
   if (error) {
-    throw Error(error)
+    throw ValidationError(error)
   }
   commandRegistry[commandDefinition.name] = value
 }

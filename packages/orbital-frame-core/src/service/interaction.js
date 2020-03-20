@@ -1,3 +1,5 @@
+import { StateError, PermissionError } from '../error'
+
 const userFocus = {} // track active job per user
 const interactions = {}
 
@@ -65,10 +67,10 @@ const interaction = () => ({ configService, environmentService, jobService, list
     async foreground (userId, jobId) {
       const job = await jobService.findOne({ id: jobId })
       if (job.status !== jobService.status.RUNNING) {
-        throw new Error('Cannot foreground a job which is not running')
+        throw new StateError('Cannot foreground a job which is not running')
       }
       if (!interactions[job.command.pid].includes(userId)) {
-        throw new Error('Cannot foreground a job which this user does not belong to')
+        throw new PermissionError('Cannot foreground a job which this user does not belong to')
       }
 
       userFocus[userId] = job.command.pid

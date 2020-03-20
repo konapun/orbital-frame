@@ -1,9 +1,10 @@
 import { phase as phases } from '../lifecycle'
+import { ValidationError } from '../error'
 
 const loadOne = plugin => {
   Object.entries(plugin).forEach(([ pluginPhase, actionDefinition ]) => {
     if (!(pluginPhase in phases)) {
-      throw new Error(`Can't register plugin action for key "${pluginPhase}" (available keys are ${Object.keys(phases).join(' ')})`)
+      throw new ValidationError(`Can't register plugin action for key "${pluginPhase}" (available keys are ${Object.keys(phases).join(' ')})`)
     }
 
     phases[pluginPhase].extend(actionDefinition)

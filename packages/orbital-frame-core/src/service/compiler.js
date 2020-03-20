@@ -1,5 +1,6 @@
 import parser, { walker, type } from '@orbital-frame/parser'
 import { builder, metadataWalker } from '../command'
+import { ParseError } from '../error'
 
 const compiler = () => ({ commandService, environmentService })  => ({
 
@@ -10,18 +11,26 @@ const compiler = () => ({ commandService, environmentService })  => ({
    * @returns {Function} function that when executed evaluates the source string
    */
   compile (string) {
-    const ast = parser.parse(string)
+    const ast = this._parse(string)
     const builder = this._getBuilder(ast)
     return builder.build()
   },
 
   compileWithMetadata (string) {
-    const ast = parser.parse(string)
+    const ast = this._parse(string)
     const builder = this._getBuilder(ast)
     const metadata = metadataWalker(builder.getMetadata())
     const command = builder.build()
 
     return { metadata, command }
+  },
+
+  _parse (string) {
+    try {
+      return parser.parse(string)
+    } catch (err) {
+      throw new ParseError(err)
+    }
   },
 
   _getBuilder (ast) {
