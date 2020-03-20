@@ -1,5 +1,6 @@
 import search from '../util/search'
 import cyclicIncrementor from '../util/cyclicIncrementor'
+import { SearchError } from '../error'
 
 const idGenerator = cyclicIncrementor(1)
 const jobs = {}
@@ -60,7 +61,7 @@ const job = () => () => {
 
     update (id, updates) { // TODO: use joi for schema validation
       if (!jobs[id]) {
-        throw new Error(`No such job with id ${id}`)
+        throw new SearchError(`No such job with id ${id}`)
       }
       const updated = { ...jobs[id], ...updates }
       if (subscriptions[id]) {

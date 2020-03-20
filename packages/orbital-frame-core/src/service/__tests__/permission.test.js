@@ -67,7 +67,7 @@ describe('permission service', () => {
         error = message
       }
 
-      expect(error).toBe('Root user cannot be demoted')
+      expect(error).toBe('Permission Error: Root user cannot be demoted')
     })
 
     it('should run a guarded block', async () => {

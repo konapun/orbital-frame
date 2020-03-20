@@ -407,8 +407,13 @@ propogate downstream in the lifecycle.
 ### Handling Specific Errors
 The following are specific errors that may be checked for using `instanceof` if
 you wish to only handle a certain class of error in your error phase:
-  * **PermissionError** thrown when a user attempts to run permission-gated code
   * **CommandNotFoundError** thrown when the user requests to run a command which has not been registered under any name
+  * **CompilationError** thrown when an error is encountered during the compilation phase
+  * **ParseError** thrown when an error is encountered by the parser
+  * **PermissionError** thrown when a user attempts to run permission-gated code
+  * **SearchError** thrown when no items can be found that match search criteria
+  * **StateError** thrown when an operation is rejected because of conflicting state
+  * **ValidationError** thrown when an error occurs due to an unexpected schema or property
 
 #### Example
 ```js

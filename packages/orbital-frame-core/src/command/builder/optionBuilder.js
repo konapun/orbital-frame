@@ -1,11 +1,12 @@
 import type from '../metadata/types'
+import { CompilationError } from '../../error'
 
 function optionBuilder (key, context) {
   let optionValue
 
   return {
     setValue (value) {
-      if (optionValue) throw new Error('Options may only have a single value')
+      if (optionValue) throw new CompilationError('Options may only have a single value')
       optionValue = value
     },
 

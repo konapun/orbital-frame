@@ -1,3 +1,4 @@
+import { SearchError } from '../error'
 import { get } from 'lodash'
 
 function search (buildList) {
@@ -12,7 +13,7 @@ function search (buildList) {
     async findOne (criteria) {
       const matches = await this.find(criteria)
       if (matches.length === 0) {
-        throw new Error('No items found for search criteria')
+        throw new SearchError('No items found for search criteria')
       }
 
       return matches[0]

@@ -23,7 +23,7 @@ const permission = () => ({ userService, persistenceService }) => {
         const rootUsers = await rootUsersP
 
         if (rootUsers.includes(userId)) {
-          throw new Error('Root user cannot be demoted')
+          throw new PermissionError('Root user cannot be demoted')
         }
 
         const didDelete = superusers.delete(userId)

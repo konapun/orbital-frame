@@ -1,4 +1,4 @@
-import { PermissionError } from '../error'
+import { PermissionError, ValidationError, SearchError } from '../error'
 
 const signals = {
   SIGINT: 1, // polite interrupt
@@ -13,7 +13,7 @@ const signal = () => ({ environmentService, jobService, userService, permissionS
 
   async send (jobId, signal) {
     if (!Object.values(signals).includes(signal)) {
-      throw new Error(`Error sending signal ${signal} to job ID ${jobId}: Unknown signal`)
+      throw new ValidationError(`Error sending signal ${signal} to job ID ${jobId}: Unknown signal`)
     }
 
     const { id: senderId } = await userService.getCurrentUser()
@@ -26,7 +26,7 @@ const signal = () => ({ environmentService, jobService, userService, permissionS
     if (registry[pid] && registry[pid][signal]) {
       registry[pid][signal]()
     } else {
-      throw new Error(`Job with ID ${pid} does not exist, is not running, or does not specify a signal handler for signal ${signal}`)
+      throw new SearchError(`Job with ID ${pid} does not exist, is not running, or does not specify a signal handler for signal ${signal}`)
     }
   },
 
@@ -44,7 +44,7 @@ const signal = () => ({ environmentService, jobService, userService, permissionS
     return {
       onSignal (signal, handler) {
         if (!Object.values(signals).includes(signal)) {
-          throw new Error(`Error installing handler for signal ${signal}: Unknown signal`)
+          throw new ValidationError(`Error installing handler for signal ${signal}: Unknown signal`)
         }
         registry[pid][signal] = handler
       }

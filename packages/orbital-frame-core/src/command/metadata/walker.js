@@ -1,5 +1,6 @@
-import { isObject } from 'lodash'
 import type from './types'
+import { SearchError } from '../../error'
+import { isObject } from 'lodash'
 
 const findRec = (node, fn, found = []) => {
   if (isObject(node)) {
@@ -30,7 +31,7 @@ function metadataWalker (data) {
     findOne (fn) {
       const found = this.find(fn)
       if (found.length === 0) {
-        throw new Error('No data found matching criteria')
+        throw new SearchError('No data found matching criteria')
       }
       const value = found[0].value
       return Array.isArray(value) ? value[0] : value
