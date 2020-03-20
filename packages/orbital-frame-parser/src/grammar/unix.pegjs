@@ -6,10 +6,28 @@ Program
 
 Statement
   = Assignment
+  / Function
   / Pipeline
 
 Assignment
   = variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value ] } }
+
+Function
+  = NamedFunction
+  / AnonymousFunction
+
+NamedFunction
+  = ExplicitNamedFunction
+  / ImplicitNamedFunction
+
+ExplicitNamedFunction
+  = "function" _ name:Word _ "{" _ FunctionBody _ "}"
+
+ImplicitNamedFunction
+  = name:Word _ "()" _ "{" _ FunctionBody _ "}"
+
+AnonymousFunction
+  = "function" _ "{" _ FunctionBody _ "}"
 
 Pipeline
   = _ command:Command _ rest:("|" _ Command _)* {
