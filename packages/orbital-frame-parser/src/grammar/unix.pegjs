@@ -10,10 +10,17 @@ Statement
   / Pipeline
 
 Assignment
-  = scope:ScopeModifier? _ variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, value, scope ] } }
+  = scope:ScopeModifier? _ variable:Word "=" value:Argument { return { type: "Assignment", body: [ variable, (scope || "global"), value ] } }
 
 ScopeModifier
-  = "local" { return { type: "ScopeModifier", body: [ "local", true ] } }
+  = GlobalModifier
+  / LocalModifier
+
+GlobalModifier
+  = "global" { return "global" }
+
+LocalModifier
+  = "local" { return "local" }
 
 Function
   = ExplicitFunction

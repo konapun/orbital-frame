@@ -12,6 +12,6 @@ describe('uptime plugin', () => {
     const up = plugin({ environmentService })
 
     up[phase.LOAD_PLUGINS].exit()
-    expect(environmentService.set).toHaveBeenCalledWith('SESSION_START', now, true)
+    expect(environmentService.set).toHaveBeenCalledWith('SESSION_START', now, { readonly: true })
   })
 })

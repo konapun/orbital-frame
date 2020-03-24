@@ -15,10 +15,10 @@ describe('assignment builder', () => {
   })
 
   it('should return a build representation', () => {
-    const builder = assignmentBuilder('key')
+    const builder = assignmentBuilder('key', 'global')
     builder.addArgument('value')
 
     const metadata = builder.build()
-    expect(metadata).toEqual([ 'key', 'value' ])
+    expect(metadata).toEqual([ 'key', 'global', 'value' ])
   })
 })

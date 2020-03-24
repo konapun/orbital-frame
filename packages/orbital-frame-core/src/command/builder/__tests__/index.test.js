@@ -25,7 +25,7 @@ describe('builder', () => {
   it('should support adding variables', () => {
     assignmentBuilder.mockReturnValueOnce('assignment')
     const chain = commandBuilder.addVariable('test')
-    expect(assignmentBuilder).toHaveBeenCalledWith('test')
+    expect(assignmentBuilder).toHaveBeenCalledWith('test', undefined)
     expect(chain).toBe('assignment')
   })
 

@@ -47,9 +47,9 @@ const compiler = () => ({ commandService, environmentService })  => ({
         break
       }
       case type.ASSIGNMENT: {
-        const [ key ] = node.body
+        const [ key, scope ] = node.body
 
-        const assignment = commandBuilder.addVariable(key)
+        const assignment = commandBuilder.addVariable(key, scope)
         currentBuilder = assignment
         break
       }
@@ -63,7 +63,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
       case type.FUNCTION: {
         const [ name, body ] = node.body
 
-        const cmd = this._getBuilder(body).build()
+        const cmd = this._getBuilder(body).build({ scope: name })
         const execute = () => cmd() // swallow args and opts since functions get these through env variables
         commandService.load(() => ({ name, execute }))
         return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder

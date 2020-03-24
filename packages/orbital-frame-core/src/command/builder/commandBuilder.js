@@ -25,7 +25,7 @@ function commandBuilder (name, context) {
     },
 
     addVariable (key) {
-      return this.addArgument(() => environment.get(key))
+      return this.addArgument((opts = {}) => environment.get(key, { scope: opts.scope }))
     },
 
     getMetadata () {
@@ -49,7 +49,7 @@ function commandBuilder (name, context) {
         const execArgs = incoming ? [ ...args, incoming ] : args
         const interpolatedArgs = flatten(await Promise.all(execArgs.map(async arg => {
           if (isFunction(arg)) {
-            const value = await arg()
+            const value = await arg(buildOpts)
             return isArray(value) ? flatten(value) : value
           }
           return arg

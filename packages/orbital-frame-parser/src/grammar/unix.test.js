@@ -34,13 +34,13 @@ describe('parser', () => {
   it('should allow variables', () => {
     const program = 'ARG=test; ARG2="test space"'
 
-    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', { body: [ 'test' ], type: 'Argument' }, null ], type: 'Assignment' }, { body: [ 'ARG2', { body: [ 'test space' ], type: 'Argument' }, null ], type: 'Assignment' } ], type: 'Program' })
+    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', 'global', { body: [ 'test' ], type: 'Argument' } ], type: 'Assignment' }, { body: [ 'ARG2', 'global', { body: [ 'test space' ], type: 'Argument' } ], type: 'Assignment' } ], type: 'Program' })
   })
 
   it('should allow scoped variables', () => {
     const program = 'local ARG=test'
 
-    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', { body: [ 'test' ], type: 'Argument' }, { body: [ 'local', true ], type: 'ScopeModifier' } ], type: 'Assignment' } ], type: 'Program' })
+    expect(parse(program)).toEqual({ body: [ { body: [ 'ARG', 'local', { body: [ 'test' ], type: 'Argument' } ], type: 'Assignment' } ], type: 'Program' })
   })
 
   it('should parse post-argument options', () => {
@@ -80,8 +80,12 @@ describe('parser', () => {
   })
 
   it('should allow functions', () => {
-    const program = 'function test { echo $1 }'
+    const programExplicit = 'function test { echo $1 }'
+    const programImplicit = 'test () { echo $1 }'
 
-    expect(parse(program)).toEqual({ type:'Program',body:[ { type:'Function',body:[ 'test',[ { type:'Pipeline',body:[ { type:'Command',body:[ 'echo',{ type:'Variable',body:[ '1' ] } ] } ] } ] ] } ] })
+    const expected = { type:'Program',body:[ { type:'Function',body:[ 'test',[ { type:'Pipeline',body:[ { type:'Command',body:[ 'echo',{ type:'Variable',body:[ '1' ] } ] } ] } ] ] } ] }
+
+    expect(parse(programExplicit)).toEqual(expected)
+    expect(parse(programImplicit)).toEqual(expected)
   })
 })

@@ -1,7 +1,6 @@
 import type from '../metadata/types'
 
-// TODO: scoping
-function assignmentBuilder (variable) {
+function assignmentBuilder (variable, scope) {
   let value
 
   return {
@@ -13,13 +12,14 @@ function assignmentBuilder (variable) {
       return {
         [type.ASSIGNMENT]: {
           variable,
+          scope,
           value
         }
       }
     },
 
     build () {
-      return [ variable, value ]
+      return [ variable, scope, value ]
     }
   }
 }
