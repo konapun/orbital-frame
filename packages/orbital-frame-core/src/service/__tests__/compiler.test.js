@@ -49,31 +49,43 @@ describe('compiler service', () => {
     // TODO:
   })
 
-  it('should work with interpolated arguments', () => {
-    // TODO:
-  })
-
-  it('should work with interpolated option values', () => {
-    // TODO:
-  })
-
-  it('should work with asynchronous interpolated arguments', () => {
-    // TODO:
-  })
-
-  it('should work with asynchronous interpolated option values', () => {
-    // TODO:
-  })
-
-  it('should work with nested interpolations', () => {
-    // TODO:
-  })
-
   it('should work with condensed single options', () => {
     // TODO:
   })
 
-  it('should work with asynchronous interpolations with pipes', () => {
-    // TODO:
+  describe('interpolations', () => {
+    it('should work with interpolated arguments', () => {
+      // TODO:
+    })
+
+    it('should work with interpolated option values', () => {
+      // TODO:
+    })
+
+    it('should work with asynchronous interpolated arguments', () => {
+      // TODO:
+    })
+
+    it('should work with asynchronous interpolated option values', () => {
+      // TODO:
+    })
+
+    it('should work with nested interpolations', () => {
+      // TODO:
+    })
+
+    it('should work with asynchronous interpolations with pipes', () => {
+      // TODO:
+    })
+  })
+
+  describe('functions', () => {
+    it('should work with functions', () => {
+
+    })
+
+    it('should not pass arguments or options to a function invocation', () => {
+
+    })
   })
 })

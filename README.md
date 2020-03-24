@@ -2,12 +2,11 @@
 **UNIX Command Line as a Chatbot**
 [![Build Status](https://travis-ci.org/konapun/orbital-frame.svg?branch=master)](https://travis-ci.org/konapun/orbital-frame)
 
-There are many bots that allow one to create custom commands. This bot
-framework, however, provides that ability along with the power and flexibility
-of the UNIX command line by employing commands, options, variables, pipes,
-asynchronous chaining, inline logical operators (via commands), inline scripting
-for creating new commands at runtime (via aliases), and a custom language based
-on the venerable bash. For full details, visit the [core README](./packages/orbital-frame-core/README.md).
+Unleash the power and flexibility of the UNIX command line with a chat bot!
+Orbital Frame supports commands, options, variables, pipes, asynchronous
+chaining, inline logical operators (via commands), functions, and a custom
+language based on the venerable bash. For full details, visit the
+[core README](./packages/orbital-frame-core/README.md).
 
 This project is organized as a monorepo consisting of the following:
   - [@orbital-frame/core](./packages/orbital-frame-core/README.md) The core framework.
@@ -30,6 +29,58 @@ which is ready right out of the box.
 @jehuty if $(equal 1 1) "they're equal" "they're not equal"
 @jehuty alias test-alias 'if $(not $(equal 1 1)) "they're not equal" "they are equal"'
 @jehuty test-alias
+```
+
+## Syntax
+The bot command line is mostly a subset of Bash with a few exceptions. The main
+features will be covered here. For parser details and the full grammar, see
+[@orbital-frame/parser](./packages/orbital-frame-parser/README.md).
+
+### Commands
+`Documentation TODO`
+
+### Pipes
+`Documentation TODO`
+
+### Signals
+`Documentation TODO`
+
+### Functions
+Like Bash, the Orbital Frame command line supports two forms of functions which
+are equivalent in the AST so it's a matter of your personal style:
+
+##### form 1
+```sh
+function my_function {
+  echo "This is form 1"
+}
+
+```
+##### form 2
+```sh
+my_function () {
+  echo "this is form 2"
+}
+```
+
+Like Bash, function arguments are given through positional environment variables
+$1 through $n, so even in the second form where parentheses are used, no
+parameters can be listed.
+
+#### Scoping
+By default, all variables are declared in the global scope. If you want to
+instead use lexical scoping, use the `local` keyword inside your function block:
+
+```sh
+MY_VAR=outer
+
+function set_var {
+  local MY_VAR=inner
+  echo $MY_VAR
+}
+
+set_var # echoes "inner"
+echo $MY_VAR # echoes "outer"
 ```
 
 ## Developing

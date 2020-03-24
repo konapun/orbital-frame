@@ -39,7 +39,7 @@ describe('state', () => {
   })
 
   it('should not allow a readonly value to be changed', () => {
-    const setInitial = s.set('test2', 'yaya', true)
+    const setInitial = s.set('test2', 'yaya', { readonly: true })
     const setOverwrite = s.set('test2', 'yoyo')
     const value = s.get('test2')
 
@@ -48,5 +48,34 @@ describe('state', () => {
     expect(value).toBe('yaya')
   })
 
+  describe('scoping', () => {
+    it('should place state in the global scope if no scope is provided', () => {
+      s.set('default', 'yep')
 
+      expect(s.get('default', { scope: 'global' })).toBe('yep')
+    })
+
+    it('should allow setting and getting a scoped value', () => {
+      const setScoped = s.set('scoped', 'yep', { scope: 'scoped' })
+
+      expect(setScoped).toBeTrue()
+      expect(s.get('scoped', { scope: 'scoped' })).toBe('yep')
+    })
+
+    it('should allow a scoped key to exist independently of a global key', () => {
+      const setGlobal = s.set('independent', 'global', { readonly: true })
+      const setLocal = s.set('independent', 'local', { scope: 'scoped', readonly: true })
+
+      expect(setGlobal).toBeTrue()
+      expect(setLocal).toBeTrue()
+      expect(s.get('independent')).toBe('global')
+      expect(s.get('independent', { scope: 'scoped' })).toBe('local')
+    })
+
+    it('should retrieve the global value for the key if it was not contained within the requested scope', () => {
+      s.set('onlyInGlobal', 'global value')
+
+      expect(s.get('onlyInGlobal', { scope: 'my-scope' })).toBe('global value')
+    })
+  })
 })

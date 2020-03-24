@@ -20,8 +20,8 @@ function builder (commandRegistry, environment) {
       return builder
     },
 
-    addVariable (key) {
-      const builder = assignmentBuilder(key)
+    addVariable (key, scope) {
+      const builder = assignmentBuilder(key, scope)
       assignments.push(builder)
 
       return builder
@@ -40,9 +40,9 @@ function builder (commandRegistry, environment) {
       const process = async (args, opts) => {
         await Promise.all(assignments
           .map(assignment => assignment.build(buildOpts))
-          .map(async ([ key, value ]) => {
+          .map(async ([ key, scope, value ]) => {
             const execVal = isFunction(value) ? await value() : value
-            environment.set(key, execVal)
+            environment.set(key, execVal, { scope: scope === 'local' && buildOpts.scope })
           })
         )
 

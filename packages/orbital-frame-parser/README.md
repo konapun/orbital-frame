@@ -13,6 +13,8 @@ The command grammar is a modified subset of bash's grammar:
   - command substitution
     - interpolated commands can be used as either arguments or option values
   - variables
+  - functions
+    - including optional lexical scoping
 
 ## AST
 The grammar can be found [here](./src/grammar/unix.pegjs).

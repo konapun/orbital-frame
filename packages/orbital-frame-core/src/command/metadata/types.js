@@ -4,6 +4,7 @@ export default {
   PIPELINE: 'pipeline',
   COMMAND: 'command',
   INTERPOLATION: 'interpolation',
+  FUNCTION: 'function',
   OPTION: 'option',
   ARGUMENT: 'argument'
 }

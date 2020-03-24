@@ -7,7 +7,7 @@ const loadOne = (command, services) => {
   const commandDefinition = wrapper(command(services))
   const { value, error } = schemaValidator.validate(commandDefinition)
   if (error) {
-    throw ValidationError(error)
+    throw new ValidationError(error)
   }
   commandRegistry[commandDefinition.name] = value
 }

@@ -15,11 +15,12 @@ describe('command schema validator', () => {
     expect(error.message).toBe('child "name" fails because ["name" is required]')
   })
 
-  it('should require a description', () => {
+  it('should not require a description', () => {
     const command = buildCommand({ description: undefined })
-    const { error } = schemaValidator.validate(command)
+    const { value, error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "description" fails because ["description" is required]')
+    expect(error).toBe(null)
+    expect(value).toEqual(expect.objectContaining({ description: '' }))
   })
 
   it('should require an execute function', () => {

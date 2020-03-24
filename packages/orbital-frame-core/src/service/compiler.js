@@ -47,32 +47,44 @@ const compiler = () => ({ commandService, environmentService })  => ({
         break
       }
       case type.ASSIGNMENT: {
-        const [ key ] = node.body
+        const [ key, scope ] = node.body
 
-        const assignment = commandBuilder.addVariable(key)
+        const assignment = commandBuilder.addVariable(key, scope)
         currentBuilder = assignment
         break
       }
       case type.INTERPOLATION: {
         const [ source ] = node.body
+
         const cmd = this._getBuilder(source).build({ format: false })
         currentBuilder.addArgument(cmd)
         return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder
       }
+      case type.FUNCTION: {
+        const [ name, body ] = node.body
+
+        const cmd = this._getBuilder(body).build({ scope: name })
+        const execute = () => cmd() // swallow args and opts since functions get these through env variables
+        commandService.load(() => ({ name, execute }))
+        return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder
+      }
       case type.COMMAND: {
         const [ name ] = node.body
+
         command = pipeline.addCommand(name)
         currentBuilder = command
         break
       }
       case type.OPTION: {
         const [ key ] = node.body
+
         option = command.addOption(key)
         currentBuilder = option
         break
       }
       case type.ARGUMENT: {
         const [ value ] = node.body
+
         if (currentBuilder) {
           currentBuilder.addArgument(value)
         }
@@ -81,6 +93,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
       }
       case type.VARIABLE: {
         const [ key ] = node.body
+
         currentBuilder.addVariable(key)
         break
       }
