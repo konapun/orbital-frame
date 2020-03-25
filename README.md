@@ -37,13 +37,53 @@ features will be covered here. For parser details and the full grammar, see
 [@orbital-frame/parser](./packages/orbital-frame-parser/README.md).
 
 ### Commands
-`Documentation TODO`
+Commands can be called with arguments and options. The options and option types
+a command accepts are provided by the command's author in the command
+definition. A detailed explanation for command authors is provided
+[here](./packages/orbital-frame-core/README.md#Commands).
+
+```sh
+some_command --some_option option_value arg1 arg2
+```
+
+#### Options
+Command options can either be valued or boolean, which is defined in the command
+itself.Command options can be either short form or long form:
+
+```sh
+some_command --long_option option_value
+# or
+some_command -s option_value
+```
+
+Unlike long options, short options can be chained:
+```sh
+some_command -abcd arg # here, a, b, c, and d are all options. a, b, and c are boolean options while d is being passed the argument "arg"
+```
+
+#### Interpolated Commands
+Commands can be immediately evaluated for use as arguments, option values, etc.
+by surrounding the command or pipeline with `$()`:
+
+```sh
+some_command --option $(calculate_value | uppercase)
+```
 
 ### Pipes
-`Documentation TODO`
+Pipes are pipelines of commands (or functions) who pass their output as input
+into the next pipe.
 
-### Signals
-`Documentation TODO`
+```sh
+whoami | uppercase
+```
+
+### Variables
+Variables are key/value pairs:
+
+```sh
+MY_KEY="some value" # set a variable
+echo $MY_KEY # retrieve a value
+```
 
 ### Functions
 Like Bash, the Orbital Frame command line supports two forms of functions which
@@ -67,6 +107,14 @@ Like Bash, function arguments are given through positional environment variables
 $1 through $n, so even in the second form where parentheses are used, no
 parameters can be listed.
 
+```sh
+function say_hello {
+  echo Hello, $1
+}
+
+say_hello konapun # displays "Hello, konapun"
+```
+
 #### Scoping
 By default, all variables are declared in the global scope. If you want to
 instead use lexical scoping, use the `local` keyword inside your function block:
@@ -82,6 +130,9 @@ function set_var {
 set_var # echoes "inner"
 echo $MY_VAR # echoes "outer"
 ```
+
+### Signals
+`Documentation TODO`
 
 ## Developing
 This project uses [yarn](https://github.com/yarnpkg/yarn). See yarn's [installation guide](https://yarnpkg.com/en/docs/install) for installation instructions.
