@@ -23,7 +23,7 @@ const signal = () => ({ environmentService, jobService, userService, permissionS
     }
 
     const pid = command.pid
-    if (registry[pid] && registry[pid][signal]) {
+    if (registry[pid]?.[signal]) {
       registry[pid][signal]()
     } else {
       throw new SearchError(`Job with ID ${pid} does not exist, is not running, or does not specify a signal handler for signal ${signal}`)

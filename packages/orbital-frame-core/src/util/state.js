@@ -13,7 +13,7 @@ function state () {
       }
 
       const contained = store[key]
-      if (contained && contained.readonly) {
+      if (contained?.readonly) {
         return false
       }
       store[key] = { value, readonly }
@@ -23,11 +23,11 @@ function state () {
       const { scope } = options
 
       if (scope) {
-        const contained = scoped[scope] && scoped[scope][key]
+        const contained = scoped[scope]?.[key]
         if (contained) return contained.value
       } // fall through and check for value in root scope if no scoped value was found for the key
       const contained = root[key]
-      if (contained) return contained.value // TODO: clean this up once optional chaining is enabled
+      if (contained) return contained.value
     }
   }
 }
