@@ -33,7 +33,10 @@ which is ready right out of the box.
 
 ## Syntax
 The bot command line is mostly a subset of Bash with a few exceptions. The main
-features will be covered here. For parser details and the full grammar, see
+features will be covered here. Although not included for the sake of brevity and
+because it will vary based on your bot's configuration, every example below must
+start by hailing your bot so it understands the message is intended for it. For
+parser details and the full grammar, see
 [@orbital-frame/parser](./packages/orbital-frame-parser/README.md).
 
 ### Commands
@@ -69,6 +72,17 @@ by surrounding the command or pipeline with `$()`:
 some_command --option $(calculate_value | uppercase)
 ```
 
+#### Interactive Commands
+Some commands start an interactive session where the command can receive
+nonblocking input throughout its lifespan. The interaction character is
+configurable based on your bot but defaults to `>`. For full details, see
+documentation in the @orbital-frame/core [README](./packages/orbital-frame-core/README.md#Interactive%20Commands):
+```sh
+interactive_command # some command that starts an interaction
+some_other_command # the interaction will not intercept this command
+> interactive_input # because this command is prefixed with the interaction character, it will be sent to the interactive command
+```
+
 ### Pipes
 Pipes are pipelines of commands (or functions) who pass their output as input
 into the next pipe.
@@ -84,6 +98,9 @@ Variables are key/value pairs:
 MY_KEY="some value" # set a variable
 echo $MY_KEY # retrieve a value
 ```
+
+### Signals
+See documentation in the @orbital-frame/core [README](./packages/orbital-frame-core/README.md#signalService)
 
 ### Functions
 Like Bash, the Orbital Frame command line supports two forms of functions which
@@ -130,9 +147,6 @@ function set_var {
 set_var # echoes "inner"
 echo $MY_VAR # echoes "outer"
 ```
-
-### Signals
-`Documentation TODO`
 
 ## Developing
 This project uses [yarn](https://github.com/yarnpkg/yarn). See yarn's [installation guide](https://yarnpkg.com/en/docs/install) for installation instructions.
