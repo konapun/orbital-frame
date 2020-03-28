@@ -1,4 +1,3 @@
-// TODO: https://codeburst.io/monorepos-by-example-part-2-4153712cfa31
 module.exports = {
   collectCoverage: false,
   collectCoverageFrom: [
@@ -9,5 +8,5 @@ module.exports = {
   roots: [
     'packages/'
   ],
-  setupTestFrameworkScriptFile: 'jest-extended'
+  setupFilesAfterEnv: [ 'jest-extended' ]
 }
