@@ -4,7 +4,9 @@
  */
 const process = ({ compilerService }) => next => args => {
   const { context } = args
-  const source = context.message.text.split(/\s+/).splice(1).join(' ')
+
+  const input = context.message.text
+  const source = input.substring(input.indexOf(' ') + 1) // remove bot hail portion from command
   const { command, metadata } = compilerService.compileWithMetadata(source)
 
   next({ ...args, source, command, metadata })

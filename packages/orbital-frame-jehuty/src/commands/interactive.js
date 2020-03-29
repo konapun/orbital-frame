@@ -10,7 +10,7 @@ function interactive ({ interactionService }) {
 
       const { text: name } = await interaction.prompt('What is your name?')
       const { text: age } = await interaction.prompt('What is your age?')
-      const { text:color } = await interaction.prompt('What is your favorite color?')
+      const { text: color } = await interaction.prompt('What is your favorite color?')
 
       return { name, age, color }
     }
