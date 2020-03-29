@@ -21,7 +21,7 @@ function builder (commandRegistry, environment) {
     },
 
     addVariable (key, scope) {
-      const builder = assignmentBuilder(key, scope)
+      const builder = assignmentBuilder(key, scope, context)
       assignments.push(builder)
 
       return builder

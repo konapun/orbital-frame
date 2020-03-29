@@ -9,5 +9,5 @@ export default () => ({
       default: ' '
     }
   },
-  execute: args => args.join(' ').split(' ')
+  execute: (args, opts) => args.join(' ').split(opts.d)
 })

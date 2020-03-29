@@ -1,11 +1,15 @@
 import type from '../metadata/types'
 
-function assignmentBuilder (variable, scope) {
+function assignmentBuilder (variable, scope, { environment }) {
   let value
 
   return {
     addArgument (val) {
-      value = val
+      value = () => val
+    },
+
+    addVariable (key) { // setting the value from another variable
+      value = () => environment.get(key, { opts: scope })
     },
 
     getMetadata () {
@@ -13,13 +17,13 @@ function assignmentBuilder (variable, scope) {
         [type.ASSIGNMENT]: {
           variable,
           scope,
-          value
+          value: value()
         }
       }
     },
 
     build () {
-      return [ variable, scope, value ]
+      return [ variable, scope, value() ]
     }
   }
 }
