@@ -125,7 +125,7 @@ LetterOrDigit = [a-zA-Z0-9]
 
 Newline = [\r\n|\r|\n]
 
-Whitespace = [ \t]
+Whitespace = [  \t]
 
 __ = _ Newline* _
 

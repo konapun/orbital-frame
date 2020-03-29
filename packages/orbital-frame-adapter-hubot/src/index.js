@@ -1,9 +1,11 @@
 function hubotAdapter (hubot) { // TODO: config
+  const adapterName = hubot.adapterName
+
   return {
     ps1: '@', // this symbol is used to hail a user/bot
     hear (matcher, callback) {
       return hubot.hear(matcher, response => {
-        const { message } = response
+        const { message } = processResponseForAdapter(adapterName, response)
         const { user, text, room: channel } = message
 
         return callback({
@@ -34,6 +36,25 @@ function hubotAdapter (hubot) { // TODO: config
       return [] // TODO: find out how to do this
     }
   }
+}
+
+const processResponseForAdapter = (name, response) => {
+  switch (name) {
+  case 'slack':
+    return {
+      ...response,
+      message: {
+        ...response.message,
+        text: processSlackText(response.message.text)
+      }
+    }
+  default:
+    return response
+  }
+}
+
+const processSlackText = text => {
+  return text.replace(/```/g, '') // remove code blocks
 }
 
 export default hubotAdapter

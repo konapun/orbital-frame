@@ -241,8 +241,8 @@ function peg$parse(input, options) {
       peg$c76 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false),
       peg$c77 = /^[\r\n|\r|\n]/,
       peg$c78 = peg$classExpectation(["\r", "\n", "|", "\r", "|", "\n"], false, false),
-      peg$c79 = /^[ \t]/,
-      peg$c80 = peg$classExpectation([" ", "\t"], false, false),
+      peg$c79 = /^[ \xA0\t]/,
+      peg$c80 = peg$classExpectation([" ", "\xA0", "\t"], false, false),
 
       peg$currPos          = 0,
       peg$savedPos         = 0,
