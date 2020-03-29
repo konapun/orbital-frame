@@ -12,10 +12,13 @@ const setup = overrides => {
     ...overrides
   }
   const compilerService = { compileWithMetadata: jest.fn(() => ({ command: 'command', metadata: 'metadata' })) }
+  const configService = { name: overrides?.name ?? 'heavyarms'}
   const next = jest.fn()
 
   return {
     compilerService,
+    configService,
+    processStep: process({ compilerService, configService }),
     next,
     args
   }
@@ -24,8 +27,8 @@ const setup = overrides => {
 
 describe('process phase', () => {
   it('should find a message via context and compile it with the compiler service', () => {
-    const { compilerService, next, args } = setup()
-    process({ compilerService })(next)(args)
+    const { compilerService, configService, next, args } = setup()
+    process({ compilerService, configService })(next)(args)
 
     expect(compilerService.compileWithMetadata).toHaveBeenCalledWith('mount vulcan-gun')
     expect(next).toHaveBeenCalledWith({ ...args, source: 'mount vulcan-gun', command: 'command', metadata: 'metadata' })
@@ -39,7 +42,7 @@ describe('process phase', () => {
       set-active --weapon $WEAPON
     }`
 
-    const { compilerService, next, args } = setup({
+    const { processStep, next, args } = setup({
       context: {
         message: {
           text: `@heavyarms ${command}`
@@ -47,7 +50,7 @@ describe('process phase', () => {
       }
     })
 
-    process({ compilerService })(next)(args)
+    processStep(next)(args)
     expect(next).toHaveBeenCalledWith(expect.objectContaining({
       source: command
     }))
