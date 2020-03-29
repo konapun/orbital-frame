@@ -7,6 +7,8 @@ import trueCommand from './true'
 import falseCommand from './false'
 import ifCommand from './if'
 import equal from './equal'
+import and from './and'
+import or from './or'
 import not from './not'
 import car from './car'
 import cdr from './cdr'
@@ -49,6 +51,8 @@ export default [
   falseCommand,
   ifCommand,
   equal,
+  and,
+  or,
   not,
   car,
   cdr,

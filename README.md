@@ -106,14 +106,14 @@ See documentation in the @orbital-frame/core [README](./packages/orbital-frame-c
 Like Bash, the Orbital Frame command line supports two forms of functions which
 are equivalent in the AST so it's a matter of your personal style:
 
-##### form 1
+##### Form 1
 ```sh
 function my_function {
   echo "This is form 1"
 }
 
 ```
-##### form 2
+##### Form 2
 ```sh
 my_function () {
   echo "this is form 2"
@@ -130,6 +130,26 @@ function say_hello {
 }
 
 say_hello konapun # displays "Hello, konapun"
+```
+
+#### Control Structures
+To keep the syntax simple, the Orbital Frame grammar does not include any
+control structures such as if statements or loops but these can be easily
+replicated using commands. Here is an additional example using commands loaded
+into jehuty which demonstrates how to do branching using the `if` and `and`
+commands rather than dedicated control structures:
+
+```sh
+@jehuty function analyze_length {
+    local WORD=$1
+    local LOWER=$2
+    local UPPER=$3
+    local WORD_LENGTH=$(split -d '' $WORD | length)
+
+    if $(and $(greater-than $WORD_LENGTH $LOWER) $(less-than $WORD_LENGTH $UPPER)) "String is valid" "String is invalid"
+}
+
+@jehuty analyze_length "fits" 1 5 # displays "String is valid"
 ```
 
 #### Scoping
