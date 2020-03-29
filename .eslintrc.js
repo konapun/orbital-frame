@@ -40,6 +40,14 @@ module.exports = {
       "error",
       "always"
     ],
+    "key-spacing": [
+      "error",
+      {"afterColon": true}
+    ],
+    "comma-spacing": [
+      "error",
+      {"after": true}
+    ],
     "comma-dangle": [
       "error",
       "never"

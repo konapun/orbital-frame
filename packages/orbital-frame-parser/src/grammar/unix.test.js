@@ -83,9 +83,23 @@ describe('parser', () => {
     const programExplicit = 'function test { echo $1 }'
     const programImplicit = 'test () { echo $1 }'
 
-    const expected = { type:'Program',body:[ { type:'Function',body:[ 'test',[ { type:'Pipeline',body:[ { type:'Command',body:[ 'echo',{ type:'Variable',body:[ '1' ] } ] } ] } ] ] } ] }
+    const expected = { type: 'Program', body: [ { type: 'Function', body: [ 'test', [ { type: 'Pipeline', body: [ { type: 'Command', body: [ 'echo', { type: 'Variable', body: [ '1' ] } ] } ] } ] ] } ] }
 
     expect(parse(programExplicit)).toEqual(expected)
     expect(parse(programImplicit)).toEqual(expected)
+  })
+
+  it('should allow newline statement terminators within a function', () => {
+    const program = `
+
+    analyze_length () {
+      local VAR1=$1
+      local VAR2=$2
+
+      echo $VAR1 $VAR2
+
+    }`
+
+    expect(parse(program)).toEqual({ type: 'Program', body: [ { type: 'Function', body: [ 'analyze_length', [ { type: 'Assignment', body: [ 'VAR1', 'local', { type: 'Variable', body: [ '1' ] } ] }, { type: 'Assignment', body: [ 'VAR2', 'local', { type: 'Variable', body: [ '2' ] } ] }, { type: 'Pipeline', body: [ { type: 'Command', body: [ 'echo', { type: 'Variable', body: [ 'VAR1' ] }, { type: 'Variable', body: [ 'VAR2' ] } ] } ] } ] ] } ] })
   })
 })

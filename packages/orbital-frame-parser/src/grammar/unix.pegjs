@@ -1,5 +1,5 @@
 Program
-  = _ statement:Statement _ rest:(";" _ Statement)* _ ";"* {
+  = __ statement:Statement _ rest:(ExpressionTerminator __ Statement)* _ ExpressionTerminator* {
       const statements = rest.map(part => part[2])
       return { type: "Program", body: [ statement, ...statements ] }
     }
@@ -27,13 +27,13 @@ Function
   / ImplicitFunction
 
 ExplicitFunction
-  = "function" _ name:Word _ "{" _ body:FunctionBody? _ "}" { return { type: "Function", body: [ name, body ] } }
+  = "function" _ name:Word __ "{" __ body:FunctionBody? __ "}" { return { type: "Function", body: [ name, body ] } }
 
 ImplicitFunction
-  = name:Word _ "()" _ "{" _ body:FunctionBody? _ "}" { return { type: "Function", body: [ name, body ] } }
+  = name:Word _ "()" __ "{" __ body:FunctionBody? __ "}" { return { type: "Function", body: [ name, body ] } }
 
 FunctionBody
-  = _ statement:FunctionBodyStatement _ rest:(";" _ FunctionBodyStatement)* _ ";"* {
+  = _ statement:FunctionBodyStatement _ rest:(ExpressionTerminator __ FunctionBodyStatement)* _ ExpressionTerminator* {
     const statements = rest.map(part => part[2])
     return [ statement, ...statements ]
   }
@@ -115,8 +115,18 @@ EscapeSequence
 Variable
   = "$" variable:Word { return { type: "Variable", body: [ variable ] } }
 
+ExpressionTerminator
+  = ";"
+  / Newline
+
 Word = word:([a-zA-Z0-9_%\+\*\^\?\!][a-zA-Z0-9_%\+\*\^\?\!\-]*) { const [ start, rest ] = word; return [ start, ...rest ].join('')  }
 
 LetterOrDigit = [a-zA-Z0-9]
 
-_  = [ \t\r\n]*
+Newline = [\r\n|\r|\n]
+
+Whitespace = [ \t]
+
+__ = _ Newline* _
+
+_  = Whitespace*
