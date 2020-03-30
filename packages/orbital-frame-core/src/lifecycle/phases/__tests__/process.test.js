@@ -12,7 +12,7 @@ const setup = overrides => {
     ...overrides
   }
   const compilerService = { compileWithMetadata: jest.fn(() => ({ command: 'command', metadata: 'metadata' })) }
-  const configService = { name: overrides?.name ?? 'heavyarms'}
+  const configService = { name: overrides?.name ?? 'heavyarms' }
   const next = jest.fn()
 
   return {
