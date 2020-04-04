@@ -9,6 +9,7 @@
   "dependencies": {
     "@orbital-frame/adapter-hubot": "^0.1.3",
     "@orbital-frame/core": "^0.1.3",
+    "@orbital-frame/plugin-bundle-loader": "^0.1.3",
     "@orbital-frame/plugin-did-you-mean": "^0.1.3",
     "@orbital-frame/plugin-error-trap": "^0.1.3",
     "@orbital-frame/plugin-rc": "^0.1.3",
