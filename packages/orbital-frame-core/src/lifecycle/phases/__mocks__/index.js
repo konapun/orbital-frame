@@ -1,23 +1,23 @@
-export const phase1 = jest.fn((services, next) => {
-  next('phase1')
+export const loadPlugins = jest.fn((services, next) => {
+  next('loadPlugins')
 })
 
-export const phase2 = jest.fn((services, next, args) => {
-  next(`${args} phase2`)
+export const loadCommands = jest.fn((services, next, args) => {
+  next(`${args} loadCommands`)
 })
 
-export const phase3 = jest.fn((services, next, args) => {
-  next(`${args} phase3`)
+export const listen = jest.fn((services, next, args) => {
+  next(`${args} listen`)
 })
 
 export default {
-  phase1: {
-    call: services => next => args => phase1(services, next, args)
+  loadPlugins: {
+    call: services => next => args => loadPlugins(services, next, args)
   },
-  phase2: {
-    call: services => next => args => phase2(services, next, args)
+  loadCommands: {
+    call: services => next => args => loadCommands(services, next, args)
   },
-  phase3: {
-    call: services => next => args => phase3(services, next, args)
+  listen: {
+    call: services => next => args => listen(services, next, args)
   }
 }

@@ -1,5 +1,5 @@
 import lifecycle from '../lifecycle'
-import { phase1, phase2, phase3 } from '../phases'
+import { loadPlugins, loadCommands, listen } from '../phases'
 
 jest.mock('../phases')
 
@@ -11,8 +11,8 @@ describe('lifecycle', () => {
     const lc = lifecycle(services)
 
     lc.run()
-    expect(phase1).toHaveBeenCalledWith(services, expect.any(Function), {})
-    expect(phase2).toHaveBeenCalledWith(services, expect.any(Function), 'phase1')
-    expect(phase3).toHaveBeenCalledWith(services, expect.any(Function), 'phase1 phase2')
+    expect(loadPlugins).toHaveBeenCalledWith(services, expect.any(Function), {})
+    expect(loadCommands).toHaveBeenCalledWith(services, expect.any(Function), 'loadPlugins')
+    expect(listen).toHaveBeenCalledWith(services, expect.any(Function), 'loadPlugins loadCommands')
   })
 })
