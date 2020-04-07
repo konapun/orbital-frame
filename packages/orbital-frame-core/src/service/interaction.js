@@ -45,7 +45,7 @@ const interaction = () => ({ configService, environmentService, jobService, list
 
           return new Promise(resolve => {
             messengerService.respond(context, string)
-            const stream = getInteractionPipe(members).pipe(message => {
+            const stream = getInteractionPipe().pipe(message => {
               stream.end()
               resolve(message)
             })
@@ -55,7 +55,7 @@ const interaction = () => ({ configService, environmentService, jobService, list
         observe () {
           members.forEach(id => userFocus[id] = pid)
 
-          return getInteractionPipe(members)
+          return getInteractionPipe()
         },
 
         send (message) {

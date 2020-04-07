@@ -23,7 +23,7 @@ const localIdGenerator = userId => {
 }
 
 const job = () => () => {
-  const list = async () => await Object.values(jobs)
+  const list = async () => Object.values(jobs)
   const { find, findOne } = search(list)
 
   return {
