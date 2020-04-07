@@ -1,6 +1,7 @@
 # O R B I T A L  -  F R A M E
 **UNIX Command Line as a Chatbot**
 [![Build Status](https://travis-ci.org/konapun/orbital-frame.svg?branch=master)](https://travis-ci.org/konapun/orbital-frame)
+[![DeepScan grade](https://deepscan.io/api/teams/8479/projects/10684/branches/150761/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=8479&pid=10684&bid=150761)
 
 Unleash the power and flexibility of the UNIX command line with a chat bot!
 Orbital Frame supports commands, options, variables, pipes, asynchronous
