@@ -1,4 +1,6 @@
 export default () => ({
   name: 'and',
-  execute: ([ branch1, branch2 ]) => branch1 && branch2
+  synopsis: 'and [CONDITION1] [CONDITION2]',
+  description: 'Evaluate the AND of two conditions to a boolean',
+  execute: ([ condition1, condition2 ]) => condition1 && condition2
 })

@@ -2,11 +2,12 @@ import _ from 'lodash'
 
 export default () => ({
   name: 'repeat',
+  synopsis: 'repeat [TEXT] ...[REST]',
   description: 'Repeat output',
   options: {
     r: {
       alias: 'repeat',
-      describe: 'Number of times to repeat',
+      description: 'Number of times to repeat',
       type: 'number',
       default: 2
     }

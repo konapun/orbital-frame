@@ -1,10 +1,9 @@
 function trueCommand () {
   return {
     name: 'true',
-    description: 'TODO',
-    execute () {
-      return true
-    }
+    synopsis: 'true',
+    description: 'Return true',
+    execute: () => true
   }
 }
 

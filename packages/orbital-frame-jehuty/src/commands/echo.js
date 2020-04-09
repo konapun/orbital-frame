@@ -1,6 +1,7 @@
 export default () => ({
   name: 'echo',
-  description: 'Write arguments to standard output',
+  synopsis: 'echo [ARGUMENT] ...[ARGUMENTS]',
+  description: 'Write arguments to output',
   format: output => output.join(' '),
   execute: args => args
 })

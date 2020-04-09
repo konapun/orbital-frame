@@ -1,7 +1,8 @@
 function whoami ({ userService }) {
   return {
     name: 'whoami',
-    description: 'TODO',
+    synopsis: 'whoami',
+    description: 'Get the current user',
     format (user) {
       return user.name
     },

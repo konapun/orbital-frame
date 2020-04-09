@@ -1,9 +1,10 @@
 export default () => ({
   name: 'greater-than',
+  synopsis: 'greater-than [NUMBER1] [NUMBER2]',
   description: 'Check whether one number is greater than another',
   options: {
     e: {
-      describe: 'Compare greater than or equal to',
+      description: 'Compare greater than or equal to',
       alias: 'or-equal',
       type: 'boolean'
     }

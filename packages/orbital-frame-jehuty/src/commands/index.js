@@ -18,10 +18,9 @@ import jobs from './jobs'
 import whoami from './whoami'
 import choose from './choose'
 import interactive from './interactive'
-import args from './arguments'
 import get from './get'
 import noop from './noop'
-import noFormat from './no-format'
+import noFormat from './noFormat'
 import length from './length'
 import flatten from './flatten'
 import xargs from './xargs'
@@ -33,13 +32,13 @@ import tail from './tail'
 import quote from './quote'
 import range from './range'
 import repeat from './repeat'
-import channel from './channel'
 import lessThan from './lessThan'
 import greaterThan from './greaterThan'
 import observer from './observer'
 import kill from './kill'
 import fg from './fg'
 import promote from './promote'
+import version from './version'
 
 export default [
   uptimeCommand,
@@ -62,7 +61,6 @@ export default [
   whoami,
   choose,
   interactive,
-  args,
   get,
   noop,
   noFormat,
@@ -77,11 +75,11 @@ export default [
   quote,
   range,
   repeat,
-  channel,
   lessThan,
   greaterThan,
   observer,
   kill,
   fg,
-  promote
+  promote,
+  version
 ]

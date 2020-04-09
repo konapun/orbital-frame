@@ -1,10 +1,9 @@
 function falseCommand () {
   return {
     name: 'false',
-    description: 'TODO',
-    execute () {
-      return false
-    }
+    synopsis: 'false',
+    description: 'Return false',
+    execute: () => false
   }
 }
 

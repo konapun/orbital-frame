@@ -1,5 +1,3 @@
-TEST="yay it works"
-alias test-alias 'if $(not $(equal -s 1 1)) "they\'re not equal" "they are equal"'
 alias d20 "range 1 20 | choose"
 alias 8ball "choose 'It is certain' 'It is decidedly so' 'Without a doubt' 'Yes definitely' 'You may rely on it' 'As I see it, yes' 'Most likely' 'Outlook good' 'Yes' 'Signs point to yes' 'Reply hazy try again' 'Ask again later' 'Better not tell you now' 'Cannot predict now' 'Concentrate and ask again' 'Dont count on it' 'My reply is no' 'My sources say no' 'Outlook not so good' 'Very doubtful' | quote"
 alias alignment "echo 'lawful neutral chaotic' 'good neutral evil' | xargs '$(split | choose)' | join"

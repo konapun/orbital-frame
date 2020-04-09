@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 export default () => ({
   name: 'range',
+  synopsis: 'range [START] [END]',
   description: 'Generate an inclusive range',
   execute (args) {
     if (args.length !== 2) {
