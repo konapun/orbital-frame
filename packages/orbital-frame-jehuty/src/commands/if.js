@@ -1,7 +1,8 @@
 function ifCommand () {
   return {
     name: 'if',
-    description: 'TODO',
+    synopsis: 'if [CONDITION] [TRUE BRANCH] [FALSE BRANCH]',
+    description: 'Branch based on a condition',
     execute ([ cond, trueBranch, falseBranch ]) {
       return cond ? trueBranch : falseBranch
     }

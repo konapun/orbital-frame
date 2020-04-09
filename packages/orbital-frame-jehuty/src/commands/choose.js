@@ -3,11 +3,12 @@ import { take, shuffle } from 'lodash'
 function choose () {
   return {
     name: 'choose',
-    description: 'Choose from multiple choices',
+    synopsis: 'choose [CHOICE] ...[CHOICES]',
+    description: 'Choose one or more values from multiple choices',
     options: {
       n: {
         alias: 'number',
-        describe: 'Take n choices',
+        description: 'Take n choices',
         type: 'number',
         default: 1,
         valid: (value, args) => value > 0 && value <= args.length

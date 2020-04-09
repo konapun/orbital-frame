@@ -1,10 +1,11 @@
 export default () => ({
   name: 'join',
+  synopsis: 'join [ITEM] [...ITEMS]',
   description: 'Join input by a character',
   options: {
     g: {
       alias: 'glue',
-      describe: 'Text to join the input with',
+      description: 'Text to join the input with',
       type: 'string',
       default: ' '
     }

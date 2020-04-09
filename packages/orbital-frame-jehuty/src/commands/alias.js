@@ -1,6 +1,7 @@
 function alias ({ commandService, compilerService }) {
   return {
     name: 'alias',
+    synopsis: 'alias [NAME] [COMMAND STRING]',
     description: 'Create an alias for a command string',
     execute ([ name, source ]) {
       const { command, metadata } = compilerService.compileWithMetadata(source)
@@ -12,7 +13,6 @@ function alias ({ commandService, compilerService }) {
         options: firstCommand.options,
         description: `Alias for "${source}"`,
         execute (args, opts) {
-          // console.log('EXECUTE WITH ARGS', args) // FIXME: args are being prepended to the beginning?
           return command(args, opts)
         }
       }))

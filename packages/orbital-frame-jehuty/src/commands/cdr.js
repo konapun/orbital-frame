@@ -1,7 +1,6 @@
 export default () => ({
   name: 'cdr',
-  description: 'TODO',
-  execute ([ , ...rest ]) {
-    return rest
-  }
+  synopsis: 'cdr [ITEM] ...[ITEMS]',
+  description: 'Treat input as a const cell and get the rest of the contents after car',
+  execute: ([ , ...rest ]) => rest
 })

@@ -1,6 +1,7 @@
 export default () => ({
   name: 'list',
-  description: 'Convert args to a list',
+  synopsis: 'list [ITEM] ...[ITEMS]',
+  description: 'Convert arguments to a list',
   execute (args) {
     return [ args ]
   }

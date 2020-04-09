@@ -5,10 +5,52 @@ Jehuty is a reference implementation and ready to use orbital frame running on
 and can be easily extended. [The documentation for Hubot administration is below](#running-jehuty-locally).
 
 ### Installed Plugins
-TODO
+  * [error-trap](../orbital-frame-plugin-error-trap/README.md)
+  * [did-you-mean]('../orbital-frame-plugin-did-you-mean/README.md)
+  * [rc]('../orbital-frame-plugin-rc/README.md)
+  * [uptime]('../orbital-frame-plugin-uptime/README.md)
 
 ### Installed Commands
-TODO
+  * **alias** Create an alias for a command string
+  * **and** Evaluate the AND of two conditions to a boolean
+  * **calc** Evaluate a mathematical expression
+  * **car** Treat input as a const cell and get the first contents
+  * **cdr** Treat input as a const cell and get the rest of the contents after car
+  * **choose** Choose one or more values from multiple choices
+  * **echo** Write arguments to output
+  * **equal** Check two or more arguments for equality
+  * **exec** Execute a string as a command
+  * **false** Return false
+  * **fg** Foreground an interactive job
+  * **flatten** Flatten array data to a string
+  * **get** Retrieve data at a position from a list
+  * **greater-than** Check whether one number is greater than another
+  * **head** Return items from the front of input
+  * **help** List all available commands and help dialog for an individual command
+  * **if** Branch based on a condition
+  * **interactive** An example of an interactive command
+  * **jobs** List jobs and their statuses
+  * **join** Join input by a character
+  * **kill** Send a signal to a job
+  * **length** Get argument length
+  * **less-than** Check whether one number is less than another
+  * **list** Convert arguments to a list
+  * **no-format** Get the raw output of a command without running it through its formatter
+  * **noop** No operation
+  * **not** Get the logical inversion of a value
+  * **observer** An example of a command which uses observable interactions
+  * **or** Evaluate the OR of two conditions to a boolean
+  * **promote** Promote a user to a superuser
+  * **quote** Surround a string with backticks
+  * **range** Generate an inclusive range
+  * **repeat** Repeat output
+  * **sleep** Wait for a specified amount of time
+  * **split** Split input by a character
+  * **tail** Return items from the end of input
+  * **true** Return true
+  * **version** Get the bot's version
+  * **whoami** Get the current user
+  * **xargs** Distribute list items to a command
 
 ### Running Jehuty Locally
 

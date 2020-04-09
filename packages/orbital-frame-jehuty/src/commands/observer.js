@@ -1,6 +1,7 @@
-export default ({ interactionService, signalService }) => ({
+export default ({ interactionService, signalService, configService }) => ({
   name: 'observer',
-  description: 'Testing observable interactions',
+  synopsis: 'observer',
+  description: `An example of a command which uses observable interactions. To respond to this command, prepend your message with "${configService.ps2}".`,
   async execute () {
     const interaction = await interactionService.createInteractionChannel()
     const signalHandler = await signalService.createSignalHandler()

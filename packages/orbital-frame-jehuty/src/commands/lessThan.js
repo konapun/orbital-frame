@@ -1,9 +1,10 @@
 export default () => ({
   name: 'less-than',
+  synopsis: 'less-than [NUMBER1] [NUMBER2]',
   description: 'Check whether one number is less than another',
   options: {
     e: {
-      describe: 'Compare less than or equal to',
+      description: 'Compare less than or equal to',
       alias: 'or-equal',
       type: 'boolean'
     }

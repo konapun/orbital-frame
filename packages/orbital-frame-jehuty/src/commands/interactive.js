@@ -1,7 +1,8 @@
-function interactive ({ interactionService }) {
+function interactive ({ interactionService, configService }) {
   return {
     name: 'interactive',
-    description: 'Testing interactive commands',
+    synopsis: 'interactive',
+    description: `An example of an interactive command. To respond to this command, prepend your message with "${configService.ps2}".`,
     format ({ name, age, color }) {
       return `Name: ${name}, Age: ${age}, Favorite Color: ${color}`
     },

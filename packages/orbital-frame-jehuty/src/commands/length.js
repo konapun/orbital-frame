@@ -1,5 +1,6 @@
 export default () => ({
   name: 'length',
-  description: 'Get output length',
+  synopsis: 'length [ITEM] ...[ITEMS]',
+  description: 'Get argument length',
   execute: args => args.length
 })

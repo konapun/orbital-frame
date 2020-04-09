@@ -1,7 +1,8 @@
 function not () {
   return {
     name: 'not',
-    description: 'TODO',
+    synopsis: 'not [VALUE]',
+    description: 'Get the logical inversion of a value',
     execute ([ value ]) {
       return !value
     }

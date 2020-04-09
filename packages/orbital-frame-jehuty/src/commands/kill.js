@@ -1,21 +1,22 @@
 export default ({ signalService }) => ({
   name: 'kill',
+  synopsis: 'kill [JOB ID]',
   description: 'Send a signal to a job',
   options: {
     1: {
       alias: 'SIGINT',
       type: 'boolean',
-      describe: 'Request a job to interrupt'
+      description: 'Request a job to interrupt'
     },
     2: {
       alias: 'SIGSTP',
       type: 'boolean',
-      describe: 'Request a job to stop'
+      description: 'Request a job to stop'
     },
     3: {
       alias: 'SIGRES',
       type: 'boolean',
-      describe: 'Request a job to resume'
+      description: 'Request a job to resume'
     }
   },
   async execute ([ jobId ], { SIGSTP, SIGRES }) {

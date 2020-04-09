@@ -1,7 +1,8 @@
 function jobs ({ jobService }) {
   return {
     name: 'jobs',
-    description: 'TODO',
+    synopsis: 'jobs',
+    description: 'List jobs and their statuses',
     format (output) {
       return output.map(jobToString).join('\n\n')
     },

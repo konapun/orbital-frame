@@ -358,17 +358,17 @@ export default ({ signalService }) => ({
     1: {
       alias: 'SIGINT',
       type: 'boolean',
-      describe: 'Request a job to interrupt'
+      description: 'Request a job to interrupt'
     },
     2: {
       alias: 'SIGSTP',
       type: 'boolean',
-      describe: 'Request a job to stop'
+      description: 'Request a job to stop'
     },
     3: {
       alias: 'SIGRES',
       type: 'boolean',
-      describe: 'Request a job to resume'
+      description: 'Request a job to resume'
     }
   },
   async execute ([ jobId ], { SIGSTP, SIGRES }) {
@@ -530,7 +530,7 @@ a plugin function) and returns an object with the following structure:
   * **description** help text for the command
   * **options** a mapping of single letter short options to:
     * **alias** long option alias for short option
-    * **describe** help text for option
+    * **description** help text for option
     * **type** one of `number`, `string`, or `boolean`
     * **required** whether or not the option is required
     * **default** a default value for the option if the option isn't explicitly set
@@ -555,7 +555,7 @@ export default () => ({
   options: {
     n: {
       alias: 'number',
-      describe: 'Take n choices',
+      description: 'Take n choices',
       type: 'number',
       default: 1
     }
