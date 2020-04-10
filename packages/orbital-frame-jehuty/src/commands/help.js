@@ -7,7 +7,7 @@ function help ({ commandService }) {
 
       const formatOption = ([ key, { alias, type, default: def, required = false, description: describe = none } ]) => {
         const keyDescriptor = `-${key}, --${alias}`
-        const typeDescriptor = `[${[ type, def ? `:${def}` : null, required ? 'REQUIRED' : null ].filter(i => i).join(' ')}]` //[ def ?? def, required && 'REQUIRED' ]
+        const typeDescriptor = `[${[ type, def ? `:${def}` : null, required ? 'REQUIRED' : null ].filter(i => i).join(' ')}]`
 
         return `${keyDescriptor}\t${typeDescriptor}\t${describe}`
       }
@@ -18,7 +18,7 @@ NAME
       ${name}
 
 SYNOPSIS
-      ${synopsis}
+      ${synopsis || none}
 
 DESCRIPTION
       ${description || none}
@@ -49,14 +49,13 @@ OPTIONS
         throw new Error('Wrong number of arguments: expected 0 or 1')
       }
     },
-//     format (output) {
-//       // TODO:
-//       return `
-// Available Commands
-// ------------------
-// ${output?.join('\n')}
-// `
-//     }
+    format (output) {
+      if (Array.isArray(output)) { // list all
+        return [ 'Available Commands', '------------------', ...output ].join('\n')
+      }
+
+      return output
+    }
   }
 }
 

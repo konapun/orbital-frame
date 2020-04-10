@@ -55,7 +55,7 @@ describe('command schema validator', () => {
     const command = buildCommand({
       options: {
         t: {
-          describe: 'test',
+          description: 'test',
           type: 'boolean'
         }
       }
@@ -71,7 +71,7 @@ describe('command schema validator', () => {
       options: {
         test: {
           alias: 't',
-          describe: 'test',
+          description: 'test',
           type: 'boolean'
         }
       }
@@ -94,7 +94,7 @@ describe('command schema validator', () => {
 
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "options" fails because [child "t" fails because [child "describe" fails because ["describe" is required]]]')
+    expect(error.message).toBe('child "options" fails because [child "t" fails because [child "description" fails because ["description" is required]]]')
   })
 
   it('should require a type for options', () => {
@@ -102,7 +102,7 @@ describe('command schema validator', () => {
       options: {
         t: {
           alias: 'test',
-          describe: 'test'
+          description: 'test'
         }
       }
     })
@@ -117,7 +117,7 @@ describe('command schema validator', () => {
       options: {
         t: {
           alias: 'test',
-          describe: 'test',
+          description: 'test',
           type: 'boolean'
         }
       }
@@ -133,7 +133,7 @@ describe('command schema validator', () => {
       options: {
         t: {
           alias: 'test',
-          describe: 'test',
+          description: 'test',
           type: 'boolean'
         }
       }

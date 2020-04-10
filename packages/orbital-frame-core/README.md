@@ -353,6 +353,7 @@ const example = ({ interactionService, signalService }) => ({
 ```js
 export default ({ signalService }) => ({
   name: 'kill',
+  synopsis: 'kill [JOB ID]',
   description: 'Send a signal to a job',
   options: {
     1: {
@@ -527,6 +528,7 @@ Commands are the primary means of extension for an Orbital Frame instance. A
 command is a function which takes as input injected services (in the same way as
 a plugin function) and returns an object with the following structure:
   * **name** the name the command will be invoked with
+  * **synopsis** usage details for the command
   * **description** help text for the command
   * **options** a mapping of single letter short options to:
     * **alias** long option alias for short option
