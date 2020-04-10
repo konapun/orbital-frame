@@ -5,10 +5,6 @@ const messenger = frame => () => ({
 
   send (channel, message) {
     return frame.send(channel, message)
-  },
-
-  reply (context, message) {
-    return context.reply(message)
   }
 })
 

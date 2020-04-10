@@ -34,7 +34,19 @@ chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapte
 `@orbital-frame/jehuty` runs on.
 
 ### Creating adapters
-`TODO` The adapters API is still in flux
+An adapter should return an object with the following form:
+  * **ps1** `(optional)` A symbol/string which is prepended to the bot name used to hail the bot. For instance, slack uses `@`
+  * **hear** `Fn <RegExp matcher, Fn callback>` Listen for user input and invoke `callback` on match with `matcher`. Must invoke callback with an object of the form:
+    * **message** `Object`
+      * **user** `Object`
+        * **id** `String|Number` Unique user ID
+        * **name** `String` The user's name
+      * **text** `String` The message text
+      * **channel** `String` The channel in which the message was received. If the chat service does not support channels, you can return a constant value like `"root"`
+    * **send** `String message -> Nil` Send a message in the same context the message was received in
+  * **send** `String channel, String message` Send a message to a channel
+  * **async getUsers** `-> Array<User>` Get all users in the chat
+  * **async getChannels** `-> Array<Channel>` Get all channels in the chat
 
 See the [hubot adapter](../orbital-frame-adapter-hubot/src/index.js) as an example.
 
@@ -207,7 +219,6 @@ const example = ({ listenerService }) => {
 The messenger service sends output to the adapter the bot is running on.
   * **`respond`** `Context, String -> Nil` Send a message in response to the sending context
   * **`send`** `Channel, String -> Nil` Send a message to a channel
-  * **`reply`** `Context, String` Reply to a sending context
 
 #### Example
 ```js

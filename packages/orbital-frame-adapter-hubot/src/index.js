@@ -19,9 +19,6 @@ function hubotAdapter (hubot) { // TODO: config
           },
           send (message) {
             response.send(message)
-          },
-          reply (message) {
-            response.reply(message)
           }
         })
       })
