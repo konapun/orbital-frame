@@ -9,6 +9,7 @@
     "@orbital-frame/adapter-hubot": "^0.0.2-alpha.0",
     "@orbital-frame/core": "^0.0.2-alpha.5",
     "@orbital-frame/core-commands": "^0.0.2-alpha.5",
+    "@orbital-frame/command-game-example": "^0.0.2-alpha.0",
     "@orbital-frame/plugin-did-you-mean": "^0.0.2-alpha.5",
     "@orbital-frame/plugin-error-trap": "^0.0.2-alpha.5",
     "@orbital-frame/plugin-rc": "^0.0.2-alpha.5",
