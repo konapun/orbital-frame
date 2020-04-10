@@ -5,8 +5,7 @@ const frame = {
 }
 
 const context = {
-  send: jest.fn(),
-  reply: jest.fn()
+  send: jest.fn()
 }
 
 describe('messenger service', () => {
@@ -20,10 +19,5 @@ describe('messenger service', () => {
   it('should use context for responding', () => {
     messenger.respond(context, 'hello')
     expect(context.send).toHaveBeenCalledWith('hello')
-  })
-
-  it('should use context for replying', () => {
-    messenger.reply(context, 'hello')
-    expect(context.reply).toHaveBeenCalledWith('hello')
   })
 })
