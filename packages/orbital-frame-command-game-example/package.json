@@ -1,0 +1,14 @@
+{
+  "name": "@orbital-frame/command-game-example",
+  "version": "0.1.3",
+  "description": "An example command for a multi-user game using orbital-frame",
+  "main": "dist/command.js",
+  "dependencies": {
+    "@orbital-frame/core": "^0.1.3"
+  },
+  "peerDependencies": {
+    "@orbital-frame/core": "^0.1.3"
+  },
+  "author": "konapun",
+  "license": "MIT"
+}

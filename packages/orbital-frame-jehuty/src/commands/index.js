@@ -1,4 +1,5 @@
 import { uptimeCommand } from '@orbital-frame/plugin-uptime'
+import gameExample from '@orbital-frame/command-game-example'
 import calc from './calc'
 import echo from './echo'
 import exec from './exec'
@@ -81,5 +82,6 @@ export default [
   kill,
   fg,
   promote,
-  version
+  version,
+  gameExample
 ]
