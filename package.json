@@ -24,7 +24,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:coverage:core": "lerna run --scope @orbital-frame/core test:coverage"
+    "test:coverage:core": "lerna run --scope @orbital-frame/core test:coverage",
+    "version:patch": "lerna version patch",
+    "version:minor": "lerna version minor",
+    "version:major": "lerna version major"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
