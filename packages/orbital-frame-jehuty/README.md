@@ -48,6 +48,7 @@ and can be easily extended. [The documentation for Hubot administration is below
   * **split** Split input by a character
   * **tail** Return items from the end of input
   * **true** Return true
+  * **uptime** Gives the amount of time the bot has been running
   * **version** Get the bot's version
   * **whoami** Get the current user
   * **xargs** Distribute list items to a command
