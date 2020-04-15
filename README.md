@@ -13,6 +13,7 @@ This project is organized as a monorepo consisting of the following:
   - [@orbital-frame/core](./packages/orbital-frame-core/README.md) The core framework.
   - [@orbital-frame/jehuty](./packages/orbital-frame-jehuty/README.md) A reference implementation using core.
   - [@orbital-frame/parser](./packages/orbital-frame-parser/README.md) PEG grammar and parser which outputs an AST.
+  - [@orbital-frame/core-commands](./packages/orbital-frame-core-commands/README.md) A collection of optional starter commands to load into your bot. `@orbital-frame/jehuty` uses these.
   - **@orbital-frame/plugin-*** Optional plugins that can be installed and loaded into your bot.
   - **@orbital-frame/command-*** Optional commands that can be installed and loaded into your bot.
   - **@orbital-frame/adapter-*** Adapters orbital frame can run on. `@orbital-frame/core` does not include an adapter by default so you must include one of these to use orbital-frame in your chat service.
