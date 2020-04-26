@@ -18,7 +18,7 @@
     "watch": "NODE_ENV=production lerna exec --parallel -- babel --root-mode upward src -d dist --watch",
     "clean": "lerna clean && lerna exec --parallel -- rm -rf dist",
     "dev": "yarn bootstrap && yarn build",
-    "lerna:publish": "lerna publish",
+    "lerna:publish": "lerna publish from-package",
     "lint": "eslint --ignore-path .eslintignore .",
     "lint:fix": "eslint --fix --ignore-path .eslintignore .",
     "test": "jest",
