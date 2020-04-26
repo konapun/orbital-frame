@@ -25,6 +25,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:coverage:core": "lerna run --scope @orbital-frame/core test:coverage",
+    "version:prerelease": "lerna version prerelease",
     "version:patch": "lerna version patch",
     "version:minor": "lerna version minor",
     "version:major": "lerna version major"
