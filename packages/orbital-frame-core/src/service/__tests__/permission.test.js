@@ -40,7 +40,7 @@ describe('permission service', () => {
     expect(await permission.isSuperuser(4)).toBe(false)
   })
 
-  describe('as superuser', async () => {
+  describe('as superuser', () => {
     const { permission, persistenceSet, persistenceGet } = setup(1, { get: [ 1 ] })
     expect(persistenceGet).toHaveBeenCalled()
 
@@ -86,7 +86,7 @@ describe('permission service', () => {
     })
   })
 
-  describe('as normal user', async () => {
+  describe('as normal user', () => {
     const { permission, persistenceSet, persistenceGet } = setup(9)
     expect(persistenceGet).toHaveBeenCalled()
 
