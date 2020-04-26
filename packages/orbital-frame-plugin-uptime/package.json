@@ -1,14 +1,14 @@
 {
   "name": "@orbital-frame/plugin-uptime",
-  "version": "0.1.3",
+  "version": "0.0.1",
   "description": "A plugin and command for orbital frame to get bot uptime",
   "main": "dist/index.js",
   "dependencies": {
-    "@orbital-frame/core": "^0.1.3",
+    "@orbital-frame/core": "^0.0.1",
     "pretty-ms": "^5.0.0"
   },
   "peerDependencies": {
-    "@orbital-frame/core": "^0.1.3"
+    "@orbital-frame/core": "^0.0.1"
   },
   "author": "konapun",
   "license": "MIT"

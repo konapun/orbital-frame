@@ -1,13 +1,13 @@
 {
   "name": "@orbital-frame/plugin-error-trap",
-  "version": "0.1.3",
+  "version": "0.0.1",
   "description": "Catch and report runtime errors",
   "main": "dist/errorTrap.js",
   "dependencies": {
-    "@orbital-frame/core": "^0.1.3"
+    "@orbital-frame/core": "^0.0.1"
   },
   "peerDependencies": {
-    "@orbital-frame/core": "^0.1.3"
+    "@orbital-frame/core": "^0.0.1"
   },
   "author": "konapun",
   "license": "MIT"
