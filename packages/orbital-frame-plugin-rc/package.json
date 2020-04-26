@@ -1,10 +1,10 @@
 {
   "name": "@orbital-frame/plugin-rc",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha.0",
   "description": "A plugin for running commands from an rc file on startup",
   "main": "dist/loadRc.js",
   "dependencies": {
-    "@orbital-frame/core": "^0.0.1"
+    "@orbital-frame/core": "^0.0.2-alpha.0"
   },
   "peerDependencies": {
     "@orbital-frame/core": "^0.0.1"
