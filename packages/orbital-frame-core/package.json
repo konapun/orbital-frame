@@ -7,7 +7,6 @@
   ],
   "author": "Bremen Braun (konapun)",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "test:coverage": "jest --coverage"
   },
