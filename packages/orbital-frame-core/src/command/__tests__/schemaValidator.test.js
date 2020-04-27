@@ -12,14 +12,14 @@ describe('command schema validator', () => {
     const command = buildCommand({ name: undefined })
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "name" fails because ["name" is required]')
+    expect(error.message).toBe('"name" is required')
   })
 
   it('should not require a description', () => {
     const command = buildCommand({ description: undefined })
     const { value, error } = schemaValidator.validate(command)
 
-    expect(error).toBe(null)
+    expect(error).toBe(undefined)
     expect(value).toEqual(expect.objectContaining({ description: '' }))
   })
 
@@ -27,7 +27,7 @@ describe('command schema validator', () => {
     const command = buildCommand({ execute: undefined })
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "execute" fails because ["execute" is required]')
+    expect(error.message).toBe('"execute" is required')
   })
 
   it('should provide a default for usage', () => {
@@ -63,7 +63,7 @@ describe('command schema validator', () => {
 
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "options" fails because [child "t" fails because [child "alias" fails because ["alias" is required]]]')
+    expect(error.message).toBe('"options.t.alias" is required')
   })
 
   it('should require option non-aliases be single letters', () => {
@@ -79,7 +79,7 @@ describe('command schema validator', () => {
 
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "options" fails because ["test" is not allowed]')
+    expect(error.message).toBe('"options.test" is not allowed')
   })
 
   it('should require option descriptions', () => {
@@ -94,7 +94,7 @@ describe('command schema validator', () => {
 
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "options" fails because [child "t" fails because [child "description" fails because ["description" is required]]]')
+    expect(error.message).toBe('"options.t.description" is required')
   })
 
   it('should require a type for options', () => {
@@ -109,7 +109,7 @@ describe('command schema validator', () => {
 
     const { error } = schemaValidator.validate(command)
 
-    expect(error.message).toBe('child "options" fails because [child "t" fails because [child "type" fails because ["type" is required]]]')
+    expect(error.message).toBe('"options.t.type" is required')
   })
 
   it('should provide a default for option "required"', () => {
@@ -140,7 +140,6 @@ describe('command schema validator', () => {
     })
 
     const { value } = schemaValidator.validate(command)
-
     expect(value.options.t.valid).toBeInstanceOf(Function)
   })
 })
