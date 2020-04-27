@@ -1,17 +1,17 @@
-import Joi from 'joi'
+import Joi from '@hapi/joi'
 
 function runtimeValidator ({ type, default: deflt, required }) {
-  const validator = Joi[type]()
+  const schema = Joi[type]()
   if (deflt) {
-    validator.default(deflt)
+    schema.default(() => deflt)
   }
   if (required) {
-    validator.required()
+    schema.required()
   }
 
   return {
     validate (value) {
-      const { error, value: val } = validator.validate(value)
+      const { error, value: val } = schema.validate(value)
       if (error) {
         throw error
       }
