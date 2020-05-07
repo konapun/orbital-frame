@@ -7,12 +7,12 @@
   },
   "dependencies": {
     "@orbital-frame/adapter-hubot": "^0.0.2-alpha.0",
-    "@orbital-frame/core": "^0.0.2-alpha.1",
-    "@orbital-frame/core-commands": "^0.0.2-alpha.1",
-    "@orbital-frame/plugin-did-you-mean": "^0.0.2-alpha.1",
-    "@orbital-frame/plugin-error-trap": "^0.0.2-alpha.1",
-    "@orbital-frame/plugin-rc": "^0.0.2-alpha.1",
-    "@orbital-frame/plugin-uptime": "^0.0.2-alpha.1",
+    "@orbital-frame/core": "^0.0.2-alpha.2",
+    "@orbital-frame/core-commands": "^0.0.2-alpha.2",
+    "@orbital-frame/plugin-did-you-mean": "^0.0.2-alpha.2",
+    "@orbital-frame/plugin-error-trap": "^0.0.2-alpha.2",
+    "@orbital-frame/plugin-rc": "^0.0.2-alpha.2",
+    "@orbital-frame/plugin-uptime": "^0.0.2-alpha.2",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.2",
     "hubot-heroku-keepalive": "^1.0.3",
@@ -25,5 +25,5 @@
   "engines": {
     "node": "0.10.x"
   },
-  "version": "0.0.2-alpha.1"
+  "version": "0.0.2-alpha.2"
 }
