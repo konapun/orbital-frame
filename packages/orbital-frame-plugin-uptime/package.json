@@ -7,9 +7,6 @@
     "@orbital-frame/core": "^0.0.2-alpha.2",
     "pretty-ms": "^5.0.0"
   },
-  "peerDependencies": {
-    "@orbital-frame/core": "^0.0.1"
-  },
   "author": "konapun",
   "license": "MIT"
 }

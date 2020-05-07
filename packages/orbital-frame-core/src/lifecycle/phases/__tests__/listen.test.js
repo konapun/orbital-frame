@@ -27,7 +27,7 @@ describe('listen phase', () => {
   })
 
   it('should not interpret the configured name as as regular expression', () => {
-    const { configService, listenerService, next, args } = setup({ name: '^hey$'})
+    const { configService, listenerService, next, args } = setup({ name: '^hey$' })
     listen({ configService, listenerService })(next)(args)
 
     expect(listenerService.listen).toHaveBeenCalledWith(/^@\^hey\$\s/)
