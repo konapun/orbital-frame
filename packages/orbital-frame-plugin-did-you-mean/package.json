@@ -1,10 +1,10 @@
 {
   "name": "@orbital-frame/plugin-did-you-mean",
-  "version": "0.0.2-alpha.2",
+  "version": "0.0.2-alpha.3",
   "description": "A plugin to list close mathces to unfound commands",
   "main": "dist/didYouMean.js",
   "dependencies": {
-    "@orbital-frame/core": "^0.0.2-alpha.2",
+    "@orbital-frame/core": "^0.0.2-alpha.3",
     "talisman": "^0.21.0"
   },
   "author": "konapun",
