@@ -1,4 +1,5 @@
 import { StateError, PermissionError } from '../error'
+import { escapeRegExp } from 'lodash'
 
 const userFocus = {} // track active job per user
 const interactions = {}
@@ -18,7 +19,7 @@ const interaction = () => ({ configService, environmentService, jobService, list
 
       const { id, context, userId } = await jobService.findOne({ 'command.pid': pid })
       const members = [ userId, ...userIds ]
-      const channelListener = listenerService.listen(`^${prompt}`)
+      const channelListener = listenerService.listen(new RegExp(`^${escapeRegExp(prompt)}`))
         .pipe(({ message }) => ({ // format stream contents before downstream consumers
           ...message,
           text: message.text.substring(prompt.length)

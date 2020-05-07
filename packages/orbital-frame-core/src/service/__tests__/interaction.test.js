@@ -82,7 +82,7 @@ describe('interaction service', () => {
     environmentService.get.mockReturnValueOnce(2)
 
     await interaction.createInteractionChannel()
-    expect(listenerService.listen).toHaveBeenCalledWith('^>')
+    expect(listenerService.listen).toHaveBeenCalledWith(/^>/)
   })
 
   it('shouldn\'t invoke the interaction channel on ">" messages for which there are no unfulfilled prompts', async () => {
