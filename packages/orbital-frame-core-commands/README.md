@@ -3,6 +3,27 @@ A collection of optional starter commands for an orbital-frame bot. All included
 commands are chat service agnostic so they should work with an orbital-frame bot
 running anywhere.
 
+## Installing
+```sh
+npm install --save @orbital-frame/core-commands
+```
+
+## Usage
+```js
+import orbitalFrame from '@orbital-frame/core'
+import hubotAdapter from '@orbital-frame/adapter-hubot'
+import coreCommands from '@orbital-frame/core-commands'
+import myCommands from './commands'
+import plugins from './plugins'
+import hubotConfig from './config'
+
+export default hubot => orbitalFrame(hubotAdapter(hubot, hubotConfig), {
+  name: 'jehuty',
+  commands: [ ...coreCommands, ...myCommands ],
+  plugins
+})
+```
+
 ## Bundled Commands
   * **alias** Create an alias for a command string
   * **and** Evaluate the AND of two conditions to a boolean

@@ -2,6 +2,11 @@
 This is a parser generator whose output is a parser which produces an AST for
 consumption by @orbital-frame/core.
 
+## Installing
+```sh
+npm install --save @orbital-frame/parser
+```
+
 The command grammar is a modified subset of bash's grammar:
   - command
   - options

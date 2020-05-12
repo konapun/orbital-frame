@@ -9,6 +9,8 @@ chaining, inline logical operators (via commands), functions, and a custom
 language based on the venerable bash. For full details, visit the
 [core README](./packages/orbital-frame-core/README.md).
 
+[Try it online!](https://konapun.github.io/projects/orbital-frame)
+
 This project is organized as a monorepo consisting of the following:
   - [@orbital-frame/core](./packages/orbital-frame-core/README.md) The core framework.
   - [@orbital-frame/jehuty](./packages/orbital-frame-jehuty/README.md) A reference implementation using core.
