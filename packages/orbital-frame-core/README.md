@@ -3,6 +3,13 @@
 to the UNIX command line, complete with commands, pipes, variables, signals,
 etc. A reference implementation is provided in `@orbital-frame/jehuty`.
 
+[Try it online](https://konapun.github.io/projects/orbital-frame)
+
+## Installing
+```sh
+npm install @orbital-frame/core
+```
+
 ## Creating a bot
 ```js
 import orbitalFrame from '@orbital-frame/core'

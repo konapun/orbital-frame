@@ -1,6 +1,13 @@
 # @orbital-frame/plugin-rc
-Loads and executes file of orbital frame commands each time the bot is started
+Load and execute file of orbital frame commands each time the bot is started.
+This is useful for bootstrapping an environment (variables, aliases, functions, etc.).
 
+## Installing
+```sh
+npm install @orbital-frame/plugin-rc
+```
+
+## Usage
 ```js
 import rcPlugin from '@orbital-frame/plugin-rc'
 
