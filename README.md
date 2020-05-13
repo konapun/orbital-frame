@@ -5,8 +5,8 @@
 
 Unleash the power and flexibility of the UNIX command line with a chat bot!
 Orbital Frame supports commands, options, variables, pipes, asynchronous
-chaining, inline logical operators (via commands), functions, and a custom
-language based on the venerable bash. For full details, visit the
+chaining, inline logical operators (via commands), functions, jobs, signals, and
+ a custom language based on the venerable bash. For full details, visit the
 [core README](./packages/orbital-frame-core/README.md).
 
 [Try it online!](https://konapun.github.io/projects/orbital-frame)

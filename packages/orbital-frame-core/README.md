@@ -59,14 +59,28 @@ See the [hubot adapter](../orbital-frame-adapter-hubot/src/index.js) as an examp
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
-  - **loadPlugins** loads plugins into the Orbital Frame lifecycle
-  - **loadCommands** loads commands into the Orbital Frame lifecycle
-  - **listen** sets up a responder for every time this bot is mentioned.
+  - **loadPlugins** Loads plugins into the Orbital Frame lifecycle
+  - **loadCommands** Loads commands into the Orbital Frame lifecycle
+  - **listen** Sets up a responder for every time this bot is mentioned.
       *NOTE*: the exit phase triggers when the responder has been triggered, not when the
       responder has been set up
-  - **process** processes a message produced from the bot's invocation
-  - **execute** executes a command built from the message
-  - **respond** returns the command's output
+  - **process** Processes a message produced from the bot's invocation
+  - **execute** Executes a command built from the message
+  - **respond** Returns the command's output
+
+## Jobs
+When user input is entered it is assigned to a job. A job is in one of four states:
+  - **pending** A job begins its lifecycle in the pending state
+  - **running** Once a job begins execution, it is moved to the running state and remains there until it is either fulfilled or rejected
+  - **fulfilled** Upon success, a job moves to the terminal fulfilled state
+  - **rejected** Upon error, a job moves to the terminal rejected state
+
+Along with its current state, a job contains its ID, a user-local ID, the ID of
+the user who started the job. The job's context which is used for interaction
+with the chat service, a command object for the command that belongs to the job,
+the source code input by the user which spawned the job, the date the job was
+started, the date the job was finished (or null if the job hasn't reached a
+terminal state), and the job's output if it is in a finished state.
 
 ## Services
 Orbital Frame uses dependency injection (DI) to expose its various configured
