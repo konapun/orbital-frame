@@ -1,6 +1,6 @@
 {
   "name": "@orbital-frame/core-commands",
-  "version": "0.0.2-alpha.3",
+  "version": "0.0.2-alpha.4",
   "description": "A collection of optional starter commands for an orbital-frame bot",
   "main": "dist/index.js",
   "dependencies": {
