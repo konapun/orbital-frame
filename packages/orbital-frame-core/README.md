@@ -76,7 +76,7 @@ When user input is entered it is assigned to a job. A job is in one of four stat
   - **rejected** Upon error, a job moves to the terminal rejected state
 
 Along with its current state, a job contains its ID, a user-local ID, the ID of
-the user who started the job. The job's context which is used for interaction
+the user who started the job, the job's context which is used for interaction
 with the chat service, a command object for the command that belongs to the job,
 the source code input by the user which spawned the job, the date the job was
 started, the date the job was finished (or null if the job hasn't reached a
