@@ -73,7 +73,7 @@ Commands can be immediately evaluated for use as arguments, option values, etc.
 by surrounding the command or pipeline with `$()`:
 
 ```sh
-some_command --option $(calculate_value | uppercase)
+echo "three plus two is " $(calc 3 + 2)
 ```
 
 #### Interactive Commands
