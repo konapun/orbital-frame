@@ -19,7 +19,7 @@
     "watch": "NODE_ENV=development BABEL_ENV=$NODE_ENV lerna exec --parallel -- babel --root-mode upward src -d dist --watch",
     "clean": "lerna clean && lerna exec --parallel -- rm -rf dist",
     "dev": "yarn bootstrap && yarn build:dev",
-    "publish": "lerna publish from-package",
+    "lerna:publish": "lerna publish from-package",
     "lint": "eslint --ignore-path .eslintignore .",
     "lint:fix": "eslint --fix --ignore-path .eslintignore .",
     "test": "jest",
