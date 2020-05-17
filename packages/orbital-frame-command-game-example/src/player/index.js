@@ -2,12 +2,16 @@ import { look, examine, move } from './actions'
 
 function player (user, location) {
   const properties = {
+    ...user,
     location
   }
 
   const actions = {}
 
   const base = {
+    process (text) {
+      console.log('Player processing text', text)
+    },
     load (action) {
       if (action.verbs) {
         const { execute } = action

@@ -5,8 +5,8 @@ import controller from './controller'
 function game (users, resolve) {
   const players = users.map(user => player(user, map.spawn))
 
-  players[0].move('left')
-  return message => controller(message, {
+  const handle = controller(players)
+  return message => handle(message, {
     onExit: resolve
   })
 }
