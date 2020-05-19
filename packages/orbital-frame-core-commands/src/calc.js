@@ -1,4 +1,4 @@
-import mathJs from 'mathjs'
+import { evaluate } from 'mathjs'
 
 export default () => ({
   name: 'calc',
@@ -9,6 +9,6 @@ export default () => ({
     return String(output)
   },
   execute (args) {
-    return mathJs.eval(args.join(''))
+    return evaluate(args.join(''))
   }
 })

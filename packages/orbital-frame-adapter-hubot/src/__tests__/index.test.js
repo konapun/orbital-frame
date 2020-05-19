@@ -4,7 +4,6 @@ describe('hubot adapter', () => {
   it('should parse code blocks for slack', () => {
     const response = {
       send: jest.fn(),
-      reply: jest.fn(),
       message: {
         user: {
           id: 1,

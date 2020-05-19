@@ -3,6 +3,13 @@
 to the UNIX command line, complete with commands, pipes, variables, signals,
 etc. A reference implementation is provided in `@orbital-frame/jehuty`.
 
+[Try it online](https://konapun.github.io/projects/orbital-frame)
+
+## Installing
+```sh
+npm install --save @orbital-frame/core
+```
+
 ## Creating a bot
 ```js
 import orbitalFrame from '@orbital-frame/core'
@@ -34,20 +41,46 @@ chat services. Currently, only the Hubot (`@orbital-frame/adapter-hubot`) adapte
 `@orbital-frame/jehuty` runs on.
 
 ### Creating adapters
-`TODO` The adapters API is still in flux
+An adapter should return an object with the following form:
+  * **ps1** `(optional)` A symbol/string which is prepended to the bot name used to hail the bot. For instance, slack uses `@`
+  * **hear** `Fn <RegExp matcher, Fn callback>` Listen for user input and invoke `callback` on match with `matcher`. Must invoke callback with an object of the form:
+    * **message** `Object`
+      * **user** `Object`
+        * **id** `String|Number` Unique user ID
+        * **name** `String` The user's name
+      * **text** `String` The message text
+      * **channel** `String` The channel in which the message was received. If the chat service does not support channels, you can return a constant value like `"root"`
+    * **send** `String message -> Nil` Send a message in the same context the message was received in
+  * **send** `String channel, String message` Send a message to a channel
+  * **async getUsers** `-> Array<User>` Get all users in the chat
+  * **async getChannels** `-> Array<Channel>` Get all channels in the chat
 
 See the [hubot adapter](../orbital-frame-adapter-hubot/src/index.js) as an example.
 
 ## Runtime
 The Orbital Frame lifecycle consists of the following stages:
-  - **loadPlugins** loads plugins into the Orbital Frame lifecycle
-  - **loadCommands** loads commands into the Orbital Frame lifecycle
-  - **listen** sets up a responder for every time this bot is mentioned.
+  - **loadPlugins** Loads plugins into the Orbital Frame lifecycle
+  - **loadCommands** Loads commands into the Orbital Frame lifecycle
+  - **listen** Sets up a responder for every time this bot is mentioned.
       *NOTE*: the exit phase triggers when the responder has been triggered, not when the
       responder has been set up
-  - **process** processes a message produced from the bot's invocation
-  - **execute** executes a command built from the message
-  - **respond** returns the command's output
+  - **process** Processes a message produced from the bot's invocation
+  - **execute** Executes a command built from the message
+  - **respond** Returns the command's output
+
+## Jobs
+When user input is entered it is assigned to a job. A job is in one of four states:
+  - **pending** A job begins its lifecycle in the pending state
+  - **running** Once a job begins execution, it is moved to the running state and remains there until it is either fulfilled or rejected
+  - **fulfilled** Upon success, a job moves to the terminal fulfilled state
+  - **rejected** Upon error, a job moves to the terminal rejected state
+
+Along with its current state, a job contains its ID, a user-local ID, the ID of
+the user who started the job, the job's context which is used for interaction
+with the chat service, a command object for the command that belongs to the job,
+the source code input by the user which spawned the job, the date the job was
+started, the date the job was finished (or null if the job hasn't reached a
+terminal state), and the job's output if it is in a finished state.
 
 ## Services
 Orbital Frame uses dependency injection (DI) to expose its various configured
@@ -207,7 +240,6 @@ const example = ({ listenerService }) => {
 The messenger service sends output to the adapter the bot is running on.
   * **`respond`** `Context, String -> Nil` Send a message in response to the sending context
   * **`send`** `Channel, String -> Nil` Send a message to a channel
-  * **`reply`** `Context, String` Reply to a sending context
 
 #### Example
 ```js
@@ -642,5 +674,4 @@ Name: konapun, Color: monokai # Command output
 ```
 
 ## Pending Features/TODOs
-  * [ ] Lazy evaluations
   * [ ] [Parameter Expresions](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)

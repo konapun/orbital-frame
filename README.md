@@ -5,14 +5,17 @@
 
 Unleash the power and flexibility of the UNIX command line with a chat bot!
 Orbital Frame supports commands, options, variables, pipes, asynchronous
-chaining, inline logical operators (via commands), functions, and a custom
-language based on the venerable bash. For full details, visit the
-[core README](./packages/orbital-frame-core/README.md).
+chaining, inline logical operators (via commands), functions, jobs, signals,
+plugins, and a custom language based on the venerable bash. For full details,
+visit the [core README](./packages/orbital-frame-core/README.md).
+
+[Try it online!](https://konapun.github.io/projects/orbital-frame)
 
 This project is organized as a monorepo consisting of the following:
   - [@orbital-frame/core](./packages/orbital-frame-core/README.md) The core framework.
   - [@orbital-frame/jehuty](./packages/orbital-frame-jehuty/README.md) A reference implementation using core.
   - [@orbital-frame/parser](./packages/orbital-frame-parser/README.md) PEG grammar and parser which outputs an AST.
+  - [@orbital-frame/core-commands](./packages/orbital-frame-core-commands/README.md) A collection of optional starter commands to load into your bot. `@orbital-frame/jehuty` uses these.
   - **@orbital-frame/plugin-*** Optional plugins that can be installed and loaded into your bot.
   - **@orbital-frame/command-*** Optional commands that can be installed and loaded into your bot.
   - **@orbital-frame/adapter-*** Adapters orbital frame can run on. `@orbital-frame/core` does not include an adapter by default so you must include one of these to use orbital-frame in your chat service.
@@ -70,7 +73,7 @@ Commands can be immediately evaluated for use as arguments, option values, etc.
 by surrounding the command or pipeline with `$()`:
 
 ```sh
-some_command --option $(calculate_value | uppercase)
+echo "three plus two is " $(calc 3 + 2)
 ```
 
 #### Interactive Commands

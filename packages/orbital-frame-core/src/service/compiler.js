@@ -56,7 +56,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
       case type.INTERPOLATION: {
         const [ source ] = node.body
 
-        const cmd = this._getBuilder(source).build({ ...options, format: false }) // if interpolation is within a scope it should have access to scoped variables
+        const cmd = this._getBuilder(source, options).build({ ...options, format: false }) // if interpolation is within a scope it should have access to scoped variables //FIXME: passing options both places is kind of ugly
         currentBuilder.addArgument(cmd)
         return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder
       }

@@ -1,5 +1,5 @@
 function help ({ commandService }) {
-  const listAll = () => Object.keys(commandService.registry)
+  const listAll = () => Object.keys(commandService.registry).sort()
   const listOne = commandName => {
     const command = commandService.registry[commandName]
     if (command) {

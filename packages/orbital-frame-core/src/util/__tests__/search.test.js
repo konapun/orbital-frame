@@ -70,7 +70,7 @@ describe('search', () => {
     })
   })
 
-  describe('should work with asychronous list building', async () => {
+  describe('should work with asychronous list building', () => {
     const buildList = async () => new Promise(resolve => {
       setTimeout(() => {
         resolve(data)

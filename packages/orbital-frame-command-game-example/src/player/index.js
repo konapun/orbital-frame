@@ -1,13 +1,17 @@
 import { look, examine, move } from './actions'
 
-function player (user, location) {
+function player (controller, user, location) {
   const properties = {
+    ...user,
     location
   }
 
   const actions = {}
 
   const base = {
+    process (text) {
+      controller(player).process(text)
+    },
     load (action) {
       if (action.verbs) {
         const { execute } = action

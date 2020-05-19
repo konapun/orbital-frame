@@ -1,6 +1,6 @@
 {
   "name": "@orbital-frame/adapter-hubot",
-  "version": "0.1.3",
+  "version": "0.0.2-alpha.0",
   "description": "A configurable adapter for using Hubot as the orbital-frame backend",
   "main": "dist/index.js",
   "files": [

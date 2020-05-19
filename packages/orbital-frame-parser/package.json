@@ -10,10 +10,9 @@
     "test:coverage": "jest --coverage"
   },
   "author": "Bremen Braun (konapun)",
-  "private": true,
   "license": "MIT",
   "devDependencies": {
     "pegjs": "^0.10.0"
   },
-  "version": "0.1.3"
+  "version": "0.0.2-alpha.0"
 }
