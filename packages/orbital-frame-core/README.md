@@ -68,6 +68,16 @@ The Orbital Frame lifecycle consists of the following stages:
   - **execute** Executes a command built from the message
   - **respond** Returns the command's output
 
+### Runtime Variablaes
+The following variables are set during runtime:
+  * **`0`** The name of the currently executing command
+  * **`1 .. n`** Positional arguments (used for getting arguments within a function)
+  * **`#`** The number of command line arguments
+  * **`@`** All command line arguments as an array
+  * **`!`** The PID of the current command
+  * **`?`** The exit status of the most recently executed command
+
+
 ## Jobs
 When user input is entered it is assigned to a job. A job is in one of four states:
   - **pending** A job begins its lifecycle in the pending state

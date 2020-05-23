@@ -119,7 +119,7 @@ ExpressionTerminator
   = ";"
   / Newline
 
-Word = word:([a-zA-Z0-9_%\+\*\^\?\!][a-zA-Z0-9_%\+\*\^\?\!\-]*) { const [ start, rest ] = word; return [ start, ...rest ].join('')  }
+Word = word:([a-zA-Z0-9_%#@\+\*\^\?\!][a-zA-Z0-9_%#@\+\*\^\?\!\-]*) { const [ start, rest ] = word; return [ start, ...rest ].join('')  }
 
 LetterOrDigit = [a-zA-Z0-9]
 

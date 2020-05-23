@@ -1,6 +1,7 @@
 import { phase } from '@orbital-frame/core'
 import fs from 'fs'
 import readline from 'readline'
+import process from 'process'
 
 const defaults = {
   file: './orbital-frame.rc'
@@ -14,12 +15,17 @@ export default options => ({ compilerService }) => ({
       if (!fs.existsSync(file)) {
         throw new Error(`Unable to read rc file ${file} (cwd is ${process.cwd()})`)
       }
-      const lineReader = readline.createInterface({
-        input: fs.createReadStream(file)
-      })
-      lineReader.on('line', source => {
-        const command = compilerService.compile(source)
-        command()
+      return new Promise(resolve => {
+        const lineReader = readline.createInterface({
+          input: fs.createReadStream(file)
+        })
+        lineReader.on('line', source => {
+          const command = compilerService.compile(source)
+          command()
+        })
+        lineReader.on('close', () => {
+          resolve()
+        })
       })
     }
   }
