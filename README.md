@@ -103,6 +103,14 @@ MY_KEY="some value" # set a variable
 echo $MY_KEY # retrieve a value
 ```
 
+The following variables are built-in:
+  * **`0`** The name of the currently executing command
+  * **`1 .. n`** Positional arguments (used for getting arguments within a function)
+  * **`#`** The number of command line arguments
+  * **`@`** All command line arguments as an array
+  * **`!`** The PID of the current command
+  * **`?`** The exit status of the most recently executed command
+
 ### Signals
 See documentation in the @orbital-frame/core [README](./packages/orbital-frame-core/README.md#signalService)
 

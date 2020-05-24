@@ -200,10 +200,6 @@ describe('stream', () => {
     expect(pipeData).toBe('Pipe1: data2')
   })
 
-  it('should allow piping between streams', async () => {
-    // TODO: each pipe creates a duplex stream but should streams created manually be pipeable?
-  })
-
   it('should throw an error if a closed stream is writter to', async () => {
     const { writer } = stream()
 

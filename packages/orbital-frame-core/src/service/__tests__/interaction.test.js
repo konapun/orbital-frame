@@ -50,7 +50,7 @@ beforeEach(() => {
 
 describe('interaction service', () => {
   it('should not allow multiple interactions for the same PID', () => {
-
+    // TODO:
   })
 
   it('should run interaction channels for separate PIDs separately', async () => {
@@ -96,10 +96,11 @@ describe('interaction service', () => {
     // console.log('Before pipe')
     // listenerApi.pipe()
     // console.log('After pipe')
+    // TODO:
   })
 
   it('should clean up interactions when a job is no longer running', () => {
-
+    // TODO:
   })
 
   // TODO: tests for observe
@@ -115,6 +116,6 @@ describe('interaction service', () => {
   })
 
   it('should allow changing the foregrounded job per-user', async () => {
-
+    // TODO:
   })
 })
