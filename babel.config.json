@@ -20,7 +20,11 @@
     },
     "development": {
       "sourceMaps": true,
-      "plugins": ["babel-plugin-source-map-support"]
+      "plugins": ["babel-plugin-source-map-support"],
+      "ignore": [
+        "**/*.test.js",
+        "**/__mocks__/**/*.js"
+      ]
     },
     "production": {
       "ignore": [
