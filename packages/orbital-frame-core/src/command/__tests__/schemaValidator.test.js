@@ -128,6 +128,22 @@ describe('command schema validator', () => {
     expect(value.options.t.required).toBe(false)
   })
 
+  it('should require the default value to be of the same type as option.type', () => {
+    const command = buildCommand({
+      options: {
+        t: {
+          alias: 'test',
+          description: 'test',
+          type: 'boolean',
+          default: 'oops'
+        }
+      }
+    })
+
+    const { error } = schemaValidator.validate(command)
+    expect(error.message).toBe('"options.t.default" must be [ref:options.type]')
+  })
+
   it('should provide a default validator for options', () => {
     const command = buildCommand({
       options: {

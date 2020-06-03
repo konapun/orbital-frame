@@ -1,5 +1,5 @@
 import core from '../core'
-// import lifecycle from '../lifecycle'
+import lifecycle from '../lifecycle'
 import frame from '../frame'
 
 jest.mock('../service')
@@ -22,10 +22,9 @@ describe('core', () => {
 
   describe('lifecycle', () => {
     it('should run the lifecycle', () => {
-      // const instance = core('adapter', 'options')
-      // instance.run()
-      // expect(lifecycle).toHaveBeenLastCalledWith()
-      // TODO:
+      const instance = core('adapter', 'options')
+      instance.run()
+      expect(lifecycle).toHaveBeenLastCalledWith('cradle')
     })
   })
 })

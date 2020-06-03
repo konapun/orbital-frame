@@ -68,9 +68,6 @@ describe('command runtime wrapper', () => {
     }, {
       pid: 1
     })
-    // TODO: test calling order!
-    // test --boolean one two
-    // test one --boolean two
 
     await wrapper.execute([ 'test' ], {
       boolean: 'argument',
@@ -131,9 +128,25 @@ describe('command runtime wrapper', () => {
     expect(command.execute).toHaveBeenCalledWith([], { b: true, boolean: true }, { pid: 1 })
   })
 
-  it('should ignore unknown options', () => {
-    // TODO: use the runtime validator instead
-    expect(true).toBeTrue()
+  it('should ignore unknown options', async () => {
+    const command = {
+      name: 'test',
+      options: {
+        b: {
+          alias: 'boolean',
+          type: 'boolean',
+          default: false,
+          valid: () => true
+        }
+      },
+      execute: jest.fn()
+    }
+
+    const wrapper = commandWrapper(1, command)
+    await wrapper.execute([], {
+      unknown: 'yee'
+    })
+    expect(command.execute).toHaveBeenCalledWith([], { b: false, boolean: false }, { pid: 1 })
   })
 
   it('should provide pid as a property on the execute function', async () => {

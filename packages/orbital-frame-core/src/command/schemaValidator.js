@@ -17,7 +17,7 @@ export const schema = Joi.object().keys({
     description: Joi.string().required(),
     type: Joi.string().valid(...Object.values(optionType)).required(),
     required: Joi.boolean().default(false),
-    default: Joi.any(), // TODO should make sure this is the same type as defined above
+    default: Joi.ref('options.type'), // default value must be of the same type as the option type
     valid: Joi.func().default(() => () => true)
   })).default({}),
   format: Joi.func().default(() => defaultFormatter),
