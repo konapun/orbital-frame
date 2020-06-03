@@ -15,21 +15,21 @@ beforeEach(() => {
 
 describe('pipeline builder', () => {
   it('should support adding commands', () => {
-    const commandChain = jest.fn()
+    const commandChain = 'chain'
     commandBuilder.mockReturnValue(() => commandChain)
-    // const builder = pipelineBuilder(context)
+    const builder = pipelineBuilder(context)
 
-    // const chain = builder.addCommand('test')
-    // expect(commandBuilder).toHaveBeenCalledWith('test', context)
-    // expect(chain).toBe(commandChain) // FIXME:
-
+    const chain = builder.addCommand('test')
+    expect(commandBuilder).toHaveBeenCalledWith('test', context)
+    expect(chain()).toBe(commandChain)
   })
 
   it('should support adding interpolations as arguments', () => {
-    // const builder = pipelineBuilder(context)
+    const builder = pipelineBuilder(context)
 
-    // const chain = builder.addArgument('interpolation')
-    // TODO:
+    const chain = builder.addArgument('interpolation')
+    expect(interpolationBuilder).toHaveBeenCalledWith('interpolation')
+    expect(chain).toBe(builder)
   })
 
   describe('buildMetadata', () => {
