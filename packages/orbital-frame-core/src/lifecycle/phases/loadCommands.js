@@ -1,6 +1,6 @@
-const loadCommands = ({ configService, commandService }) => next => args => {
+const loadCommands = ({ configService, commandService }) => next => async args => {
   const commands = [ ...configService.commands ]
-  commandService.load(commands)
+  await commandService.load(commands)
   next(args)
 }
 
