@@ -35,7 +35,7 @@ const permission = () => ({ userService, persistenceService }) => {
     async isSuperuser (userId) {
       const superusers = await superusersP
 
-      return superusers.has(userId)
+      return superusers.has(userId ?? (await userService.getCurrentUser()).id)
     },
 
     async guard (block) {

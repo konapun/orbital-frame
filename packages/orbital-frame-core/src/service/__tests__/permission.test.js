@@ -40,6 +40,15 @@ describe('permission service', () => {
     expect(await permission.isSuperuser(4)).toBe(false)
   })
 
+  it('should use the current user ID if no ID is passed', async () => {
+    const { permission, userService } = setup()
+
+    const isSuperuser = await permission.isSuperuser()
+
+    expect(isSuperuser).toBe(true)
+    expect(userService.getCurrentUser).toHaveBeenCalled()
+  })
+
   describe('as superuser', () => {
     const { permission, persistenceSet, persistenceGet } = setup(1, { get: [ 1 ] })
     expect(persistenceGet).toHaveBeenCalled()
