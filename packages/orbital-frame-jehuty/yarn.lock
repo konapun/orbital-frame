@@ -47,18 +47,18 @@
   resolved "https://registry.yarnpkg.com/@orbital-frame/adapter-hubot/-/adapter-hubot-0.0.2-alpha.0.tgz#bd25ff1e8ac1721f95a9f7bb8486d51a66068dc1"
   integrity sha512-et6vVIf1yyylL8OKZyymCuPvI9rOUeR34GTNd+lKwLURMef453l1YZxjRjG2p0IkwLCbBa7PiPwTmQB/ZFnnjw==
 
-"@orbital-frame/core-commands@^0.0.2-alpha.4":
-  version "0.0.2-alpha.4"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/core-commands/-/core-commands-0.0.2-alpha.4.tgz#633d209a25f50508935ba9bdafd69c2854aa1c0b"
-  integrity sha512-0US0okyNSEWQtOrndKxoPaq79VSD3RtQdff4Y+efxEqsz20CdcU/XJjarwtg1/G5cMFlSL86a+g/gA32+bjAgA==
+"@orbital-frame/core-commands@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/core-commands/-/core-commands-0.0.2-alpha.5.tgz#12a9de2a25bd7ca2cbd34f77340001241991edce"
+  integrity sha512-zbZklRC9/ZyWOMzkIPNhqTRlawt9IccqsyQ3AcgYPc5kBNCx4oRApRoxLMUPPyuOh3koWOJ2DUY6Qpbc/RTClw==
   dependencies:
-    "@orbital-frame/core" "^0.0.2-alpha.3"
+    "@orbital-frame/core" "^0.0.2-alpha.5"
     mathjs "^6.6.3"
 
-"@orbital-frame/core@^0.0.2-alpha.3":
-  version "0.0.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/core/-/core-0.0.2-alpha.3.tgz#68833a28e70f4e49c3f5ac248874e990021a547a"
-  integrity sha512-eIn9lS1rZ7Ck1Bgj3zqVIYrQUKgzIBU05UGOWuPYgLYW4Tz45RjU54EX/+0RWS7G9N/6GoDXnJ4KIaJKydhWIQ==
+"@orbital-frame/core@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/core/-/core-0.0.2-alpha.5.tgz#eb223d4cd04a911ea73dbef874a6587361fce065"
+  integrity sha512-Hm4m/EgG9y5bch62CTsKXB8J1iguCzVNFUDZy/O9DnKYlkn90hILTUpz8IKDsA6ss28YmM8fbdDUVEh53tUj0A==
   dependencies:
     "@hapi/joi" "^17.1.1"
     "@orbital-frame/parser" "^0.0.2-alpha.0"
@@ -70,34 +70,34 @@
   resolved "https://registry.yarnpkg.com/@orbital-frame/parser/-/parser-0.0.2-alpha.0.tgz#764ed5dfafee5f3fffa7d581315779363ca8934f"
   integrity sha512-BrVVUV6hOYro6q5/4ayxaZSRXL9Ual0UOTh4uL93Dy5qa1CrxaZWfERmPLA/VUsS5YgBzDJDgmPFPdBkLavtRA==
 
-"@orbital-frame/plugin-did-you-mean@^0.0.2-alpha.3":
-  version "0.0.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-did-you-mean/-/plugin-did-you-mean-0.0.2-alpha.3.tgz#f632107f41a1651bcfcfc83711034490934c7d42"
-  integrity sha512-T9C/W9RkpySXPHX6Md9o0nEq2J5nCEmo5vk6C1kqIB9bRqtWABx8FBkqioExbleaE/94oDZmK0u5AmneRfRKEQ==
+"@orbital-frame/plugin-did-you-mean@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-did-you-mean/-/plugin-did-you-mean-0.0.2-alpha.5.tgz#faadca40a3367612a2ae7ebdaf3941a438687a58"
+  integrity sha512-yNc/e+CCz2kdaT4QECYS/cDawcVgm1zcTA5rrMkUDHOOKLZsG0BDg4Cyjdpm5pGXf4w1ve/56QN8nIifjMzvsQ==
   dependencies:
-    "@orbital-frame/core" "^0.0.2-alpha.3"
+    "@orbital-frame/core" "^0.0.2-alpha.5"
     talisman "^0.21.0"
 
-"@orbital-frame/plugin-error-trap@^0.0.2-alpha.3":
-  version "0.0.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-error-trap/-/plugin-error-trap-0.0.2-alpha.3.tgz#b7f7a7ea35e522187809633c24a591564cb11dc7"
-  integrity sha512-l2lUaITc9VmURio16seROi9gyHnA7mUmIFzO4gJWkivvNSZNMjDiYLD/iF/RwN7tYFrzdtKrbwCo1120Ua5/YA==
+"@orbital-frame/plugin-error-trap@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-error-trap/-/plugin-error-trap-0.0.2-alpha.5.tgz#3c90149885035d5a7ffa6b4d472bc2511b297a3d"
+  integrity sha512-X8ZMU6IxFTjTqYs3Ua3Rv0IU1Sd1dDktx8tx9f8U6jRuytfKeJPE0rzYsB7xj2yf0UidgPYy6M5UFVOXtUJ8aA==
   dependencies:
-    "@orbital-frame/core" "^0.0.2-alpha.3"
+    "@orbital-frame/core" "^0.0.2-alpha.5"
 
-"@orbital-frame/plugin-rc@^0.0.2-alpha.3":
-  version "0.0.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-rc/-/plugin-rc-0.0.2-alpha.3.tgz#29a693fb377427a070d28578b2dc9344b865275e"
-  integrity sha512-02+iqSpn8VNBpaqK02C+lRC5DQb2oLMT54faFsUvBs5s90idcP2Po1iGzk8LWCKmmRJh81VitVI3fAlq9KawLQ==
+"@orbital-frame/plugin-rc@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-rc/-/plugin-rc-0.0.2-alpha.5.tgz#3783105e5ad25298bb3dde32bb39f7213ab32e1e"
+  integrity sha512-BXVJgaT2/MNnHskgnJHdNwzkMRsEYKOzLu7jmZG9D4DiDsvs4ymSeDSPLYf2RlWmbtueUp3YhVlssLHniXrgng==
   dependencies:
-    "@orbital-frame/core" "^0.0.2-alpha.3"
+    "@orbital-frame/core" "^0.0.2-alpha.5"
 
-"@orbital-frame/plugin-uptime@^0.0.2-alpha.3":
-  version "0.0.2-alpha.3"
-  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-uptime/-/plugin-uptime-0.0.2-alpha.3.tgz#da71631f5bc7b3ed18b870c26fdca790b38c13b9"
-  integrity sha512-aF+/9BTU3jR4S0AK+99Sp1uaAcu/hD07sNudjsWnLk2HAORuMOp90MFOHLS0AfksqRFMrLkxo36nCOoKEFn1/g==
+"@orbital-frame/plugin-uptime@^0.0.2-alpha.5":
+  version "0.0.2-alpha.5"
+  resolved "https://registry.yarnpkg.com/@orbital-frame/plugin-uptime/-/plugin-uptime-0.0.2-alpha.5.tgz#b8f4209508ab7dbf14cc8cb5c87f62045844b57f"
+  integrity sha512-77NFjhs/Gy6N/GoWBAjL+RGJseu3khotOzcFxHnHW6ivJlYywGQCf8b4pkM6WHqQJGdPtiYUTlzc5wvyiRwUlQ==
   dependencies:
-    "@orbital-frame/core" "^0.0.2-alpha.3"
+    "@orbital-frame/core" "^0.0.2-alpha.5"
     pretty-ms "^5.0.0"
 
 "@slack/client@3.16.1-sec.2":
@@ -842,14 +842,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-lodash@^4.13.1, lodash@^4.17.10:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
-
-lodash@^4.17.13, lodash@^4.17.15, lodash@^4.6.1:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.6.1:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log@1.4.0:
   version "1.4.0"
