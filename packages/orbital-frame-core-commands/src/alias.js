@@ -3,12 +3,12 @@ function alias ({ commandService, compilerService }) {
     name: 'alias',
     synopsis: 'alias [NAME] [COMMAND STRING]',
     description: 'Create an alias for a command string',
-    execute ([ name, source ]) {
+    async execute ([ name, source ]) {
       const { command, metadata } = compilerService.compileWithMetadata(source)
       const firstCommandName = metadata.findOne(({ type }) => type === metadata.type.COMMAND).name
       const firstCommand = commandService.registry[firstCommandName]
 
-      commandService.load(() => ({
+      return commandService.load(() => ({
         name,
         options: firstCommand.options,
         description: `Alias for "${source}"`,

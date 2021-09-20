@@ -33,12 +33,12 @@ const compiler = () => ({ commandService, environmentService })  => ({
     }
   },
 
-  _getBuilder (ast, options = {}) {
+  async _getBuilder (ast, options = {}) {
     const commandBuilder = builder(commandService.registry, environmentService)
 
     const pipelines = []
     let pipeline, command, option, currentBuilder
-    walker.walk(ast, node => {
+    await walker.walk(ast, async node => {
       switch (node.type) {
       case type.PIPELINE: {
         pipeline = commandBuilder.addPipeline()
@@ -66,7 +66,7 @@ const compiler = () => ({ commandService, environmentService })  => ({
         const fnOpts = { scope: name }
         const cmd = this._getBuilder(body, fnOpts).build(fnOpts)
         const execute = () => cmd() // swallow args and opts since functions get these through env variables
-        commandService.load(() => ({ name, execute }))
+        await commandService.load(() => ({ name, execute }))
         return walker.treeControl.SUBTREE_STOP // subtree processing is handled by the recursive call of _getBuilder
       }
       case type.COMMAND: {

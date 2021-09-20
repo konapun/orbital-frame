@@ -4,21 +4,21 @@ const treeControl = {
 
 export default {
   treeControl,
-  walk (node, visitor) {
+  async walk (node, visitor) {
     if (node === null) return // boolean options may have a null body
     if (!Array.isArray(node)) {
-      const control = visitor(node)
+      const control = await visitor(node)
       switch (control) {
       case treeControl.SUBTREE_STOP:
         return
       }
     } else {
-      node.forEach(n => this.walk(n, visitor))
+      await Promise.all(node.map(async n => this.walk(n, visitor)))
     }
 
     const { body } = node
     if (body) {
-      body.forEach(child => this.walk(child, visitor))
+      await Promise.all(body.map(async child => this.walk(child, visitor)))
     }
   }
 }
